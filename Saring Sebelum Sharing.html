@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saring Sebelum Sharing | Literasi Digital — SMP Fase D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Plus Jakarta Sans', sans-serif; background: #0b1a2e; }
+
+    .viewport { position: relative; width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .track { display: flex; height: 92vh; width: 100%; transition: transform 0.55s cubic-bezier(0.65,0,0.35,1); will-change: transform; }
+    .slide { flex: 0 0 100%; height: 100%; padding: 0 4vw; display: flex; align-items: center; justify-content: center; }
+    .slide-inner {
+      position: relative; width: 100%; max-width: 1100px; height: 100%;
+      background: #f0f7ff; border-radius: 44px 44px 28px 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 8px 20px rgba(0,20,50,0.3);
+      padding: 40px 48px; overflow-y: auto; overflow-x: hidden;
+      border: 1px solid rgba(255,255,255,0.3); scrollbar-width: thin; scrollbar-color: #2563eb #e0e7ff;
+    }
+    .slide-inner::-webkit-scrollbar { width: 8px; }
+    .slide-inner::-webkit-scrollbar-track { background: #e0e7ff; border-radius: 10px; }
+    .slide-inner::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 10px; }
+    .slide-inner::before {
+      content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 10px;
+      background: linear-gradient(90deg, #2563eb, #3b82f6, #8b5cf6, #ec4899);
+      border-radius: 44px 44px 0 0;
+    }
+
+    .slide-number {
+      position: absolute; top: 24px; right: 32px; font-size: 0.85rem; font-weight: 600;
+      color: #1e3a8a; background: rgba(37,99,235,0.08); padding: 5px 16px;
+      border-radius: 100px; border: 1px solid rgba(37,99,235,0.2); z-index: 2;
+    }
+
+    h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; line-height: 1.15; color: #0a1e3c; margin-bottom: 10px; }
+    h2 { font-size: 1.9rem; font-weight: 700; color: #0a1e3c; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    h2 i { color: #2563eb; font-size: 1.6rem; background: rgba(37,99,235,0.12); padding: 10px; border-radius: 16px; }
+    h3 { font-size: 1.2rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+    p, li { font-size: 1.05rem; line-height: 1.5; color: #1e293b; }
+    .subhead { font-size: 1.2rem; font-weight: 500; color: #2563eb; margin-bottom: 22px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .card {
+      background: white; border-radius: 24px; padding: 24px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      border: 1px solid rgba(37,99,235,0.1);
+    }
+    .card-icon { font-size: 1.8rem; color: #2563eb; margin-bottom: 10px; }
+
+    .example-box {
+      background: #eef4ff; border-radius: 16px; padding: 16px;
+      margin-top: 12px; border-left: 5px solid #2563eb;
+      font-style: italic; color: #1e2f4a; font-size: 0.98rem;
+    }
+    .example-box strong { font-style: normal; color: #0a1e3c; display: block; margin-bottom: 4px; font-weight: 700; }
+
+    .solution-box {
+      background: #f0fdf4; border-radius: 16px; padding: 16px;
+      margin-top: 12px; border-left: 5px solid #16a34a;
+      color: #14532d; font-size: 0.95rem;
+    }
+    .solution-box strong { color: #166534; display: block; margin-bottom: 4px; font-weight: 700; }
+    .solution-box i { color: #16a34a; margin-right: 6px; }
+
+    .warn-box {
+      background: #fef2f2; border-radius: 16px; padding: 16px;
+      margin-top: 12px; border-left: 5px solid #dc2626;
+      color: #7f1d1d; font-size: 0.95rem;
+    }
+    .warn-box strong { color: #991b1b; display: block; margin-bottom: 4px; font-weight: 700; }
+    .warn-box i { color: #dc2626; margin-right: 6px; }
+
+    .tag { display: inline-block; padding: 3px 12px; border-radius: 60px; font-size: 0.78rem; font-weight: 700; margin-bottom: 8px; }
+    .tag-blue { background: #dbeafe; color: #1e3a8a; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-purple { background: #ede9fe; color: #5b21b6; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+
+    .highlight { background: #fef9c3; padding: 2px 7px; border-radius: 6px; font-weight: 600; }
+
+    .quote {
+      background: #e6f0ff; border-radius: 18px; padding: 18px 24px;
+      margin: 20px 0 8px; font-size: 1.05rem; font-weight: 500;
+      color: #0a1e3c; border: 1px dashed #2563eb; text-align: center;
+    }
+    .quote i { color: #2563eb; margin-right: 6px; }
+
+    .fase-badge {
+      background: #8b5cf6; color: white; font-size: 0.9rem; font-weight: 700;
+      padding: 5px 16px; border-radius: 60px; display: inline-block; margin-bottom: 12px;
+    }
+
+    /* Langkah besi 4 */
+    .langkah-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 16px; }
+    .langkah-item {
+      background: white; border-radius: 22px; padding: 22px 18px;
+      border: 1px solid rgba(37,99,235,0.12);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+      position: relative; display: flex; flex-direction: column;
+      transition: all 0.2s;
+    }
+    .langkah-item:hover { border-color: #2563eb; box-shadow: 0 10px 22px rgba(37,99,235,0.1); }
+    .langkah-num {
+      background: #2563eb; color: white; font-weight: 800; font-size: 1rem;
+      width: 38px; height: 38px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+    .langkah-item h4 { font-size: 1rem; font-weight: 800; color: #0a1e3c; margin-bottom: 6px; }
+    .langkah-item p { font-size: 0.85rem; line-height: 1.45; color: #475569; }
+
+    /* Refleksi angka */
+    .big-stat {
+      font-size: 2.4rem; font-weight: 800; line-height: 1;
+      color: #2563eb; letter-spacing: -1px;
+    }
+    .stat-card {
+      background: white; border-radius: 22px; padding: 22px;
+      border: 1px solid rgba(37,99,235,0.1);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+      text-align: center;
+    }
+    .stat-card p { font-size: 0.9rem; color: #475569; margin-top: 8px; }
+
+    /* Navigation */
+    .nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 50px; height: 50px; border-radius: 50%;
+      background: rgba(255,255,255,0.95); color: #1e3a8a; border: none;
+      cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3); transition: all 0.2s; z-index: 10;
+    }
+    .nav-btn:hover { background: #2563eb; color: white; transform: translateY(-50%) scale(1.08); }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: translateY(-50%); }
+    .nav-btn:disabled:hover { background: rgba(255,255,255,0.95); color: #1e3a8a; }
+    .nav-prev { left: 16px; }
+    .nav-next { right: 16px; }
+
+    .dots {
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; padding: 10px 18px;
+      background: rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+      border-radius: 100px; z-index: 10; border: 1px solid rgba(255,255,255,0.15);
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.35); border: none; cursor: pointer; transition: all 0.25s; padding: 0; }
+    .dot.active { background: #3b82f6; width: 24px; border-radius: 100px; }
+
+    @media (max-width: 900px) {
+      .slide-inner { padding: 28px 20px; border-radius: 28px; }
+      h1 { font-size: 2.1rem; }
+      h2 { font-size: 1.5rem; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: 1fr 1fr; }
+      .langkah-grid { grid-template-columns: 1fr 1fr; }
+      .nav-btn { width: 40px; height: 40px; }
+      .nav-prev { left: 6px; }
+      .nav-next { right: 6px; }
+    }
+    @media (max-width: 600px) {
+      .slide-inner { padding: 22px 14px; }
+      h1 { font-size: 1.7rem; }
+      p, li { font-size: 0.95rem; }
+      .grid-4 { grid-template-columns: 1fr; }
+      .langkah-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="viewport">
+  <div class="track" id="track">
+
+    <!-- 1: COVER -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">1 / 7</div>
+        <div class="fase-badge">Kokurikuler SMP • Fase D</div>
+        <h1>Saring Sebelum Sharing</h1>
+        <p class="subhead">Literasi digital: cerdas memilah informasi sebelum membagikannya.</p>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px;">
+          <div style="background: white; border-radius: 16px; padding: 12px 18px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-shield-halved" style="color: #2563eb; font-size: 1.3rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.9rem;">Literasi Digital</span>
+          </div>
+          <div style="background: white; border-radius: 16px; padding: 12px 18px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-bolt" style="color: #f59e0b; font-size: 1.3rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.9rem;">Mengapa Hoaks Cepat?</span>
+          </div>
+          <div style="background: white; border-radius: 16px; padding: 12px 18px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-list-check" style="color: #16a34a; font-size: 1.3rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.9rem;">4 Langkah Praktis</span>
+          </div>
+        </div>
+        <p style="margin-top: 30px; font-size: 0.95rem; color: #475569;"><i class="fas fa-arrow-right" style="color: #2563eb; margin-right: 8px;"></i>Gunakan tombol panah / geser untuk navigasi.</p>
+      </div>
+    </div>
+
+    <!-- 2: LITERASI DIGITAL -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">2 / 7</div>
+        <h2><i class="fas fa-shield-halved"></i> Literasi Digital Itu Apa?</h2>
+        <p class="subhead">Kemampuan <span class="highlight">memilah, memverifikasi, dan menggunakan</span> informasi secara bijak di dunia digital.</p>
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-magnifying-glass"></i></div>
+            <h3 style="font-size: 1.1rem;">Cek Fakta</h3>
+            <p style="font-size: 0.95rem;">Tidak langsung percaya. Bandingkan dengan sumber resmi.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-brain"></i></div>
+            <h3 style="font-size: 1.1rem;">Berpikir Kritis</h3>
+            <p style="font-size: 0.95rem;">Tanya: siapa yang diuntungkan? Apa buktinya?</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-heart"></i></div>
+            <h3 style="font-size: 1.1rem;">Etika Digital</h3>
+            <p style="font-size: 0.95rem;">Jaga jejak digital. Jangan sebarkan kebencian/hoaks.</p>
+          </div>
+        </div>
+        <div class="warn-box" style="margin-top: 18px;">
+          <strong><i class="fas fa-triangle-exclamation"></i> Tanpa literasi digital:</strong>
+          Mudah termakan hoaks, ikut menyebarkan kebencian, dan meninggalkan jejak digital yang merugikan diri sendiri.
+        </div>
+      </div>
+    </div>
+
+    <!-- 3: REFLEKSI — MENGAPA HOAKS CEPAT MENYEBAR -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">3 / 7</div>
+        <h2><i class="fas fa-bolt"></i> Refleksi: Mengapa Hoaks Cepat Menyebar?</h2>
+        <p class="subhead" style="margin-bottom: 18px;">Bukan karena hoaks itu benar, tapi karena <strong>emosi kita lebih cepat dari logika</strong>.</p>
+
+        <div class="grid-4" style="margin-bottom: 18px;">
+          <div class="stat-card">
+            <div class="big-stat"><i class="fas fa-face-angry" style="font-size: 2rem;"></i></div>
+            <p><strong>Emosi</strong> — marah & takut bikin cepat share</p>
+          </div>
+          <div class="stat-card">
+            <div class="big-stat"><i class="fas fa-clock" style="font-size: 2rem;"></i></div>
+            <p><strong>Kecepatan</strong> — share sebelum baca selesai</p>
+          </div>
+          <div class="stat-card">
+            <div class="big-stat"><i class="fas fa-users" style="font-size: 2rem;"></i></div>
+            <p><strong>FOMO</strong> — takut ketinggalan info</p>
+          </div>
+          <div class="stat-card">
+            <div class="big-stat"><i class="fas fa-thumbs-up" style="font-size: 2rem;"></i></div>
+            <p><strong>Validasi</strong> — ingin dianggap "paling tahu"</p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card" style="border-left: 5px solid #dc2626;">
+            <span class="tag tag-red"><i class="fas fa-fire"></i> Pemicu Emosi</span>
+            <p style="font-size: 0.95rem;">Hoaks sengaja dibuat <strong>memancing marah, takut, atau kagum</strong>. Otak kita langsung bereaksi sebelum sempat berpikir.</p>
+          </div>
+          <div class="card" style="border-left: 5px solid #2563eb;">
+            <span class="tag tag-blue"><i class="fas fa-share"></i> Algoritma</span>
+            <p style="font-size: 0.95rem;">Konten yang banyak dibagikan <strong>naik ke atas</strong> — jadi hoaks yang viral makin mudah ditemukan.</p>
+          </div>
+        </div>
+
+        <div class="quote" style="margin-top: 16px;">
+          <i class="fas fa-quote-left"></i> Hoaks menyebar bukan karena benar, tapi karena <strong>emosi lebih cepat dari verifikasi</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: 4 LANGKAH PRAKTIS — JUDUL & RINGKASAN -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">4 / 7</div>
+        <h2><i class="fas fa-list-check"></i> 4 Langkah Praktis</h2>
+        <p class="subhead">Saring sebelum sharing — pakai 4 langkah ini setiap kali menerima info.</p>
+
+        <div class="langkah-grid">
+          <div class="langkah-item">
+            <div class="langkah-num">1</div>
+            <h4>BERHENTI</h4>
+            <p>Jangan langsung share. Tarik napas, baca ulang, tunggu 10 detik.</p>
+          </div>
+          <div class="langkah-item">
+            <div class="langkah-num">2</div>
+            <h4>CEK SUMBER</h4>
+            <p>Siapa yang buat? Media resmi atau akun anonim? Kapan dibuat?</p>
+          </div>
+          <div class="langkah-item">
+            <div class="langkah-num">3</div>
+            <h4>VERIFIKASI</h4>
+            <p>Cari di situs resmi (cekfakta, Kominfo, media kredibel). Bandingkan 2–3 sumber.</p>
+          </div>
+          <div class="langkah-item">
+            <div class="langkah-num">4</div>
+            <h4>PUTUSKAN</h4>
+            <p>Kalau tidak yakin, <strong>jangan share</strong>. Kalau hoaks, laporkan & klarifikasi.</p>
+          </div>
+        </div>
+
+        <div class="solution-box" style="margin-top: 20px;">
+          <strong><i class="fas fa-lightbulb"></i> Ingat:</strong>
+          Berhenti — Cek Sumber — Verifikasi — Putuskan. Empat langkah, kurang dari 2 menit, bisa mencegah penyebaran hoaks.
+        </div>
+      </div>
+    </div>
+
+    <!-- 5: LANGKAH DETAIL + CONTOH -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">5 / 7</div>
+        <h2><i class="fas fa-circle-check"></i> Detail & Contoh Tiap Langkah</h2>
+        <div class="grid-2" style="margin-top: 8px;">
+          <div class="card">
+            <span class="tag tag-blue">1. BERHENTI</span>
+            <p style="font-size: 0.95rem;">Tarik napas. Tanya: "Aku share ini karena emosi atau karena yakin?"</p>
+            <div class="example-box" style="font-size: 0.9rem; margin-top: 10px;">
+              <strong>Contoh:</strong> Lihat video "bencana" di grup WhatsApp → tunda dulu, jangan langsung forward.
+            </div>
+          </div>
+          <div class="card">
+            <span class="tag tag-blue">2. CEK SUMBER</span>
+            <p style="font-size: 0.95rem;">Lihat nama media, tanggal, dan penulis. Akun anonim = waspada.</p>
+            <div class="example-box" style="font-size: 0.9rem; margin-top: 10px;">
+              <strong>Contoh:</strong> Info dari akun "Berita Kilat" tanpa logo resmi → curigai.
+            </div>
+          </div>
+          <div class="card">
+            <span class="tag tag-blue">3. VERIFIKASI</span>
+            <p style="font-size: 0.95rem;">Cari kata kunci di Google. Cek di situs cek fakta atau media kredibel.</p>
+            <div class="example-box" style="font-size: 0.9rem; margin-top: 10px;">
+              <strong>Contoh:</strong> Ketik "vaksin X efek samping" → cek di situs Kemenkes atau cekfakta.com.
+            </div>
+          </div>
+          <div class="card">
+            <span class="tag tag-blue">4. PUTUSKAN</span>
+            <p style="font-size: 0.95rem;">Jika ragu, jangan share. Jika hoaks, laporkan & beri tahu pengirim.</p>
+            <div class="example-box" style="font-size: 0.9rem; margin-top: 10px;">
+              <strong>Contoh:</strong> Balas: "Ini hoaks, sudah dicek di [sumber]. Yuk, jangan disebar."
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6: PRAKTIK DI KEHIDUPAN SEHARI-HARI -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">6 / 7</div>
+        <h2><i class="fas fa-mobile-screen"></i> Praktik Sehari-hari</h2>
+        <p class="subhead">Saring sebelum sharing — bukan cuma teori, tapi kebiasaan.</p>
+        <div class="grid-3">
+          <div class="card" style="border-top: 5px solid #2563eb;">
+            <div class="card-icon"><i class="fab fa-whatsapp" style="color: #16a34a;"></i></div>
+            <h3 style="font-size: 1.05rem;">Grup Chat</h3>
+            <p style="font-size: 0.9rem;">Sebelum forward, cek: dari mana asalnya? Jangan sebarkan tanpa verifikasi.</p>
+          </div>
+          <div class="card" style="border-top: 5px solid #8b5cf6;">
+            <div class="card-icon"><i class="fab fa-instagram" style="color: #ec4899;"></i></div>
+            <h3 style="font-size: 1.05rem;">Media Sosial</h3>
+            <p style="font-size: 0.9rem;">Cek tanggal posting & sumber. Screenshot lama sering dipakai ulang sebagai berita baru.</p>
+          </div>
+          <div class="card" style="border-top: 5px solid #f59e0b;">
+            <div class="card-icon"><i class="fab fa-tiktok"></i></div>
+            <h3 style="font-size: 1.05rem;">Video Pendek</h3>
+            <p style="font-size: 0.9rem;">Video bisa dipotong & diedit. Cari versi lengkapnya sebelum percaya.</p>
+          </div>
+        </div>
+
+        <div class="solution-box" style="margin-top: 18px;">
+          <strong><i class="fas fa-rocket"></i> Kebiasaan Kecil:</strong>
+          Sebelum tekan "share", tanya 3 hal: <em>Benar nggak? Perlu nggak? Bermanfaat nggak?</em> Kalau ragu, jangan share.
+        </div>
+
+        <div class="quote" style="margin-top: 14px;">
+          <i class="fas fa-quote-left"></i> Jari kamu lebih kuat dari yang kamu kira — bisa menyebarkan hoaks atau menghentikannya.
+        </div>
+      </div>
+    </div>
+
+    <!-- 7: PENUTUP -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">7 / 7</div>
+        <h2><i class="fas fa-handshake"></i> Kesimpulan</h2>
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="card">
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: #2563eb; margin-right: 8px;"></i> Literasi digital = <strong>memilah & memverifikasi</strong> informasi</li>
+              <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: #2563eb; margin-right: 8px;"></i> Hoaks cepat menyebar karena <strong>emosi > logika</strong></li>
+              <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: #2563eb; margin-right: 8px;"></i> Gunakan <strong>4 langkah</strong>: Berhenti — Cek Sumber — Verifikasi — Putuskan</li>
+              <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: #2563eb; margin-right: 8px;"></i> <strong>Saring sebelum sharing</strong> — jangan jadi bagian dari penyebaran hoaks</li>
+            </ul>
+          </div>
+          <div style="background: #2563eb; border-radius: 24px; padding: 24px; color: white; display: flex; flex-direction: column; justify-content: center;">
+            <i class="fas fa-shield-halved" style="font-size: 2.2rem; margin-bottom: 10px;"></i>
+            <h3 style="color: white; font-size: 1.1rem; margin-bottom: 8px;">Komitmen</h3>
+            <p style="color: rgba(255,255,255,0.92); font-size: 0.95rem;">Aku saring sebelum sharing — karena informasi yang aku sebarkan adalah tanggung jawabku.</p>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 22px; font-size: 1.05rem;">
+          <i class="fas fa-quote-left"></i> “Berpikir dulu, share kemudian. Bukan share dulu, berpikir kemudian.”
+        </div>
+        <div style="margin-top: 20px; text-align: center; border-top: 1px solid #cbd5e1; padding-top: 14px;">
+          <p style="font-size: 0.9rem; color: #475569;"><i class="fas fa-graduation-cap" style="color: #2563eb; margin-right: 8px;"></i> Kokurikuler SMP Fase D — Saring Sebelum Sharing</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="nav-btn nav-prev" id="prevBtn" aria-label="Sebelumnya"><i class="fas fa-chevron-left"></i></button>
+  <button class="nav-btn nav-next" id="nextBtn" aria-label="Berikutnya"><i class="fas fa-chevron-right"></i></button>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+  (function() {
+    const track = document.getElementById('track');
+    const slides = track.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dotsContainer = document.getElementById('dots');
+    let currentIndex = 0;
+
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('button');
+      dot.classList.add('dot');
+      if (i === 0) dot.classList.add('active');
+      dot.setAttribute('aria-label', `Slide ${i + 1}`);
+      dot.addEventListener('click', () => goToSlide(i));
+      dotsContainer.appendChild(dot);
+    }
+    const dots = dotsContainer.querySelectorAll('.dot');
+
+    function updateUI() {
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      prevBtn.disabled = (currentIndex === 0);
+      nextBtn.disabled = (currentIndex === totalSlides - 1);
+      dots.forEach((dot, idx) => dot.classList.toggle('active', idx === currentIndex));
+      const inner = slides[currentIndex].querySelector('.slide-inner');
+      if (inner) inner.scrollTop = 0;
+    }
+
+    function goToSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      currentIndex = index;
+      updateUI();
+    }
+
+    function nextSlide() { goToSlide(currentIndex + 1); }
+    function prevSlide() { goToSlide(currentIndex - 1); }
+
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+      else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+      else if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+    });
+
+    let touchStartX = 0, touchStartY = 0, isSwiping = false;
+    const viewport = document.querySelector('.viewport');
+
+    viewport.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+      isSwiping = false;
+    }, { passive: true });
+
+    viewport.addEventListener('touchmove', (e) => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      const dy = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) isSwiping = true;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', (e) => {
+      if (!isSwiping) return;
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (dx < -50) nextSlide();
+      else if (dx > 50) prevSlide();
+      isSwiping = false;
+    }, { passive: true });
+
+    let wheelTimeout;
+    viewport.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+        if (wheelTimeout) return;
+        if (e.deltaX > 20) nextSlide();
+        else if (e.deltaX < -20) prevSlide();
+        wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 600);
+      }
+    }, { passive: false });
+
+    updateUI();
+  })();
+</script>
+</body>
+</html>
