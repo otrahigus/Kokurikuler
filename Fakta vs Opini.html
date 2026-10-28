@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fakta vs Opini & Battle Game | SMP Fase D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Plus Jakarta Sans', sans-serif; background: #0b1a2e; }
+
+    .viewport { position: relative; width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .track { display: flex; height: 92vh; width: 100%; transition: transform 0.5s cubic-bezier(0.65,0,0.35,1); will-change: transform; }
+    .slide { flex: 0 0 100%; height: 100%; padding: 0 3vw; display: flex; align-items: center; justify-content: center; }
+    .slide-inner {
+      position: relative; width: 100%; max-width: 1200px; height: 100%;
+      background: #f0f7ff; border-radius: 44px 44px 28px 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 8px 20px rgba(0,20,50,0.3);
+      padding: 40px 48px; overflow-y: auto; overflow-x: hidden;
+      border: 1px solid rgba(255,255,255,0.3); scrollbar-width: thin; scrollbar-color: #2563eb #e0e7ff;
+    }
+    .slide-inner::-webkit-scrollbar { width: 8px; }
+    .slide-inner::-webkit-scrollbar-track { background: #e0e7ff; border-radius: 10px; }
+    .slide-inner::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 10px; }
+    .slide-inner::before {
+      content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 10px;
+      background: linear-gradient(90deg, #2563eb, #3b82f6, #8b5cf6, #ec4899);
+      border-radius: 44px 44px 0 0;
+    }
+
+    .slide-number {
+      position: absolute; top: 22px; right: 30px; font-size: 0.8rem; font-weight: 600;
+      color: #1e3a8a; background: rgba(37,99,235,0.08); padding: 4px 14px;
+      border-radius: 100px; border: 1px solid rgba(37,99,235,0.2); z-index: 2;
+    }
+
+    h1 { font-size: 2.6rem; font-weight: 800; letter-spacing: -1px; line-height: 1.15; color: #0a1e3c; margin-bottom: 8px; }
+    h2 { font-size: 1.8rem; font-weight: 700; color: #0a1e3c; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    h2 i { color: #2563eb; font-size: 1.5rem; background: rgba(37,99,235,0.12); padding: 10px; border-radius: 16px; }
+    h3 { font-size: 1.1rem; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+    p, li { font-size: 1rem; line-height: 1.45; color: #1e293b; }
+    .subhead { font-size: 1.1rem; font-weight: 500; color: #2563eb; margin-bottom: 16px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .card {
+      background: white; border-radius: 20px; padding: 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      border: 1px solid rgba(37,99,235,0.1);
+    }
+    .card-icon { font-size: 1.5rem; color: #2563eb; margin-bottom: 6px; }
+
+    .bullet-list { list-style: none; padding: 0; }
+    .bullet-list li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 0.95rem; line-height: 1.35; }
+    .bullet-list li i { margin-top: 3px; flex-shrink: 0; font-size: 0.85rem; }
+
+    .example-box {
+      background: #eef4ff; border-radius: 12px; padding: 12px;
+      margin-top: 8px; border-left: 4px solid #2563eb;
+      font-size: 0.88rem; color: #1e2f4a;
+    }
+    .example-box strong { color: #0a1e3c; display: block; margin-bottom: 2px; font-weight: 700; }
+
+    .tag { display: inline-block; padding: 2px 10px; border-radius: 60px; font-size: 0.7rem; font-weight: 700; margin-bottom: 6px; }
+    .tag-blue { background: #dbeafe; color: #1e3a8a; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+
+    .quote {
+      background: #e6f0ff; border-radius: 16px; padding: 14px 20px;
+      margin: 14px 0 4px; font-size: 0.98rem; font-weight: 500;
+      color: #0a1e3c; border: 1px dashed #2563eb; text-align: center;
+    }
+    .quote i { color: #2563eb; margin-right: 5px; }
+
+    .fase-badge {
+      background: #8b5cf6; color: white; font-size: 0.8rem; font-weight: 700;
+      padding: 4px 14px; border-radius: 60px; display: inline-block; margin-bottom: 10px;
+    }
+
+    /* GAME */
+    .group-scores { display: flex; gap: 8px; flex-wrap: wrap; }
+    .score-pill {
+      background: white; border-radius: 14px; padding: 8px 12px;
+      border: 2px solid rgba(37,99,235,0.15);
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 700; font-size: 0.9rem; color: #1e293b;
+      transition: all 0.2s;
+    }
+    .score-pill.active { border-color: #2563eb; background: #dbeafe; box-shadow: 0 4px 12px rgba(37,99,235,0.2); }
+    .score-pill .g-badge {
+      width: 26px; height: 26px; border-radius: 8px; background: #2563eb; color: white;
+      display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
+    }
+    .score-pill .pts { color: #2563eb; min-width: 22px; text-align: right; }
+
+    .timer-box {
+      background: #0a1e3c; color: white; border-radius: 16px;
+      padding: 10px 22px; font-weight: 800; font-size: 1.6rem;
+      display: flex; align-items: center; gap: 10px;
+      min-width: 120px; justify-content: center;
+      transition: all 0.2s;
+    }
+    .timer-box.warning { background: #dc2626; animation: pulse 0.6s infinite; }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+    .question-box {
+      background: white; border-radius: 24px; padding: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 2px solid rgba(37,99,235,0.15);
+      text-align: center; margin: 12px 0;
+      min-height: 120px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .question-box .label {
+      font-size: 0.75rem; font-weight: 700; color: #2563eb;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+    }
+    .question-box .q-text {
+      font-size: 1.5rem; font-weight: 700; color: #0a1e3c; line-height: 1.35;
+    }
+
+    .answer-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px;
+    }
+    .answer-btn {
+      border: none; border-radius: 18px; padding: 22px 12px;
+      font-family: inherit; font-weight: 800; font-size: 1.15rem;
+      cursor: pointer; transition: all 0.15s;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: white; position: relative;
+      box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+    }
+    .answer-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,0.15); }
+    .answer-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: 0 6px 0 rgba(0,0,0,0.15); }
+    .answer-btn i { font-size: 1.8rem; }
+    .btn-fakta { background: #16a34a; }
+    .btn-opini { background: #f59e0b; }
+    .btn-hate { background: #dc2626; }
+    .answer-btn:hover:not(:disabled) { filter: brightness(1.1); }
+    .answer-btn.correct { animation: correctFlash 0.6s; }
+    .answer-btn.wrong { animation: wrongShake 0.5s; }
+    @keyframes correctFlash { 0%,100% { background: #16a34a; } 50% { background: #22c55e; transform: scale(1.05); } }
+    @keyframes wrongShake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+
+    .feedback-box {
+      margin-top: 12px; padding: 14px 18px; border-radius: 14px;
+      font-weight: 600; font-size: 1rem; text-align: center;
+      display: none;
+    }
+    .feedback-box.show { display: block; animation: fadeIn 0.3s; }
+    .feedback-box.ok { background: #dcfce7; color: #166534; border: 2px solid #86efac; }
+    .feedback-box.no { background: #fee2e2; color: #991b1b; border: 2px solid #fca5a5; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .game-controls {
+      display: flex; gap: 10px; justify-content: center; margin-top: 14px; flex-wrap: wrap;
+    }
+    .ctrl-btn {
+      border: none; border-radius: 14px; padding: 14px 26px;
+      font-family: inherit; font-weight: 700; font-size: 1rem;
+      cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; gap: 8px;
+      pointer-events: auto !important;
+    }
+    .ctrl-btn:active { transform: translateY(2px); }
+    .ctrl-primary { background: #2563eb; color: white; box-shadow: 0 4px 0 #1e40af; }
+    .ctrl-primary:active { box-shadow: 0 2px 0 #1e40af; }
+    .ctrl-primary:hover { background: #1d4ed8; }
+    .ctrl-secondary { background: white; color: #1e3a8a; border: 2px solid #cbd5e1; }
+    .ctrl-secondary:hover { border-color: #2563eb; color: #2563eb; }
+
+    /* Panel tambah soal */
+    .add-question-panel {
+      background: #f8fafc; border-radius: 18px; padding: 16px 18px;
+      margin-top: 16px; border: 2px dashed #cbd5e1;
+    }
+    .add-question-panel h4 {
+      font-size: 0.9rem; font-weight: 700; color: #475569; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .add-question-panel h4 i { color: #2563eb; }
+    .add-q-form { display: flex; gap: 8px; flex-wrap: wrap; align-items: stretch; }
+    .add-q-form input[type="text"] {
+      flex: 1; min-width: 200px; padding: 12px 14px; border-radius: 12px;
+      border: 2px solid #cbd5e1; font-family: inherit; font-size: 0.95rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .add-q-form input[type="text"]:focus { border-color: #2563eb; }
+    .add-q-form select {
+      padding: 12px 14px; border-radius: 12px; border: 2px solid #cbd5e1;
+      font-family: inherit; font-size: 0.95rem; font-weight: 600;
+      outline: none; cursor: pointer; background: white; color: #1e293b;
+    }
+    .add-q-form select:focus { border-color: #2563eb; }
+    .add-q-form button {
+      padding: 12px 20px; border-radius: 12px; border: none;
+      background: #16a34a; color: white; font-family: inherit;
+      font-weight: 700; font-size: 0.95rem; cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      transition: all 0.15s;
+    }
+    .add-q-form button:hover { background: #15803d; }
+    .add-q-form button:active { transform: translateY(2px); }
+    .q-count-info {
+      font-size: 0.82rem; color: #64748b; margin-top: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .q-count-info i { color: #2563eb; }
+
+    /* Navigation */
+    .nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.95); color: #1e3a8a; border: none;
+      cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3); transition: all 0.2s; z-index: 10;
+    }
+    .nav-btn:hover { background: #2563eb; color: white; transform: translateY(-50%) scale(1.08); }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: translateY(-50%); }
+    .nav-btn:disabled:hover { background: rgba(255,255,255,0.95); color: #1e3a8a; }
+    .nav-prev { left: 14px; }
+    .nav-next { right: 14px; }
+
+    .dots {
+      position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; padding: 10px 18px;
+      background: rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+      border-radius: 100px; z-index: 10; border: 1px solid rgba(255,255,255,0.15);
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.35); border: none; cursor: pointer; transition: all 0.25s; padding: 0; }
+    .dot.active { background: #3b82f6; width: 24px; border-radius: 100px; }
+
+    @media (max-width: 900px) {
+      .slide-inner { padding: 24px 18px; border-radius: 28px; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.4rem; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .answer-row { grid-template-columns: 1fr; }
+      .answer-btn { padding: 16px; flex-direction: row; justify-content: center; }
+      .question-box .q-text { font-size: 1.2rem; }
+      .timer-box { font-size: 1.3rem; padding: 8px 16px; }
+      .nav-btn { width: 38px; height: 38px; }
+      .nav-prev { left: 4px; }
+      .nav-next { right: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="viewport">
+  <div class="track" id="track">
+
+    <!-- 1: COVER -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">1 / 8</div>
+        <div class="fase-badge">Kokurikuler SMP • Fase D</div>
+        <h1>Fakta, Opini & Ruang Bebas Berpendapat</h1>
+        <p class="subhead">Etika berargumen tanpa menyebarkan kebencian — plus Battle Game 6 kelompok!</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px;">
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-scale-balanced" style="color: #2563eb; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Fakta vs Opini</span>
+          </div>
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-comments" style="color: #8b5cf6; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Bebas Berpendapat</span>
+          </div>
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-ban" style="color: #dc2626; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Hate Speech</span>
+          </div>
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-gamepad" style="color: #f59e0b; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Battle Interaktif</span>
+          </div>
+        </div>
+        <p style="margin-top: 24px; font-size: 0.9rem; color: #475569;"><i class="fas fa-arrow-right" style="color: #2563eb; margin-right: 6px;"></i>Navigasi: tombol panah, keyboard, atau geser layar.</p>
+      </div>
+    </div>
+
+    <!-- 2: FAKTA VS OPINI + LIST -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">2 / 8</div>
+        <h2><i class="fas fa-scale-balanced"></i> Fakta vs Opini</h2>
+        <div class="grid-2">
+          <div class="card" style="border-top: 5px solid #16a34a;">
+            <span class="tag tag-green"><i class="fas fa-check"></i> FAKTA</span>
+            <ul class="bullet-list" style="margin-top: 6px;">
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Bisa <strong>dicek</strong> kebenarannya</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Ada <strong>bukti / data</strong></span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Semua orang <strong>setuju</strong> jika dicek</span></li>
+            </ul>
+            <div class="example-box" style="border-left-color: #16a34a;">
+              <strong>Contoh:</strong> "Indonesia punya 38 provinsi."
+            </div>
+          </div>
+          <div class="card" style="border-top: 5px solid #f59e0b;">
+            <span class="tag tag-amber"><i class="fas fa-comment"></i> OPINI</span>
+            <ul class="bullet-list" style="margin-top: 6px;">
+              <li><i class="fas fa-circle" style="color: #f59e0b; font-size: 0.5rem; margin-top: 6px;"></i> <span>Pendapat <strong>pribadi</strong></span></li>
+              <li><i class="fas fa-circle" style="color: #f59e0b; font-size: 0.5rem; margin-top: 6px;"></i> <span><strong>Tidak bisa</strong> diuji benar/salah</span></li>
+              <li><i class="fas fa-circle" style="color: #f59e0b; font-size: 0.5rem; margin-top: 6px;"></i> <span>Bisa <strong>beda</strong> tiap orang</span></li>
+            </ul>
+            <div class="example-box" style="border-left-color: #f59e0b;">
+              <strong>Contoh:</strong> "Indonesia negara paling indah."
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 16px; border-left: 5px solid #2563eb;">
+          <span class="tag tag-blue"><i class="fas fa-list-check"></i> Cek Cepat: Fakta atau Opini?</span>
+          <div class="grid-2" style="margin-top: 8px; gap: 12px;">
+            <ul class="bullet-list">
+              <li><i class="fas fa-question-circle" style="color: #2563eb;"></i> <span>Bisa <strong>dicek</strong>?</span></li>
+              <li><i class="fas fa-question-circle" style="color: #2563eb;"></i> <span>Ada <strong>angka / tanggal</strong>?</span></li>
+              <li><i class="fas fa-question-circle" style="color: #2563eb;"></i> <span>Ada <strong>sumber resmi</strong>?</span></li>
+            </ul>
+            <ul class="bullet-list">
+              <li><i class="fas fa-question-circle" style="color: #8b5cf6;"></i> <span>Ada kata <strong>"menurutku"</strong>?</span></li>
+              <li><i class="fas fa-question-circle" style="color: #8b5cf6;"></i> <span>Ada kata <strong>"paling / lebih / sebaiknya"</strong>?</span></li>
+              <li><i class="fas fa-question-circle" style="color: #8b5cf6;"></i> <span>Tergantung <strong>selera</strong>?</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3: BEBAS BERPENDAPAT & BATASAN -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">3 / 8</div>
+        <h2><i class="fas fa-comments"></i> Bebas Berpendapat & Batasannya</h2>
+        <div class="grid-2">
+          <div class="card" style="border-left: 5px solid #16a34a;">
+            <span class="tag tag-green"><i class="fas fa-check"></i> BOLEH</span>
+            <ul class="bullet-list" style="margin-top: 6px;">
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Kritik <strong>ide / kebijakan</strong></span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Beda pendapat dengan <strong>sopan</strong></span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Sertakan <strong>alasan & data</strong></span></li>
+            </ul>
+            <div class="example-box" style="border-left-color: #16a34a;">
+              <strong>Contoh:</strong> "Kebijakan ini kurang tepat karena anggarannya tidak transparan."
+            </div>
+          </div>
+          <div class="card" style="border-left: 5px solid #dc2626;">
+            <span class="tag tag-red"><i class="fas fa-ban"></i> TIDAK BOLEH</span>
+            <ul class="bullet-list" style="margin-top: 6px;">
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Menyerang <strong>identitas</strong> (agama, suku, ras)</span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Menyebar <strong>kebencian</strong></span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Menghina & memfitnah</span></li>
+            </ul>
+            <div class="example-box" style="border-left-color: #dc2626;">
+              <strong>Contoh:</strong> "Dasar [suku X] bodoh, nggak pantas jadi pemimpin!"
+            </div>
+          </div>
+        </div>
+        <div class="quote">
+          <i class="fas fa-key"></i> Batasnya: <strong>kritik ide = boleh</strong>. <strong>Serang identitas = hate speech</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: PENGANTAR GAME -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">4 / 8</div>
+        <h2><i class="fas fa-gamepad"></i> Battle Game: 6 Kelompok</h2>
+        <p class="subhead">Baris ke belakang • Battle individu • Soal diacak otomatis!</p>
+
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="card" style="text-align: center; border-top: 4px solid #2563eb;">
+            <div class="card-icon"><i class="fas fa-users"></i></div>
+            <h3 style="font-size: 1rem;">6 Kelompok</h3>
+            <p style="font-size: 0.88rem;">Masing-masing 4–5 siswa</p>
+          </div>
+          <div class="card" style="text-align: center; border-top: 4px solid #f59e0b;">
+            <div class="card-icon"><i class="fas fa-shuffle"></i></div>
+            <h3 style="font-size: 1rem;">Soal Diacak</h3>
+            <p style="font-size: 0.88rem;">Urutan beda tiap main</p>
+          </div>
+          <div class="card" style="text-align: center; border-top: 4px solid #16a34a;">
+            <div class="card-icon"><i class="fas fa-trophy"></i></div>
+            <h3 style="font-size: 1rem;">Poin Otomatis</h3>
+            <p style="font-size: 0.88rem;">Skor & timer di TV board</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 14px; border-left: 5px solid #8b5cf6;">
+          <span class="tag tag-blue"><i class="fas fa-list-ol"></i> Cara Main</span>
+          <ul class="bullet-list" style="margin-top: 6px;">
+            <li><i class="fas fa-1" style="color: #2563eb;"></i> <span>Setiap kelompok berbaris ke belakang.</span></li>
+            <li><i class="fas fa-2" style="color: #2563eb;"></i> <span>Siswa terdepan maju ke depan TV board.</span></li>
+            <li><i class="fas fa-3" style="color: #2563eb;"></i> <span>Soal muncul + timer 15 detik.</span></li>
+            <li><i class="fas fa-4" style="color: #2563eb;"></i> <span>Siswa menyentuh tombol: <strong>FAKTA / OPINI / HATE SPEECH</strong>.</span></li>
+            <li><i class="fas fa-5" style="color: #2563eb;"></i> <span>Benar = +10 poin. Skor update otomatis.</span></li>
+            <li><i class="fas fa-6" style="color: #2563eb;"></i> <span>Setelah menjawab, siswa pindah ke belakang. Kelompok berikutnya maju.</span></li>
+          </ul>
+        </div>
+
+        <div class="quote" style="margin-top: 12px;">
+          <i class="fas fa-lightbulb"></i> 60 soal mudah — <strong>diacak otomatis</strong> setiap mulai game!
+        </div>
+      </div>
+    </div>
+
+    <!-- 5: GAME INTERAKTIF -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">5 / 8</div>
+        <h2 style="margin-bottom: 8px;"><i class="fas fa-bolt"></i> Battle Game — Main Sekarang!</h2>
+
+        <!-- Skor 6 kelompok -->
+        <div class="group-scores" id="groupScores">
+          <div class="score-pill" data-group="1"><span class="g-badge">1</span> <span class="pts">0</span></div>
+          <div class="score-pill" data-group="2"><span class="g-badge">2</span> <span class="pts">0</span></div>
+          <div class="score-pill" data-group="3"><span class="g-badge">3</span> <span class="pts">0</span></div>
+          <div class="score-pill" data-group="4"><span class="g-badge">4</span> <span class="pts">0</span></div>
+          <div class="score-pill" data-group="5"><span class="g-badge">5</span> <span class="pts">0</span></div>
+          <div class="score-pill" data-group="6"><span class="g-badge">6</span> <span class="pts">0</span></div>
+        </div>
+
+        <!-- Timer + status -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 12px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div class="score-pill active" id="activeGroupLabel" style="border-color: #2563eb; background: #dbeafe;">
+              <i class="fas fa-arrow-right" style="color: #2563eb;"></i>
+              <span style="font-weight: 800; color: #1e3a8a;">Giliran: Kelompok 1</span>
+            </div>
+            <span style="font-size: 0.82rem; color: #475569;" id="questionCounter">Soal 1 dari 60</span>
+          </div>
+          <div class="timer-box" id="timerBox">
+            <i class="fas fa-clock"></i>
+            <span id="timerText">15</span>
+          </div>
+        </div>
+
+        <!-- Kotak soal -->
+        <div class="question-box">
+          <div class="label"><i class="fas fa-question-circle"></i> Soal Battle</div>
+          <div class="q-text" id="questionText">Tekan "Mulai Game" untuk memulai!</div>
+        </div>
+
+        <!-- Tombol jawaban -->
+        <div class="answer-row">
+          <button class="answer-btn btn-fakta" id="btnFakta" disabled>
+            <i class="fas fa-check-circle"></i> FAKTA
+          </button>
+          <button class="answer-btn btn-opini" id="btnOpini" disabled>
+            <i class="fas fa-comment"></i> OPINI
+          </button>
+          <button class="answer-btn btn-hate" id="btnHate" disabled>
+            <i class="fas fa-ban"></i> HATE SPEECH
+          </button>
+        </div>
+
+        <!-- Feedback -->
+        <div class="feedback-box" id="feedbackBox"></div>
+
+        <!-- Kontrol -->
+        <div class="game-controls">
+          <button class="ctrl-btn ctrl-primary" id="startBtn" type="button"><i class="fas fa-play"></i> Mulai Game</button>
+          <button class="ctrl-btn ctrl-secondary" id="resetBtn" type="button"><i class="fas fa-rotate-left"></i> Reset</button>
+        </div>
+
+        <!-- Panel tambah soal -->
+        <div class="add-question-panel">
+          <h4><i class="fas fa-plus-circle"></i> Tambah Soal Baru (Langsung di TV Board)</h4>
+          <div class="add-q-form">
+            <input type="text" id="newQText" placeholder="Tulis soal baru yang mudah..." maxlength="120">
+            <select id="newQAnswer">
+              <option value="fakta">FAKTA</option>
+              <option value="opini">OPINI</option>
+              <option value="hate">HATE SPEECH</option>
+            </select>
+            <button type="button" id="addQBtn"><i class="fas fa-plus"></i> Tambah</button>
+          </div>
+          <div class="q-count-info">
+            <i class="fas fa-database"></i>
+            <span>Total soal saat ini: <strong id="totalQCount">60</strong> soal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6: BANK SOAL (Ringkasan) -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">6 / 8</div>
+        <h2><i class="fas fa-dice"></i> Bank Soal (60 Soal Mudah)</h2>
+        <p class="subhead" style="margin-bottom: 12px;">20 Fakta • 20 Opini • 20 Hate Speech — diacak otomatis!</p>
+
+        <div class="grid-3" style="gap: 12px;">
+          <div class="card" style="border-top: 4px solid #16a34a; text-align: center;">
+            <div class="card-icon"><i class="fas fa-check-circle" style="color: #16a34a;"></i></div>
+            <h3 style="font-size: 1.3rem; color: #166534;">20</h3>
+            <p style="font-size: 0.9rem;">Soal <strong>FAKTA</strong></p>
+          </div>
+          <div class="card" style="border-top: 4px solid #f59e0b; text-align: center;">
+            <div class="card-icon"><i class="fas fa-comment" style="color: #f59e0b;"></i></div>
+            <h3 style="font-size: 1.3rem; color: #92400e;">20</h3>
+            <p style="font-size: 0.9rem;">Soal <strong>OPINI</strong></p>
+          </div>
+          <div class="card" style="border-top: 4px solid #dc2626; text-align: center;">
+            <div class="card-icon"><i class="fas fa-ban" style="color: #dc2626;"></i></div>
+            <h3 style="font-size: 1.3rem; color: #991b1b;">20</h3>
+            <p style="font-size: 0.9rem;">Soal <strong>HATE SPEECH</strong></p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 14px; border-left: 5px solid #2563eb;">
+          <span class="tag tag-blue"><i class="fas fa-list"></i> Contoh Soal Mudah</span>
+          <div class="grid-2" style="margin-top: 8px; gap: 12px;">
+            <div>
+              <p style="font-size: 0.85rem; font-weight: 700; color: #166534; margin-bottom: 4px;">FAKTA:</p>
+              <ul class="bullet-list">
+                <li><i class="fas fa-check" style="color: #16a34a;"></i> <span>Air membeku pada suhu 0°C.</span></li>
+                <li><i class="fas fa-check" style="color: #16a34a;"></i> <span>1 minggu ada 7 hari.</span></li>
+                <li><i class="fas fa-check" style="color: #16a34a;"></i> <span>Indonesia punya 38 provinsi.</span></li>
+                <li><i class="fas fa-check" style="color: #16a34a;"></i> <span>Kucing punya 4 kaki.</span></li>
+              </ul>
+            </div>
+            <div>
+              <p style="font-size: 0.85rem; font-weight: 700; color: #92400e; margin-bottom: 4px;">OPINI:</p>
+              <ul class="bullet-list">
+                <li><i class="fas fa-comment" style="color: #f59e0b;"></i> <span>Film itu membosankan.</span></li>
+                <li><i class="fas fa-comment" style="color: #f59e0b;"></i> <span>Nasi goreng lebih enak dari mie.</span></li>
+                <li><i class="fas fa-comment" style="color: #f59e0b;"></i> <span>Kucing lebih lucu dari anjing.</span></li>
+                <li><i class="fas fa-comment" style="color: #f59e0b;"></i> <span>PR sebaiknya dihapus.</span></li>
+              </ul>
+            </div>
+          </div>
+          <div style="margin-top: 10px;">
+            <p style="font-size: 0.85rem; font-weight: 700; color: #991b1b; margin-bottom: 4px;">HATE SPEECH:</p>
+            <ul class="bullet-list">
+              <li><i class="fas fa-ban" style="color: #dc2626;"></i> <span>"Dasar [agama X] semua teroris!"</span></li>
+              <li><i class="fas fa-ban" style="color: #dc2626;"></i> <span>"Perempuan nggak usah sekolah tinggi."</span></li>
+              <li><i class="fas fa-ban" style="color: #dc2626;"></i> <span>"Anak difabel nggak berguna!"</span></li>
+              <li><i class="fas fa-ban" style="color: #dc2626;"></i> <span>"Orang [suku Y] memang pemalas."</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="quote" style="margin-top: 12px;">
+          <i class="fas fa-shuffle"></i> Urutan soal <strong>diacak otomatis</strong> setiap kali game dimulai — tidak pernah bosan!
+        </div>
+      </div>
+    </div>
+
+    <!-- 7: TIPS MENAMBAH SOAL -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">7 / 8</div>
+        <h2><i class="fas fa-lightbulb"></i> Tips Menambah Soal</h2>
+        <div class="grid-2">
+          <div class="card" style="border-left: 5px solid #2563eb;">
+            <h3 style="font-size: 1rem;"><i class="fas fa-plus-circle" style="color: #2563eb; margin-right: 6px;"></i> Cara Tambah Soal</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-1" style="color: #2563eb;"></i> <span>Buka slide <strong>5 (Battle Game)</strong>.</span></li>
+              <li><i class="fas fa-2" style="color: #2563eb;"></i> <span>Scroll ke bawah, temukan panel <strong>"Tambah Soal Baru"</strong>.</span></li>
+              <li><i class="fas fa-3" style="color: #2563eb;"></i> <span>Ketik pernyataan di kolom input.</span></li>
+              <li><i class="fas fa-4" style="color: #2563eb;"></i> <span>Pilih jenis: <strong>Fakta / Opini / Hate Speech</strong>.</span></li>
+              <li><i class="fas fa-5" style="color: #2563eb;"></i> <span>Klik <strong>"Tambah"</strong> — soal langsung masuk antrean!</span></li>
+            </ul>
+          </div>
+          <div class="card" style="border-left: 5px solid #16a34a;">
+            <h3 style="font-size: 1rem;"><i class="fas fa-check-circle" style="color: #16a34a; margin-right: 6px;"></i> Tips Soal Mudah</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-check" style="color: #16a34a;"></i> <span>Kalimat <strong>pendek</strong> — maksimal 10 kata.</span></li>
+              <li><i class="fas fa-check" style="color: #16a34a;"></i> <span>Pakai <strong>kata sehari-hari</strong>, hindari istilah sulit.</span></li>
+              <li><i class="fas fa-check" style="color: #16a34a;"></i> <span><strong>Fakta:</strong> angka, tanggal, nama yang jelas.</span></li>
+              <li><i class="fas fa-check" style="color: #16a34a;"></i> <span><strong>Opini:</strong> "lebih", "paling", "sebaiknya", "membosankan".</span></li>
+              <li><i class="fas fa-check" style="color: #16a34a;"></i> <span><strong>Hate Speech:</strong> serang identitas, bukan ide.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 14px;">
+          <i class="fas fa-info-circle"></i> Soal tambahan <strong>tidak hilang</strong> selama halaman belum di-refresh. Untuk permanen, edit array <code>questions</code> di kode.
+        </div>
+      </div>
+    </div>
+
+    <!-- 8: PENUTUP -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">8 / 8</div>
+        <h2><i class="fas fa-handshake"></i> Kesimpulan</h2>
+        <div class="grid-2" style="margin-top: 8px;">
+          <div class="card">
+            <ul class="bullet-list">
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span><strong>Fakta</strong> = bisa dicek. <strong>Opini</strong> = pendapat pribadi.</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Bebas berpendapat <strong>bukan</strong> tanpa batas.</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Batasnya: <strong>kritik ide boleh, serang identitas dilarang</strong>.</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span><strong>Hate speech</strong> bukan bagian dari kebebasan berpendapat.</span></li>
+            </ul>
+          </div>
+          <div style="background: #2563eb; border-radius: 22px; padding: 22px; color: white; display: flex; flex-direction: column; justify-content: center;">
+            <i class="fas fa-bullhorn" style="font-size: 2rem; margin-bottom: 8px;"></i>
+            <h3 style="color: white; font-size: 1.05rem; margin-bottom: 6px;">Komitmen</h3>
+            <p style="color: rgba(255,255,255,0.92); font-size: 0.92rem;">Aku berpendapat dengan <strong>logika & etika</strong>, tanpa menyebarkan kebencian.</p>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 18px;">
+          <i class="fas fa-quote-left"></i> "Bebas berpendapat bukan berarti bebas menyakiti."
+        </div>
+        <div style="margin-top: 16px; text-align: center; border-top: 1px solid #cbd5e1; padding-top: 12px;">
+          <p style="font-size: 0.85rem; color: #475569;"><i class="fas fa-graduation-cap" style="color: #2563eb; margin-right: 6px;"></i> Kokurikuler SMP Fase D — Fakta, Opini & Ruang Bebas Berpendapat</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="nav-btn nav-prev" id="prevBtn" aria-label="Sebelumnya"><i class="fas fa-chevron-left"></i></button>
+  <button class="nav-btn nav-next" id="nextBtn" aria-label="Berikutnya"><i class="fas fa-chevron-right"></i></button>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+  /* ========== NAVIGASI SLIDE ========== */
+  (function() {
+    const track = document.getElementById('track');
+    const slides = track.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dotsContainer = document.getElementById('dots');
+    let currentIndex = 0;
+
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('button');
+      dot.classList.add('dot');
+      if (i === 0) dot.classList.add('active');
+      dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+      dot.addEventListener('click', () => goToSlide(i));
+      dotsContainer.appendChild(dot);
+    }
+    const dots = dotsContainer.querySelectorAll('.dot');
+
+    function updateUI() {
+      track.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+      prevBtn.disabled = (currentIndex === 0);
+      nextBtn.disabled = (currentIndex === totalSlides - 1);
+      dots.forEach((dot, idx) => dot.classList.toggle('active', idx === currentIndex));
+      const inner = slides[currentIndex].querySelector('.slide-inner');
+      if (inner) inner.scrollTop = 0;
+    }
+
+    function goToSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      currentIndex = index;
+      updateUI();
+    }
+
+    window.nextSlide = () => goToSlide(currentIndex + 1);
+    window.prevSlide = () => goToSlide(currentIndex - 1);
+
+    nextBtn.addEventListener('click', window.nextSlide);
+    prevBtn.addEventListener('click', window.prevSlide);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); window.nextSlide(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); window.prevSlide(); }
+      else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+      else if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+    });
+
+    let touchStartX = 0, touchStartY = 0, isSwiping = false;
+    const viewport = document.querySelector('.viewport');
+
+    viewport.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+      isSwiping = false;
+    }, { passive: true });
+
+    viewport.addEventListener('touchmove', (e) => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      const dy = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) isSwiping = true;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', (e) => {
+      if (!isSwiping) return;
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (dx < -50) window.nextSlide();
+      else if (dx > 50) window.prevSlide();
+      isSwiping = false;
+    }, { passive: true });
+
+    updateUI();
+  })();
+
+  /* ========== GAME INTERAKTIF ========== */
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // ====== BANK SOAL (60 SOAL MUDAH) ======
+    const questions = [
+      // ===== FAKTA (20) — mudah, konkret =====
+      { text: "Air membeku pada suhu 0°C.", answer: "fakta" },
+      { text: "Indonesia merdeka 17 Agustus 1945.", answer: "fakta" },
+      { text: "1 minggu ada 7 hari.", answer: "fakta" },
+      { text: "1 jam ada 60 menit.", answer: "fakta" },
+      { text: "Kucing punya 4 kaki.", answer: "fakta" },
+      { text: "Matahari terbit dari timur.", answer: "fakta" },
+      { text: "Indonesia punya 38 provinsi.", answer: "fakta" },
+      { text: "Bumi bulat.", answer: "fakta" },
+      { text: "Manusia bernapas dengan oksigen.", answer: "fakta" },
+      { text: "Pancasila ada 5 sila.", answer: "fakta" },
+      { text: "1 tahun ada 12 bulan.", answer: "fakta" },
+      { text: "Air adalah H2O.", answer: "fakta" },
+      { text: "Indonesia di Asia Tenggara.", answer: "fakta" },
+      { text: "Oksigen simbolnya O.", answer: "fakta" },
+      { text: "Paus biru hewan terbesar.", answer: "fakta" },
+      { text: "Planet Mars punya 2 satelit.", answer: "fakta" },
+      { text: "Pemilu Indonesia 5 tahun sekali.", answer: "fakta" },
+      { text: "Aksara Jawa ada 20 huruf dasar.", answer: "fakta" },
+      { text: "Soekarno-Hatta proklamator RI.", answer: "fakta" },
+      { text: "Air mendidih di 100°C.", answer: "fakta" },
+
+      // ===== OPINI (20) — mudah, sehari-hari =====
+      { text: "Film itu membosankan.", answer: "opini" },
+      { text: "Nasi goreng lebih enak dari mie.", answer: "opini" },
+      { text: "Kucing lebih lucu dari anjing.", answer: "opini" },
+      { text: "PR sebaiknya dihapus.", answer: "opini" },
+      { text: "Matematika lebih susah dari IPA.", answer: "opini" },
+      { text: "Bakso lebih enak dari sate.", answer: "opini" },
+      { text: "Jakarta lebih ramai dari Bandung.", answer: "opini" },
+      { text: "Belajar pagi lebih efektif.", answer: "opini" },
+      { text: "Membaca lebih baik dari main HP.", answer: "opini" },
+      { text: "Seragam sekolah sebaiknya dihapus.", answer: "opini" },
+      { text: "Pantai lebih indah dari gunung.", answer: "opini" },
+      { text: "Musik dangdut lebih seru dari pop.", answer: "opini" },
+      { text: "Anime lebih bagus dari film barat.", answer: "opini" },
+      { text: "Sepak bola lebih seru dari basket.", answer: "opini" },
+      { text: "Belajar kelompok lebih baik.", answer: "opini" },
+      { text: "Buku cetak lebih nyaman dari e-book.", answer: "opini" },
+      { text: "Kelas pagi lebih menyenangkan.", answer: "opini" },
+      { text: "Sekolah sebaiknya mulai siang.", answer: "opini" },
+      { text: "Film horor Indonesia lebih seru.", answer: "opini" },
+      { text: "Pelajaran seni lebih menyenangkan.", answer: "opini" },
+
+      // ===== HATE SPEECH (20) — jelas menyerang identitas =====
+      { text: '"Dasar [agama X] semua teroris!"', answer: "hate" },
+      { text: '"Perempuan nggak usah sekolah tinggi."', answer: "hate" },
+      { text: '"Anak difabel nggak berguna!"', answer: "hate" },
+      { text: '"Orang [suku Y] memang pemalas."', answer: "hate" },
+      { text: '"Dasar [ras Z] kotor, usir!"', answer: "hate" },
+      { text: '"Orang miskin nggak usah sekolah."', answer: "hate" },
+      { text: '"Semua [kelompok A] penipu!"', answer: "hate" },
+      { text: '"Anak [agama B] najis, jangan temenan!"', answer: "hate" },
+      { text: '"Lelaki nangis itu banci!"', answer: "hate" },
+      { text: '"Orang gila nggak usah dikasihani."', answer: "hate" },
+      { text: '"Dasar [etnis C] pelit, jangan temenan!"', answer: "hate" },
+      { text: '"Perempuan keluar malam pantas dilecehkan."', answer: "hate" },
+      { text: '"Anak petani nggak usah sekolah."', answer: "hate" },
+      { text: '"Orang [agama D] semua pembohong!"', answer: "hate" },
+      { text: '"Difabel nggak layak kerja di kantor."', answer: "hate" },
+      { text: '"Dasar [suku E] bodoh, nggak pantas memimpin!"', answer: "hate" },
+      { text: '"Homo itu penyakit masyarakat!"', answer: "hate" },
+      { text: '"Orang kaya pasti korupsi!"', answer: "hate" },
+      { text: '"Anak yatim nggak berguna!"', answer: "hate" },
+      { text: '"Dasar [kelompok F] sampah masyarakat!"', answer: "hate" }
+    ];
+
+    // ====== ACAK SOAL (Fisher-Yates) ======
+    function shuffleArray(arr) {
+      const a = arr.slice(); // copy
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    let shuffledQuestions = []; // soal aktif setelah diacak
+    let scores = [0, 0, 0, 0, 0, 0];
+    let activeGroup = 0;
+    let currentQ = 0;
+    let timerInterval = null;
+    let timeLeft = 15;
+    let isAnswering = false;
+    let gameStarted = false;
+
+    const timerBox = document.getElementById('timerBox');
+    const timerText = document.getElementById('timerText');
+    const questionText = document.getElementById('questionText');
+    const questionCounter = document.getElementById('questionCounter');
+    const activeGroupLabel = document.getElementById('activeGroupLabel');
+    const feedbackBox = document.getElementById('feedbackBox');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const btnFakta = document.getElementById('btnFakta');
+    const btnOpini = document.getElementById('btnOpini');
+    const btnHate = document.getElementById('btnHate');
+    const scorePills = document.querySelectorAll('.score-pill');
+    const newQText = document.getElementById('newQText');
+    const newQAnswer = document.getElementById('newQAnswer');
+    const addQBtn = document.getElementById('addQBtn');
+    const totalQCount = document.getElementById('totalQCount');
+
+    function updateTotalCount() {
+      if (totalQCount) totalQCount.textContent = questions.length;
+    }
+    updateTotalCount();
+
+    function updateScores() {
+      scorePills.forEach((pill, i) => {
+        if (pill.querySelector('.pts')) pill.querySelector('.pts').textContent = scores[i];
+        pill.classList.toggle('active', i === activeGroup);
+      });
+    }
+
+    function updateActiveGroupLabel() {
+      activeGroupLabel.innerHTML = '<i class="fas fa-arrow-right" style="color: #2563eb;"></i>' +
+        '<span style="font-weight: 800; color: #1e3a8a;">Giliran: Kelompok ' + (activeGroup + 1) + '</span>';
+      updateScores();
+    }
+
+    function nextTurn() {
+      activeGroup = (activeGroup + 1) % 6;
+      updateActiveGroupLabel();
+    }
+
+    function clearTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    }
+
+    function startTimer() {
+      clearTimer();
+      timeLeft = 15;
+      timerText.textContent = timeLeft;
+      timerBox.classList.remove('warning');
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerText.textContent = timeLeft;
+        if (timeLeft <= 5) timerBox.classList.add('warning');
+        if (timeLeft <= 0) {
+          clearTimer();
+          timeOut();
+        }
+      }, 1000);
+    }
+
+    function timeOut() {
+      if (isAnswering) return;
+      isAnswering = true;
+      enableButtons(false);
+      showFeedback(false, '⏰ Waktu habis! Tidak ada poin.');
+      nextTurn();
+      currentQ++;
+      setTimeout(() => {
+        feedbackBox.classList.remove('show');
+        showQuestion();
+      }, 1800);
+    }
+
+    function enableButtons(enabled) {
+      btnFakta.disabled = !enabled;
+      btnOpini.disabled = !enabled;
+      btnHate.disabled = !enabled;
+    }
+
+    function showFeedback(correct, message) {
+      feedbackBox.textContent = message;
+      feedbackBox.classList.add('show');
+      feedbackBox.classList.remove('ok', 'no');
+      feedbackBox.classList.add(correct ? 'ok' : 'no');
+    }
+
+    function showQuestion() {
+      if (currentQ >= shuffledQuestions.length) { endGame(); return; }
+      const q = shuffledQuestions[currentQ];
+      questionText.textContent = q.text;
+      questionCounter.textContent = 'Soal ' + (currentQ + 1) + ' dari ' + shuffledQuestions.length;
+      isAnswering = false;
+      enableButtons(true);
+      startTimer();
+    }
+
+    function handleAnswer(selected) {
+      if (isAnswering || !gameStarted) return;
+      isAnswering = true;
+      clearTimer();
+      enableButtons(false);
+      const q = shuffledQuestions[currentQ];
+      const correct = (selected === q.answer);
+      const btnMap = { fakta: btnFakta, opini: btnOpini, hate: btnHate };
+      const correctBtn = btnMap[q.answer];
+      const selectedBtn = btnMap[selected];
+
+      if (correct) {
+        selectedBtn.classList.add('correct');
+        scores[activeGroup] += 10;
+        showFeedback(true, '✅ BENAR! +10 poin untuk Kelompok ' + (activeGroup + 1));
+      } else {
+        selectedBtn.classList.add('wrong');
+        correctBtn.classList.add('correct');
+        showFeedback(false, '❌ SALAH. Jawaban benar: ' + q.answer.toUpperCase());
+      }
+
+      updateScores();
+      setTimeout(() => {
+        selectedBtn.classList.remove('correct', 'wrong');
+        correctBtn.classList.remove('correct');
+        feedbackBox.classList.remove('show');
+        nextTurn();
+        currentQ++;
+        showQuestion();
+      }, 2000);
+    }
+
+    function endGame() {
+      clearTimer();
+      questionText.textContent = '🏆 GAME SELESAI!';
+      questionCounter.textContent = 'Semua soal terjawab';
+      enableButtons(false);
+      timerText.textContent = '--';
+      timerBox.classList.remove('warning');
+
+      let maxScore = 0;
+      let winners = [];
+      scores.forEach((s, i) => {
+        if (s > maxScore) { maxScore = s; winners = [i + 1]; }
+        else if (s === maxScore && s > 0) { winners.push(i + 1); }
+      });
+
+      let msg = 'Pemenang: ';
+      if (maxScore === 0) msg = 'Tidak ada pemenang — semua seri!';
+      else msg += winners.map(w => 'Kelompok ' + w).join(', ') + ' (' + maxScore + ' poin) 🎉';
+
+      feedbackBox.textContent = msg;
+      feedbackBox.classList.add('show', 'ok');
+      startBtn.innerHTML = '<i class="fas fa-rotate-right"></i> Main Lagi (Acak Ulang)';
+    }
+
+    function resetGame() {
+      clearTimer();
+      scores = [0, 0, 0, 0, 0, 0];
+      activeGroup = 0;
+      currentQ = 0;
+      isAnswering = false;
+      gameStarted = false;
+      timeLeft = 15;
+      timerText.textContent = '15';
+      timerBox.classList.remove('warning');
+      questionText.textContent = 'Tekan "Mulai Game" untuk memulai!';
+      questionCounter.textContent = 'Soal 1 dari ' + questions.length;
+      feedbackBox.classList.remove('show', 'ok', 'no');
+      enableButtons(false);
+      updateScores();
+      updateActiveGroupLabel();
+      startBtn.innerHTML = '<i class="fas fa-play"></i> Mulai Game';
+      [btnFakta, btnOpini, btnHate].forEach(b => b.classList.remove('correct', 'wrong'));
+    }
+
+    function startGame() {
+      if (gameStarted) { resetGame(); }
+      gameStarted = true;
+      currentQ = 0;
+      activeGroup = 0;
+      scores = [0, 0, 0, 0, 0, 0];
+      // === ACAK SOAL SETIAP MULAI ===
+      shuffledQuestions = shuffleArray(questions);
+      updateScores();
+      updateActiveGroupLabel();
+      startBtn.innerHTML = '<i class="fas fa-forward"></i> Soal Berikutnya';
+      showQuestion();
+    }
+
+    // ====== TAMBAH SOAL ======
+    function addQuestion() {
+      const text = newQText.value.trim();
+      const answer = newQAnswer.value;
+      if (!text) {
+        showFeedback(false, '⚠️ Tulis dulu soalnya!');
+        setTimeout(() => feedbackBox.classList.remove('show'), 1500);
+        return;
+      }
+      if (text.length < 5) {
+        showFeedback(false, '⚠️ Soal terlalu pendek.');
+        setTimeout(() => feedbackBox.classList.remove('show'), 1500);
+        return;
+      }
+
+      const answerLabels = { fakta: 'FAKTA', opini: 'OPINI', hate: 'HATE SPEECH' };
+      questions.push({ text: text, answer: answer });
+      // Kalo game belum mulai, acak ulang biar soal baru ikut
+      if (gameStarted && currentQ < shuffledQuestions.length) {
+        // Tambah ke antrean soal aktif (di akhir, biar gak ganggu yg udah jalan)
+        shuffledQuestions.push({ text: text, answer: answer });
+      } else {
+        shuffledQuestions = shuffleArray(questions);
+      }
+
+      newQText.value = '';
+      newQText.focus();
+      updateTotalCount();
+
+      if (!gameStarted) {
+        questionCounter.textContent = 'Soal 1 dari ' + questions.length;
+      } else {
+        questionCounter.textContent = 'Soal ' + (currentQ + 1) + ' dari ' + shuffledQuestions.length;
+      }
+
+      showFeedback(true, '✅ Soal ditambahkan sebagai ' + answerLabels[answer] + '! Total: ' + questions.length + ' soal.');
+      setTimeout(() => feedbackBox.classList.remove('show'), 2500);
+    }
+
+    // ====== EVENT LISTENERS ======
+    startBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      startGame();
+    });
+
+    resetBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      resetGame();
+    });
+
+    btnFakta.addEventListener('click', function() { handleAnswer('fakta'); });
+    btnOpini.addEventListener('click', function() { handleAnswer('opini'); });
+    btnHate.addEventListener('click', function() { handleAnswer('hate'); });
+
+    addQBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      addQuestion();
+    });
+
+    newQText.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addQuestion();
+      }
+    });
+
+    // Init
+    resetGame();
+  });
+</script>
+</body>
+</html>
