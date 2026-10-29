@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voting Inklusif + 2 Game | SMP Fase D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Plus Jakarta Sans', sans-serif; background: #0b1a2e; }
+
+    .viewport { position: relative; width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .track { display: flex; height: 92vh; width: 100%; transition: transform 0.55s cubic-bezier(0.65,0,0.35,1); will-change: transform; }
+    .slide { flex: 0 0 100%; height: 100%; padding: 0 4vw; display: flex; align-items: center; justify-content: center; }
+    .slide-inner {
+      position: relative; width: 100%; max-width: 1150px; height: 100%;
+      background: #f0f7ff; border-radius: 44px 44px 28px 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 8px 20px rgba(0,20,50,0.3);
+      padding: 40px 48px; overflow-y: auto; overflow-x: hidden;
+      border: 1px solid rgba(255,255,255,0.3); scrollbar-width: thin; scrollbar-color: #2563eb #e0e7ff;
+    }
+    .slide-inner::-webkit-scrollbar { width: 8px; }
+    .slide-inner::-webkit-scrollbar-track { background: #e0e7ff; border-radius: 10px; }
+    .slide-inner::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 10px; }
+    .slide-inner::before {
+      content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 10px;
+      background: linear-gradient(90deg, #2563eb, #3b82f6, #8b5cf6, #ec4899);
+      border-radius: 44px 44px 0 0;
+    }
+
+    .slide-number {
+      position: absolute; top: 24px; right: 32px; font-size: 0.8rem; font-weight: 600;
+      color: #1e3a8a; background: rgba(37,99,235,0.08); padding: 5px 16px;
+      border-radius: 100px; border: 1px solid rgba(37,99,235,0.2); z-index: 2;
+    }
+
+    h1 { font-size: 2.7rem; font-weight: 800; letter-spacing: -1px; line-height: 1.15; color: #0a1e3c; margin-bottom: 10px; }
+    h2 { font-size: 1.9rem; font-weight: 700; color: #0a1e3c; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    h2 i { color: #2563eb; font-size: 1.6rem; background: rgba(37,99,235,0.12); padding: 10px; border-radius: 16px; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+    p, li { font-size: 1.02rem; line-height: 1.5; color: #1e293b; }
+    .subhead { font-size: 1.15rem; font-weight: 500; color: #2563eb; margin-bottom: 20px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .card {
+      background: white; border-radius: 22px; padding: 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      border: 1px solid rgba(37,99,235,0.1);
+    }
+    .card-icon { font-size: 1.6rem; color: #2563eb; margin-bottom: 8px; }
+
+    .bullet-list { list-style: none; padding: 0; }
+    .bullet-list li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 9px; font-size: 0.96rem; line-height: 1.4; }
+    .bullet-list li i { margin-top: 3px; flex-shrink: 0; font-size: 0.85rem; }
+
+    .example-box {
+      background: #eef4ff; border-radius: 14px; padding: 14px;
+      margin-top: 10px; border-left: 4px solid #2563eb;
+      font-size: 0.92rem; color: #1e2f4a;
+    }
+    .example-box strong { color: #0a1e3c; display: block; margin-bottom: 3px; font-weight: 700; }
+
+    .warn-box {
+      background: #fef2f2; border-radius: 14px; padding: 14px;
+      margin-top: 10px; border-left: 4px solid #dc2626;
+      color: #7f1d1d; font-size: 0.92rem;
+    }
+    .warn-box strong { color: #991b1b; display: block; margin-bottom: 3px; font-weight: 700; }
+    .warn-box i { color: #dc2626; margin-right: 6px; }
+
+    .solution-box {
+      background: #f0fdf4; border-radius: 14px; padding: 14px;
+      margin-top: 10px; border-left: 4px solid #16a34a;
+      color: #14532d; font-size: 0.92rem;
+    }
+    .solution-box strong { color: #166534; display: block; margin-bottom: 3px; font-weight: 700; }
+    .solution-box i { color: #16a34a; margin-right: 6px; }
+
+    .tag { display: inline-block; padding: 3px 12px; border-radius: 60px; font-size: 0.73rem; font-weight: 700; margin-bottom: 8px; }
+    .tag-blue { background: #dbeafe; color: #1e3a8a; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-purple { background: #ede9fe; color: #5b21b6; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+
+    .highlight { background: #fef9c3; padding: 2px 7px; border-radius: 6px; font-weight: 600; }
+
+    .quote {
+      background: #e6f0ff; border-radius: 18px; padding: 16px 22px;
+      margin: 18px 0 6px; font-size: 1rem; font-weight: 500;
+      color: #0a1e3c; border: 1px dashed #2563eb; text-align: center;
+    }
+    .quote i { color: #2563eb; margin-right: 6px; }
+
+    .fase-badge {
+      background: #8b5cf6; color: white; font-size: 0.85rem; font-weight: 700;
+      padding: 5px 14px; border-radius: 60px; display: inline-block; margin-bottom: 10px;
+    }
+
+    /* PILAR A-K-S-E */
+    .pilar-card {
+      background: white; border-radius: 22px; padding: 22px 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      border: 1px solid rgba(37,99,235,0.1);
+      position: relative; transition: all 0.2s;
+      border-top: 5px solid #2563eb;
+    }
+    .pilar-card:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(37,99,235,0.12); }
+    .pilar-num {
+      background: #2563eb; color: white; font-weight: 800; font-size: 1.2rem;
+      width: 44px; height: 44px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 10px;
+    }
+    .pilar-card h3 { font-size: 1.1rem; margin-bottom: 4px; }
+    .pilar-card .pilar-sub { font-size: 0.75rem; font-weight: 600; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .pilar-card p { font-size: 0.88rem; color: #475569; line-height: 1.4; }
+
+    /* GAME SHARED */
+    .game-header {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px; margin-bottom: 14px;
+    }
+    .game-title {
+      background: #0a1e3c; color: white; border-radius: 16px;
+      padding: 10px 22px; font-weight: 800; font-size: 1.05rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .game-title i { color: #fbbf24; }
+    .game-timer {
+      background: #2563eb; color: white; border-radius: 16px;
+      padding: 10px 22px; font-weight: 800; font-size: 1.5rem;
+      display: flex; align-items: center; gap: 10px;
+      min-width: 120px; justify-content: center;
+      transition: all 0.2s;
+    }
+    .game-timer.warning { background: #dc2626; animation: pulse 0.6s infinite; }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+    .game-question-box {
+      background: white; border-radius: 22px; padding: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 2px solid rgba(37,99,235,0.15);
+      text-align: center; margin: 10px 0;
+      min-height: 90px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .game-question-box .label {
+      font-size: 0.75rem; font-weight: 700; color: #2563eb;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+    }
+    .game-question-box .q-text {
+      font-size: 1.35rem; font-weight: 700; color: #0a1e3c; line-height: 1.35;
+    }
+
+    /* PID */
+    .pid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .pid-option {
+      background: white; border-radius: 18px; padding: 16px;
+      border: 2px solid rgba(37,99,235,0.15);
+      cursor: pointer; transition: all 0.15s;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      text-align: center; position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      font-family: inherit;
+    }
+    .pid-option:hover:not(:disabled) { border-color: #2563eb; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,99,235,0.15); }
+    .pid-option:disabled { opacity: 0.5; cursor: not-allowed; }
+    .pid-option.selected { border-color: #2563eb; background: #dbeafe; box-shadow: 0 6px 18px rgba(37,99,235,0.25); }
+    .pid-option .opt-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: #e0e7ff; display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; color: #2563eb;
+    }
+    .pid-option .opt-name { font-weight: 800; font-size: 1rem; color: #0a1e3c; }
+    .pid-option .opt-desc { font-size: 0.82rem; color: #475569; line-height: 1.3; }
+    .pid-option .opt-votes {
+      background: #2563eb; color: white; font-weight: 800;
+      padding: 3px 14px; border-radius: 100px; font-size: 0.9rem; margin-top: 4px;
+    }
+    .pid-option .opt-votes.zero { background: #cbd5e1; color: #64748b; }
+
+    .pid-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+    .result-card {
+      background: white; border-radius: 16px; padding: 14px;
+      border: 1px solid rgba(37,99,235,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .result-card .rc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .result-card .rc-name { font-weight: 700; font-size: 0.88rem; color: #0a1e3c; }
+    .result-card .rc-count { font-weight: 800; font-size: 0.9rem; color: #2563eb; }
+    .rc-bar { height: 12px; background: #e0e7ff; border-radius: 100px; overflow: hidden; }
+    .rc-fill { height: 100%; border-radius: 100px; transition: width 0.5s ease; background: #2563eb; }
+    .rc-fill.win { background: #16a34a; }
+
+    .game-controls { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+    .game-btn {
+      border: none; border-radius: 14px; padding: 14px 28px;
+      font-family: inherit; font-weight: 700; font-size: 1rem;
+      cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .game-btn:active { transform: translateY(2px); }
+    .game-btn-primary { background: #2563eb; color: white; box-shadow: 0 4px 0 #1e40af; }
+    .game-btn-primary:active { box-shadow: 0 2px 0 #1e40af; }
+    .game-btn-primary:hover { background: #1d4ed8; }
+    .game-btn-secondary { background: white; color: #1e3a8a; border: 2px solid #cbd5e1; }
+    .game-btn-secondary:hover { border-color: #2563eb; color: #2563eb; }
+    .game-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .game-status {
+      background: #fef3c7; border-radius: 14px; padding: 12px 18px;
+      margin-top: 12px; font-weight: 600; color: #92400e;
+      text-align: center; font-size: 0.95rem;
+      border-left: 4px solid #f59e0b;
+    }
+    .game-status.ok { background: #dcfce7; color: #166534; border-left-color: #16a34a; }
+    .game-status.no { background: #fee2e2; color: #991b1b; border-left-color: #dc2626; }
+
+    .pid-groups { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .pid-group {
+      background: white; border-radius: 14px; padding: 8px 14px;
+      border: 2px solid rgba(37,99,235,0.15);
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 700; font-size: 0.85rem; color: #1e293b;
+      transition: all 0.2s;
+    }
+    .pid-group.voted { border-color: #16a34a; background: #dcfce7; }
+    .pid-group .pg-badge {
+      width: 24px; height: 24px; border-radius: 8px; background: #2563eb; color: white;
+      display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+    }
+    .pid-group.voted .pg-badge { background: #16a34a; }
+
+    /* QUIZ */
+    .quiz-scores { display: flex; gap: 8px; flex-wrap: wrap; }
+    .quiz-score {
+      background: white; border-radius: 14px; padding: 8px 12px;
+      border: 2px solid rgba(37,99,235,0.15);
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 700; font-size: 0.88rem; color: #1e293b;
+      transition: all 0.2s;
+    }
+    .quiz-score.active { border-color: #2563eb; background: #dbeafe; box-shadow: 0 4px 12px rgba(37,99,235,0.2); }
+    .quiz-score.penalized { border-color: #dc2626; background: #fee2e2; }
+    .quiz-score .qs-badge {
+      width: 24px; height: 24px; border-radius: 8px; background: #2563eb; color: white;
+      display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+    }
+    .quiz-score.penalized .qs-badge { background: #dc2626; }
+    .quiz-score .qs-pts { color: #dc2626; min-width: 20px; text-align: right; }
+    .quiz-score .qs-label { font-size: 0.6rem; color: #94a3b8; font-weight: 600; margin-left: 2px; }
+
+    .quiz-answer-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
+    .quiz-answer {
+      border: none; border-radius: 18px; padding: 20px 16px;
+      font-family: inherit; font-weight: 700; font-size: 1.05rem;
+      cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; gap: 12px;
+      background: white; color: #1e293b; text-align: left;
+      border: 2px solid rgba(37,99,235,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      position: relative;
+    }
+    .quiz-answer:hover:not(:disabled) { border-color: #2563eb; transform: translateY(-2px); }
+    .quiz-answer:disabled { opacity: 0.5; cursor: not-allowed; }
+    .quiz-answer .qa-letter {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: #e0e7ff; color: #2563eb; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.95rem;
+    }
+    .quiz-answer.correct { background: #dcfce7; border-color: #16a34a; }
+    .quiz-answer.correct .qa-letter { background: #16a34a; color: white; }
+    .quiz-answer.wrong { background: #fee2e2; border-color: #dc2626; }
+    .quiz-answer.wrong .qa-letter { background: #dc2626; color: white; }
+
+    .quiz-punishment-banner {
+      background: linear-gradient(135deg, #f59e0b, #ec4899); color: white;
+      border-radius: 20px; padding: 22px; text-align: center;
+      font-weight: 800; font-size: 1.15rem; margin-top: 12px;
+      display: none;
+    }
+    .quiz-punishment-banner.show { display: block; animation: fadeIn 0.4s; }
+    .quiz-punishment-banner .mic-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+    .quiz-punishment-banner .names { font-size: 1.3rem; margin: 6px 0; }
+    .quiz-punishment-banner .sub { font-size: 0.9rem; opacity: 0.95; font-weight: 600; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .quiz-winner-banner {
+      background: linear-gradient(135deg, #16a34a, #22c55e); color: white;
+      border-radius: 20px; padding: 24px; text-align: center;
+      font-weight: 800; font-size: 1.3rem; margin-top: 14px;
+      display: none;
+    }
+    .quiz-winner-banner.show { display: block; animation: fadeIn 0.5s; }
+
+    .nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 50px; height: 50px; border-radius: 50%;
+      background: rgba(255,255,255,0.95); color: #1e3a8a; border: none;
+      cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3); transition: all 0.2s; z-index: 10;
+    }
+    .nav-btn:hover { background: #2563eb; color: white; transform: translateY(-50%) scale(1.08); }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: translateY(-50%); }
+    .nav-btn:disabled:hover { background: rgba(255,255,255,0.95); color: #1e3a8a; }
+    .nav-prev { left: 16px; }
+    .nav-next { right: 16px; }
+
+    .dots {
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; padding: 10px 18px;
+      background: rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+      border-radius: 100px; z-index: 10; border: 1px solid rgba(255,255,255,0.15);
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.35); border: none; cursor: pointer; transition: all 0.25s; padding: 0; }
+    .dot.active { background: #3b82f6; width: 24px; border-radius: 100px; }
+
+    @media (max-width: 900px) {
+      .slide-inner { padding: 28px 20px; border-radius: 28px; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.4rem; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: 1fr 1fr; }
+      .pid-options { grid-template-columns: 1fr; }
+      .pid-results { grid-template-columns: 1fr; }
+      .quiz-answer-row { grid-template-columns: 1fr; }
+      .nav-btn { width: 40px; height: 40px; }
+      .nav-prev { left: 6px; }
+      .nav-next { right: 6px; }
+    }
+    @media (max-width: 600px) {
+      .slide-inner { padding: 22px 14px; }
+      h1 { font-size: 1.6rem; }
+      p, li { font-size: 0.92rem; }
+      .grid-4 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="viewport">
+  <div class="track" id="track">
+
+    <!-- 1: COVER -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">1 / 9</div>
+        <div class="fase-badge">Kokurikuler SMP • Fase D</div>
+        <h1>Voting yang Inklusif</h1>
+        <p class="subhead">Mengapa setiap suara penting & bagaimana keputusan dibuat adil untuk semua.</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px;">
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-vote-yea" style="color: #2563eb; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Voting Inklusif</span>
+          </div>
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-users" style="color: #8b5cf6; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Mengapa Penting</span>
+          </div>
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-columns" style="color: #16a34a; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">4 Pilar A-K-S-E</span>
+          </div>
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-gamepad" style="color: #f59e0b; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">2 Game Interaktif</span>
+          </div>
+        </div>
+        <p style="margin-top: 28px; font-size: 0.92rem; color: #475569;"><i class="fas fa-arrow-right" style="color: #2563eb; margin-right: 6px;"></i>Navigasi: tombol panah, keyboard, atau geser layar.</p>
+      </div>
+    </div>
+
+    <!-- 2: APA ITU VOTING INKLUSIF -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">2 / 9</div>
+        <h2><i class="fas fa-vote-yea"></i> Apa itu Voting Inklusif?</h2>
+        <p class="subhead" style="margin-bottom: 16px;">Voting yang <span class="highlight">melibatkan semua</span> — bukan hanya yang vokal atau mayoritas.</p>
+        <div class="grid-2">
+          <div class="card" style="border-top: 5px solid #16a34a;">
+            <span class="tag tag-green"><i class="fas fa-check"></i> INKLUSIF</span>
+            <ul class="bullet-list" style="margin-top: 6px;">
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Semua orang <strong>punya hak suara</strong></span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Semua <strong>didengar</strong> & dipahami</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Keputusan <strong>mewakili kepentingan bersama</strong></span></li>
+            </ul>
+            <div class="example-box" style="border-left-color: #16a34a;">
+              <strong>Contoh:</strong> Pemilihan ketua kelas dengan kotak suara — semua siswa memilih, termasuk yang pemalu.
+            </div>
+          </div>
+          <div class="card" style="border-top: 5px solid #dc2626;">
+            <span class="tag tag-red"><i class="fas fa-times"></i> TIDAK INKLUSIF</span>
+            <ul class="bullet-list" style="margin-top: 6px;">
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Hanya <strong>yang vokal</strong> didengar</span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Yang <strong>diam diabaikan</strong></span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Keputusan <strong>sepihak / tidak adil</strong></span></li>
+            </ul>
+            <div class="example-box" style="border-left-color: #dc2626;">
+              <strong>Contoh:</strong> Ketua kelas dipilih oleh 3 orang saja, tanpa tanya yang lain.
+            </div>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 16px;">
+          <i class="fas fa-key"></i> Inklusif = <strong>semua suara didengar, bukan hanya yang paling keras.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3: MENGAPA KEPUTUSAN HARUS INKLUSIF -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">3 / 9</div>
+        <h2><i class="fas fa-users"></i> Mengapa Keputusan Harus Inklusif?</h2>
+        <p class="subhead" style="margin-bottom: 14px;">Keputusan inklusif lebih <strong>adil, kuat, dan diterima semua</strong>.</p>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-scale-balanced" style="color: #16a34a;"></i></div>
+            <h3 style="font-size: 1.05rem; color: #166534;">1. Adil untuk Semua</h3>
+            <p style="font-size: 0.93rem;">Setiap orang punya kebutuhan & pandangan berbeda. Keputusan inklusif <strong>tidak mengorbankan minoritas</strong>.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-handshake" style="color: #2563eb;"></i></div>
+            <h3 style="font-size: 1.05rem; color: #1e3a8a;">2. Lebih Diterima</h3>
+            <p style="font-size: 0.93rem;">Orang <strong>patuh pada keputusan</strong> jika merasa dilibatkan. Sebaliknya, keputusan sepihak sering ditolak.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-lightbulb" style="color: #f59e0b;"></i></div>
+            <h3 style="font-size: 1.05rem; color: #92400e;">3. Ide Lebih Kaya</h3>
+            <p style="font-size: 0.93rem;">Banyak sudut pandang = <strong>solusi lebih kreatif</strong>. Satu kepala baik, banyak kepala lebih baik.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-shield-halved" style="color: #8b5cf6;"></i></div>
+            <h3 style="font-size: 1.05rem; color: #5b21b6;">4. Mencegah Konflik</h3>
+            <p style="font-size: 0.93rem;">Yang merasa diabaikan <strong>cenderung melawan</strong>. Inklusi menutup celah konflik sejak awal.</p>
+          </div>
+        </div>
+        <div class="warn-box" style="margin-top: 14px;">
+          <strong><i class="fas fa-triangle-exclamation"></i> Tanpa inklusi:</strong> Keputusan bisa dianggap tidak sah, memicu perpecahan, dan membuat sebagian orang tidak peduli lagi.
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: 4 PILAR A-K-S-E -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">4 / 9</div>
+        <h2><i class="fas fa-columns"></i> 4 Pilar Keputusan Inklusif — A-K-S-E</h2>
+        <p class="subhead" style="margin-bottom: 14px;">Empat prinsip yang membuat voting benar-benar adil untuk semua.</p>
+        <div class="grid-4">
+          <div class="pilar-card" style="border-top-color: #2563eb;">
+            <div class="pilar-num" style="background: #2563eb;">A</div>
+            <h3>Akuntabilitas</h3>
+            <div class="pilar-sub">Bertanggung Jawab</div>
+            <p>Keputusan <strong>bisa dijelaskan & dipertanggungjawabkan</strong> ke semua pihak.</p>
+          </div>
+          <div class="pilar-card" style="border-top-color: #8b5cf6;">
+            <div class="pilar-num" style="background: #8b5cf6;">K</div>
+            <h3>Kolaborasi</h3>
+            <div class="pilar-sub">Kerja Bersama</div>
+            <p>Semua pihak <strong>bekerja sama</strong> — bukan hanya satu orang yang memutuskan.</p>
+          </div>
+          <div class="pilar-card" style="border-top-color: #f59e0b;">
+            <div class="pilar-num" style="background: #f59e0b;">S</div>
+            <h3>Sinergi</h3>
+            <div class="pilar-sub">Saling Menguatkan</div>
+            <p>Gabungan ide & kekuatan <strong>menghasilkan hasil lebih baik</strong> dari individu.</p>
+          </div>
+          <div class="pilar-card" style="border-top-color: #16a34a;">
+            <div class="pilar-num" style="background: #16a34a;">E</div>
+            <h3>Empati</h3>
+            <div class="pilar-sub">Memahami Sesama</div>
+            <p>Setiap keputusan <strong>mempertimbangkan perasaan & kebutuhan</strong> semua orang.</p>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 16px;">
+          <i class="fas fa-link"></i> <strong>A-K-S-E</strong> saling melengkapi — jika satu hilang, keputusan jadi tidak inklusif.
+        </div>
+      </div>
+    </div>
+
+    <!-- 5: DETAIL PILAR A & K -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">5 / 9</div>
+        <h2><i class="fas fa-users"></i> Pilar A & K — Akuntabilitas & Kolaborasi</h2>
+        <div class="grid-2">
+          <div class="card" style="border-top: 5px solid #2563eb;">
+            <span class="tag tag-blue">Pilar A</span>
+            <h3 style="font-size: 1.1rem;"><i class="fas fa-file-signature" style="color: #2563eb; margin-right: 6px;"></i> Akuntabilitas</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Keputusan <strong>bisa dijelaskan</strong> ke semua</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Ada <strong>tanggung jawab</strong> jika salah</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Bisa <strong>dievaluasi & diperbaiki</strong></span></li>
+            </ul>
+            <div class="solution-box">
+              <strong><i class="fas fa-lightbulb"></i> Solusi nyata:</strong> Buat notulen voting — siapa, kapan, hasilnya apa, alasannya apa.
+            </div>
+          </div>
+          <div class="card" style="border-top: 5px solid #8b5cf6;">
+            <span class="tag tag-purple">Pilar K</span>
+            <h3 style="font-size: 1.1rem;"><i class="fas fa-hands-helping" style="color: #8b5cf6; margin-right: 6px;"></i> Kolaborasi</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-check-circle" style="color: #8b5cf6;"></i> <span>Semua <strong>dilibatkan</strong> dalam proses</span></li>
+              <li><i class="fas fa-check-circle" style="color: #8b5cf6;"></i> <span>Bukan hanya <strong>satu orang</strong> yang memutuskan</span></li>
+              <li><i class="fas fa-check-circle" style="color: #8b5cf6;"></i> <span>Ada <strong>ruang diskusi</strong> sebelum voting</span></li>
+            </ul>
+            <div class="solution-box">
+              <strong><i class="fas fa-lightbulb"></i> Solusi nyata:</strong> Buat sesi <strong>"dengar pendapat"</strong> 5 menit sebelum voting — semua boleh bicara tanpa interupsi.
+            </div>
+          </div>
+        </div>
+        <div class="warn-box" style="margin-top: 14px;">
+          <strong><i class="fas fa-triangle-exclamation"></i> Tanpa A & K:</strong> Keputusan jadi <strong>sepihak & tidak bisa dipertanggungjawabkan</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- 6: DETAIL PILAR S & E -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">6 / 9</div>
+        <h2><i class="fas fa-scale-balanced"></i> Pilar S & E — Sinergi & Empati</h2>
+        <div class="grid-2">
+          <div class="card" style="border-top: 5px solid #f59e0b;">
+            <span class="tag tag-amber">Pilar S</span>
+            <h3 style="font-size: 1.1rem;"><i class="fas fa-bolt" style="color: #f59e0b; margin-right: 6px;"></i> Sinergi</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-check-circle" style="color: #f59e0b;"></i> <span>Gabungan ide <strong>lebih baik</strong> dari satu ide</span></li>
+              <li><i class="fas fa-check-circle" style="color: #f59e0b;"></i> <span>Setiap orang <strong>berkontribusi</strong></span></li>
+              <li><i class="fas fa-check-circle" style="color: #f59e0b;"></i> <span>Hasil <strong>maksimal</strong> karena semua terlibat</span></li>
+            </ul>
+            <div class="solution-box">
+              <strong><i class="fas fa-lightbulb"></i> Solusi nyata:</strong> Ajak semua kelompok menyumbang 1 ide sebelum memutuskan — tulis di papan.
+            </div>
+          </div>
+          <div class="card" style="border-top: 5px solid #16a34a;">
+            <span class="tag tag-green">Pilar E</span>
+            <h3 style="font-size: 1.1rem;"><i class="fas fa-heart" style="color: #16a34a; margin-right: 6px;"></i> Empati</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Pahami <strong>perasaan & kebutuhan</strong> orang lain</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Yang <strong>pendiam</strong> juga diberi ruang</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Tidak ada yang <strong>merasa diabaikan</strong></span></li>
+            </ul>
+            <div class="solution-box">
+              <strong><i class="fas fa-lightbulb"></i> Solusi nyata:</strong> Sediakan voting <strong>anonim</strong> (kertas dilipat) untuk yang takut berbeda pendapat.
+            </div>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 14px;">
+          <i class="fas fa-key"></i> <strong>Sinergi + Empati</strong> = keputusan dipercaya & semua merasa dihargai.
+        </div>
+      </div>
+    </div>
+
+    <!-- 7: PID GAME — 5 KELOMPOK -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">7 / 9</div>
+        <div class="game-header">
+          <div class="game-title"><i class="fas fa-vote-yea"></i> GAME 1: PID — Pemilihan Interaktif Digital</div>
+          <div class="game-timer" id="pidTimer">
+            <i class="fas fa-clock"></i>
+            <span id="pidTimerText">30</span>
+          </div>
+        </div>
+
+        <div class="game-question-box">
+          <div class="label"><i class="fas fa-question-circle"></i> Pertanyaan Voting</div>
+          <div class="q-text" id="pidQuestionText">Tekan "Mulai PID" untuk memulai pemilihan!</div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+          <span style="font-size: 0.85rem; font-weight: 700; color: #475569;">
+            <i class="fas fa-users" style="color: #2563eb; margin-right: 6px;"></i>
+            Kelompok yang sudah memilih:
+          </span>
+          <span style="font-size: 0.85rem; font-weight: 700; color: #2563eb;" id="pidVotedCount">0 / 5</span>
+        </div>
+        <div class="pid-groups" id="pidGroups">
+          <div class="pid-group" data-group="1"><span class="pg-badge">1</span> <span>Kelompok 1</span></div>
+          <div class="pid-group" data-group="2"><span class="pg-badge">2</span> <span>Kelompok 2</span></div>
+          <div class="pid-group" data-group="3"><span class="pg-badge">3</span> <span>Kelompok 3</span></div>
+          <div class="pid-group" data-group="4"><span class="pg-badge">4</span> <span>Kelompok 4</span></div>
+          <div class="pid-group" data-group="5"><span class="pg-badge">5</span> <span>Kelompok 5</span></div>
+        </div>
+
+        <div class="pid-options" id="pidOptions">
+          <button class="pid-option" data-option="A" disabled>
+            <div class="opt-icon"><i class="fas fa-tree"></i></div>
+            <div class="opt-name">Opsi A</div>
+            <div class="opt-desc">Taman baca kelas</div>
+            <div class="opt-votes zero" id="votesA">0</div>
+          </button>
+          <button class="pid-option" data-option="B" disabled>
+            <div class="opt-icon"><i class="fas fa-futbol"></i></div>
+            <div class="opt-name">Opsi B</div>
+            <div class="opt-desc">Alat olahraga baru</div>
+            <div class="opt-votes zero" id="votesB">0</div>
+          </button>
+          <button class="pid-option" data-option="C" disabled>
+            <div class="opt-icon"><i class="fas fa-music"></i></div>
+            <div class="opt-name">Opsi C</div>
+            <div class="opt-desc">Alat musik kelas</div>
+            <div class="opt-votes zero" id="votesC">0</div>
+          </button>
+        </div>
+
+        <div class="pid-results">
+          <div class="result-card">
+            <div class="rc-header"><span class="rc-name">Taman Baca</span><span class="rc-count" id="rcA">0 suara</span></div>
+            <div class="rc-bar"><div class="rc-fill" id="rcFillA" style="width: 0%"></div></div>
+          </div>
+          <div class="result-card">
+            <div class="rc-header"><span class="rc-name">Alat Olahraga</span><span class="rc-count" id="rcB">0 suara</span></div>
+            <div class="rc-bar"><div class="rc-fill" id="rcFillB" style="width: 0%"></div></div>
+          </div>
+          <div class="result-card">
+            <div class="rc-header"><span class="rc-name">Alat Musik</span><span class="rc-count" id="rcC">0 suara</span></div>
+            <div class="rc-bar"><div class="rc-fill" id="rcFillC" style="width: 0%"></div></div>
+          </div>
+        </div>
+
+        <div class="game-status" id="pidStatus">
+          <i class="fas fa-info-circle"></i> Tekan "Mulai PID" untuk memulai pemilihan.
+        </div>
+
+        <div class="game-controls">
+          <button class="game-btn game-btn-primary" id="pidStartBtn" type="button" onclick="window.pidStart()"><i class="fas fa-play"></i> Mulai PID</button>
+          <button class="game-btn game-btn-secondary" id="pidResetBtn" type="button" onclick="window.pidReset()"><i class="fas fa-rotate-left"></i> Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8: KUIS GAME — 5 KELOMPOK, 30 SOAL, HUKUMAN MENYANYI -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">8 / 9</div>
+        <div class="game-header">
+          <div class="game-title"><i class="fas fa-microphone" style="color: #fbbf24;"></i> GAME 2: Kuis Inklusif — Yang Salah Menyanyi!</div>
+          <div class="game-timer" id="quizTimer">
+            <i class="fas fa-clock"></i>
+            <span id="quizTimerText">15</span>
+          </div>
+        </div>
+
+        <div class="quiz-scores" id="quizScores">
+          <div class="quiz-score" data-group="1"><span class="qs-badge">1</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="2"><span class="qs-badge">2</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="3"><span class="qs-badge">3</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="4"><span class="qs-badge">4</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="5"><span class="qs-badge">5</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div class="quiz-score active" id="quizActiveGroup" style="border-color: #2563eb; background: #dbeafe;">
+              <i class="fas fa-arrow-right" style="color: #2563eb;"></i>
+              <span style="font-weight: 800; color: #1e3a8a;">Giliran: Kelompok 1</span>
+            </div>
+            <span style="font-size: 0.82rem; color: #475569;" id="quizCounter">Soal 1 dari 30</span>
+            <span style="font-size: 0.82rem; font-weight: 700; color: #dc2626;" id="quizRoundInfo">Putaran 1</span>
+          </div>
+        </div>
+
+        <div class="game-question-box">
+          <div class="label"><i class="fas fa-question-circle"></i> Soal Kuis</div>
+          <div class="q-text" id="quizQuestionText">Tekan "Mulai Kuis" untuk memulai!</div>
+        </div>
+
+        <div class="quiz-answer-row" id="quizAnswerRow">
+          <button class="quiz-answer" data-answer="A" disabled onclick="window.quizAnswer('A')">
+            <span class="qa-letter">A</span>
+            <span class="qa-text" id="quizOptA">-</span>
+          </button>
+          <button class="quiz-answer" data-answer="B" disabled onclick="window.quizAnswer('B')">
+            <span class="qa-letter">B</span>
+            <span class="qa-text" id="quizOptB">-</span>
+          </button>
+          <button class="quiz-answer" data-answer="C" disabled onclick="window.quizAnswer('C')">
+            <span class="qa-letter">C</span>
+            <span class="qa-text" id="quizOptC">-</span>
+          </button>
+          <button class="quiz-answer" data-answer="D" disabled onclick="window.quizAnswer('D')">
+            <span class="qa-letter">D</span>
+            <span class="qa-text" id="quizOptD">-</span>
+          </button>
+        </div>
+
+        <div class="game-status" id="quizStatus">
+          <i class="fas fa-info-circle"></i> Jawaban salah = 1 poin kesalahan. Di akhir putaran, yang paling banyak salah HUKUMAN MENYANYI!
+        </div>
+
+        <div class="quiz-punishment-banner" id="quizPunishmentBanner">
+          <span class="mic-icon">🎤</span>
+          <div class="names" id="quizPunishmentNames">Kelompok 1</div>
+          <div class="sub">Dapat kesalahan terbanyak — HUKUMAN MENYANYI! 🎶</div>
+        </div>
+
+        <div class="quiz-winner-banner" id="quizWinnerBanner">
+          🏆 <span id="quizWinnerText">Pemenang: Kelompok 1</span> 🏆
+        </div>
+
+        <div class="game-controls">
+          <button class="game-btn game-btn-primary" id="quizStartBtn" type="button" onclick="window.quizStart()"><i class="fas fa-play"></i> Mulai Kuis</button>
+          <button class="game-btn game-btn-secondary" id="quizResetBtn" type="button" onclick="window.quizReset()"><i class="fas fa-rotate-left"></i> Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9: PENUTUP -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">9 / 9</div>
+        <h2><i class="fas fa-handshake"></i> Kesimpulan & Komitmen</h2>
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="card">
+            <ul class="bullet-list">
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span><strong>Voting inklusif</strong> = semua suara didengar & dihitung.</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Keputusan inklusif lebih <strong>adil, diterima, & tahan lama</strong>.</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>4 pilar <strong>A-K-S-E</strong>: Akuntabilitas, Kolaborasi, Sinergi, Empati.</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Tanpa inklusi → keputusan rapuh & memicu konflik.</span></li>
+            </ul>
+          </div>
+          <div style="background: #2563eb; border-radius: 24px; padding: 24px; color: white; display: flex; flex-direction: column; justify-content: center;">
+            <i class="fas fa-bullhorn" style="font-size: 2.2rem; margin-bottom: 10px;"></i>
+            <h3 style="color: white; font-size: 1.1rem; margin-bottom: 8px;">Komitmen</h3>
+            <p style="color: rgba(255,255,255,0.92); font-size: 0.95rem;">Aku menghargai setiap suara — termasuk yang berbeda — dan ikut menjaga voting yang adil untuk semua.</p>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 20px; font-size: 1.05rem;">
+          <i class="fas fa-quote-left"></i> "Keputusan terbaik adalah yang dibuat <strong>bersama</strong>, bukan untuk sebagian orang saja."
+        </div>
+        <div style="margin-top: 18px; text-align: center; border-top: 1px solid #cbd5e1; padding-top: 14px;">
+          <p style="font-size: 0.88rem; color: #475569;"><i class="fas fa-graduation-cap" style="color: #2563eb; margin-right: 6px;"></i> Kokurikuler SMP Fase D — Voting Inklusif (A-K-S-E) + 2 Game</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="nav-btn nav-prev" id="prevBtn" aria-label="Sebelumnya"><i class="fas fa-chevron-left"></i></button>
+  <button class="nav-btn nav-next" id="nextBtn" aria-label="Berikutnya"><i class="fas fa-chevron-right"></i></button>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+  /* ============================================================
+     BAGIAN 1: NAVIGASI SLIDE
+     ============================================================ */
+  (function() {
+    'use strict';
+    var track = document.getElementById('track');
+    if (!track) return;
+    var slides = track.querySelectorAll('.slide');
+    var totalSlides = slides.length;
+    var prevBtn = document.getElementById('prevBtn');
+    var nextBtn = document.getElementById('nextBtn');
+    var dotsContainer = document.getElementById('dots');
+    var currentIndex = 0;
+
+    for (var i = 0; i < totalSlides; i++) {
+      (function(idx) {
+        var dot = document.createElement('button');
+        dot.classList.add('dot');
+        if (idx === 0) dot.classList.add('active');
+        dot.setAttribute('aria-label', 'Slide ' + (idx + 1));
+        dot.addEventListener('click', function() { goToSlide(idx); });
+        dotsContainer.appendChild(dot);
+      })(i);
+    }
+    var dots = dotsContainer.querySelectorAll('.dot');
+
+    function updateUI() {
+      track.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+      prevBtn.disabled = (currentIndex === 0);
+      nextBtn.disabled = (currentIndex === totalSlides - 1);
+      for (var i = 0; i < dots.length; i++) {
+        dots[i].classList.toggle('active', i === currentIndex);
+      }
+      var inner = slides[currentIndex].querySelector('.slide-inner');
+      if (inner) inner.scrollTop = 0;
+    }
+
+    function goToSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      currentIndex = index;
+      updateUI();
+    }
+
+    window.nextSlide = function() { goToSlide(currentIndex + 1); };
+    window.prevSlide = function() { goToSlide(currentIndex - 1); };
+
+    nextBtn.addEventListener('click', window.nextSlide);
+    prevBtn.addEventListener('click', window.prevSlide);
+
+    document.addEventListener('keydown', function(e) {
+      var tag = (e.target && e.target.tagName) ? e.target.tagName : '';
+      if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'SELECT') return;
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); window.nextSlide(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); window.prevSlide(); }
+      else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+      else if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+    });
+
+    var touchStartX = 0, touchStartY = 0, isSwiping = false;
+    var viewport = document.querySelector('.viewport');
+    viewport.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+      isSwiping = false;
+    }, { passive: true });
+    viewport.addEventListener('touchmove', function(e) {
+      var dx = e.changedTouches[0].screenX - touchStartX;
+      var dy = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) isSwiping = true;
+    }, { passive: true });
+    viewport.addEventListener('touchend', function(e) {
+      if (!isSwiping) return;
+      var dx = e.changedTouches[0].screenX - touchStartX;
+      if (dx < -50) window.nextSlide();
+      else if (dx > 50) window.prevSlide();
+      isSwiping = false;
+    }, { passive: true });
+
+    var wheelTimeout;
+    viewport.addEventListener('wheel', function(e) {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+        if (wheelTimeout) return;
+        if (e.deltaX > 20) window.nextSlide();
+        else if (e.deltaX < -20) window.prevSlide();
+        wheelTimeout = setTimeout(function() { wheelTimeout = null; }, 600);
+      }
+    }, { passive: false });
+
+    updateUI();
+  })();
+
+  /* ============================================================
+     BAGIAN 2: PID GAME — 5 KELOMPOK
+     ============================================================ */
+  (function() {
+    'use strict';
+    var pidQuestions = [
+      { question: "Kelas kita punya dana untuk satu program. Mana yang paling bermanfaat?",
+        options: { A: { name: "Taman Baca", desc: "Rak buku + pojok baca kelas", icon: "fa-tree" },
+                   B: { name: "Alat Olahraga", desc: "Bola, raket, net, dll", icon: "fa-futbol" },
+                   C: { name: "Alat Musik", desc: "Gitar, keyboard, dll", icon: "fa-music" } } },
+      { question: "Kegiatan kelas mana yang paling ingin diadakan bulan depan?",
+        options: { A: { name: "Belajar Bareng", desc: "Sesi belajar kelompok", icon: "fa-book" },
+                   B: { name: "Jalan-Jalan", desc: "Study tour singkat", icon: "fa-bus" },
+                   C: { name: "Lomba Kelas", desc: "Kompetisi antar kelompok", icon: "fa-trophy" } } },
+      { question: "Aturan kelas mana yang paling perlu diperbaiki?",
+        options: { A: { name: "Jadwal Piket", desc: "Rotasi kebersihan kelas", icon: "fa-broom" },
+                   B: { name: "Aturan HP", desc: "Penggunaan HP saat belajar", icon: "fa-mobile" },
+                   C: { name: "Jam Masuk", desc: "Waktu datang ke sekolah", icon: "fa-clock" } } }
+    ];
+
+    var pidCurrentQ = 0;
+    var pidVotes = { A: 0, B: 0, C: 0 };
+    var pidGroupVotes = { 1: false, 2: false, 3: false, 4: false, 5: false };
+    var pidVotedCount = 0;
+    var pidTimerInterval = null;
+    var pidTimeLeft = 30;
+    var pidStarted = false;
+    var pidCurrentGroup = 1;
+    var pidActive = false;
+
+    var pidQuestionText = document.getElementById('pidQuestionText');
+    var pidTimerBox = document.getElementById('pidTimer');
+    var pidTimerText = document.getElementById('pidTimerText');
+    var pidOptions = document.querySelectorAll('.pid-option');
+    var pidGroups = document.querySelectorAll('.pid-group');
+    var pidStatus = document.getElementById('pidStatus');
+    var pidVotedCountEl = document.getElementById('pidVotedCount');
+    var pidStartBtn = document.getElementById('pidStartBtn');
+    var pidResetBtn = document.getElementById('pidResetBtn');
+
+    function updatePidResults() {
+      var total = pidVotes.A + pidVotes.B + pidVotes.C;
+      var maxVotes = Math.max(pidVotes.A, pidVotes.B, pidVotes.C);
+      var opts = ['A', 'B', 'C'];
+      for (var i = 0; i < opts.length; i++) {
+        var o = opts[i];
+        var count = pidVotes[o];
+        var el = document.getElementById('votes' + o);
+        var rc = document.getElementById('rc' + o);
+        var fill = document.getElementById('rcFill' + o);
+        if (el) { el.textContent = count; el.classList.toggle('zero', count === 0); }
+        if (rc) rc.textContent = count + ' suara';
+        if (fill) {
+          var pct = total > 0 ? (count / total) * 100 : 0;
+          fill.style.width = pct + '%';
+          fill.classList.toggle('win', count === maxVotes && count > 0);
+        }
+      }
+    }
+
+    function updatePidGroups() {
+      for (var i = 0; i < pidGroups.length; i++) {
+        var g = pidGroups[i];
+        var groupNum = i + 1;
+        g.classList.toggle('voted', pidGroupVotes[groupNum]);
+        var badge = g.querySelector('.pg-badge');
+        if (badge) {
+          if (pidGroupVotes[groupNum]) badge.innerHTML = '<i class="fas fa-check" style="font-size:0.6rem;"></i>';
+          else badge.textContent = groupNum;
+        }
+      }
+      pidVotedCount = 0;
+      for (var k in pidGroupVotes) { if (pidGroupVotes[k]) pidVotedCount++; }
+      if (pidVotedCountEl) pidVotedCountEl.textContent = pidVotedCount + ' / 5';
+    }
+
+    function showPidQuestion() {
+      if (pidCurrentQ >= pidQuestions.length) { endPidGame(); return; }
+      var q = pidQuestions[pidCurrentQ];
+      pidQuestionText.textContent = q.question;
+      for (var i = 0; i < pidOptions.length; i++) {
+        var btn = pidOptions[i];
+        var optKey = ['A', 'B', 'C'][i];
+        var opt = q.options[optKey];
+        var iconEl = btn.querySelector('.opt-icon i');
+        if (iconEl) iconEl.className = 'fas ' + opt.icon;
+        var nameEl = btn.querySelector('.opt-name');
+        if (nameEl) nameEl.textContent = opt.name;
+        var descEl = btn.querySelector('.opt-desc');
+        if (descEl) descEl.textContent = opt.desc;
+      }
+      pidVotes = { A: 0, B: 0, C: 0 };
+      pidGroupVotes = { 1: false, 2: false, 3: false, 4: false, 5: false };
+      pidVotedCount = 0;
+      pidCurrentGroup = 1;
+      updatePidResults();
+      updatePidGroups();
+      for (var j = 0; j < pidOptions.length; j++) {
+        pidOptions[j].disabled = false;
+        pidOptions[j].classList.remove('selected');
+      }
+      pidStatus.className = 'game-status';
+      pidStatus.innerHTML = '<i class="fas fa-arrow-right"></i> Giliran <strong>Kelompok ' + pidCurrentGroup + '</strong> untuk memilih!';
+      pidActive = true;
+      startPidTimer();
+    }
+
+    function startPidTimer() {
+      clearInterval(pidTimerInterval);
+      pidTimeLeft = 30;
+      pidTimerText.textContent = pidTimeLeft;
+      pidTimerBox.classList.remove('warning');
+      pidTimerInterval = setInterval(function() {
+        pidTimeLeft--;
+        pidTimerText.textContent = pidTimeLeft;
+        if (pidTimeLeft <= 10) pidTimerBox.classList.add('warning');
+        if (pidTimeLeft <= 0) {
+          clearInterval(pidTimerInterval);
+          if (pidActive) {
+            pidGroupVotes[pidCurrentGroup] = true;
+            updatePidGroups();
+            nextPidGroup();
+          }
+        }
+      }, 1000);
+    }
+
+    function nextPidGroup() {
+      clearInterval(pidTimerInterval);
+      var next = pidCurrentGroup + 1;
+      while (next <= 5 && pidGroupVotes[next]) next++;
+      if (next > 5) { finishPidVoting(); return; }
+      pidCurrentGroup = next;
+      pidStatus.className = 'game-status';
+      pidStatus.innerHTML = '<i class="fas fa-arrow-right"></i> Giliran <strong>Kelompok ' + pidCurrentGroup + '</strong> untuk memilih!';
+      pidTimerText.textContent = 30;
+      pidTimerBox.classList.remove('warning');
+      startPidTimer();
+    }
+
+    function handlePidVote(optionKey) {
+      if (!pidActive || pidGroupVotes[pidCurrentGroup]) return;
+      pidVotes[optionKey]++;
+      pidGroupVotes[pidCurrentGroup] = true;
+      updatePidResults();
+      updatePidGroups();
+      for (var i = 0; i < pidOptions.length; i++) {
+        pidOptions[i].classList.toggle('selected', pidOptions[i].dataset.option === optionKey);
+      }
+      pidStatus.className = 'game-status ok';
+      pidStatus.innerHTML = '<i class="fas fa-check-circle"></i> Kelompok ' + pidCurrentGroup + ' memilih <strong>Opsi ' + optionKey + '</strong>.';
+      setTimeout(function() {
+        for (var i = 0; i < pidOptions.length; i++) pidOptions[i].classList.remove('selected');
+        if (pidVotedCount >= 5) finishPidVoting();
+        else nextPidGroup();
+      }, 900);
+    }
+
+    function finishPidVoting() {
+      clearInterval(pidTimerInterval);
+      pidActive = false;
+      for (var i = 0; i < pidOptions.length; i++) pidOptions[i].disabled = true;
+      var maxVotes = Math.max(pidVotes.A, pidVotes.B, pidVotes.C);
+      var winners = [];
+      if (pidVotes.A === maxVotes) winners.push('Opsi A');
+      if (pidVotes.B === maxVotes) winners.push('Opsi B');
+      if (pidVotes.C === maxVotes) winners.push('Opsi C');
+      var msg = '';
+      if (maxVotes === 0) msg = 'Tidak ada suara — semua abstain.';
+      else if (winners.length > 1) msg = 'Seri! Pemenang: ' + winners.join(' & ') + ' dengan ' + maxVotes + ' suara.';
+      else msg = '🏆 Pemenang: ' + winners[0] + ' dengan ' + maxVotes + ' suara!';
+      pidStatus.className = 'game-status ok';
+      pidStatus.innerHTML = '<i class="fas fa-trophy"></i> ' + msg;
+      pidCurrentQ++;
+      if (pidCurrentQ < pidQuestions.length) {
+        pidStartBtn.innerHTML = '<i class="fas fa-forward"></i> Pertanyaan Berikutnya';
+        pidStartBtn.disabled = false;
+      } else {
+        pidQuestionText.textContent = '🏆 PID SELESAI!';
+        pidStartBtn.innerHTML = '<i class="fas fa-rotate-right"></i> Main Lagi';
+        pidStartBtn.disabled = false;
+      }
+    }
+
+    function endPidGame() {
+      pidQuestionText.textContent = '🏆 PID SELESAI!';
+      pidStartBtn.innerHTML = '<i class="fas fa-rotate-right"></i> Main Lagi';
+      pidStartBtn.disabled = false;
+    }
+
+    function startPidGame() {
+      if (pidStarted && pidCurrentQ < pidQuestions.length && !pidActive) {
+        showPidQuestion();
+        return;
+      }
+      pidStarted = true;
+      pidCurrentQ = 0;
+      pidVotes = { A: 0, B: 0, C: 0 };
+      pidGroupVotes = { 1: false, 2: false, 3: false, 4: false, 5: false };
+      pidVotedCount = 0;
+      pidCurrentGroup = 1;
+      updatePidResults();
+      updatePidGroups();
+      showPidQuestion();
+      pidStartBtn.innerHTML = '<i class="fas fa-play"></i> Voting Berjalan';
+      pidStartBtn.disabled = true;
+    }
+
+    function resetPidGame() {
+      clearInterval(pidTimerInterval);
+      pidStarted = false;
+      pidActive = false;
+      pidCurrentQ = 0;
+      pidVotes = { A: 0, B: 0, C: 0 };
+      pidGroupVotes = { 1: false, 2: false, 3: false, 4: false, 5: false };
+      pidVotedCount = 0;
+      pidCurrentGroup = 1;
+      pidTimeLeft = 30;
+      pidTimerText.textContent = '30';
+      pidTimerBox.classList.remove('warning');
+      pidQuestionText.textContent = 'Tekan "Mulai PID" untuk memulai pemilihan!';
+      for (var i = 0; i < pidOptions.length; i++) {
+        pidOptions[i].disabled = true;
+        pidOptions[i].classList.remove('selected');
+      }
+      pidStatus.className = 'game-status';
+      pidStatus.innerHTML = '<i class="fas fa-info-circle"></i> Tekan "Mulai PID" untuk memulai pemilihan.';
+      updatePidResults();
+      updatePidGroups();
+      pidStartBtn.innerHTML = '<i class="fas fa-play"></i> Mulai PID';
+      pidStartBtn.disabled = false;
+    }
+
+    window.pidStart = function() { startPidGame(); };
+    window.pidReset = function() { resetPidGame(); };
+
+    for (var i = 0; i < pidOptions.length; i++) {
+      (function(btn) {
+        btn.addEventListener('click', function() {
+          if (this.disabled) return;
+          handlePidVote(this.dataset.option);
+        });
+      })(pidOptions[i]);
+    }
+
+    resetPidGame();
+  })();
+
+  /* ============================================================
+     BAGIAN 3: KUIS GAME — 5 KELOMPOK, 30 SOAL, HUKUMAN MENYANYI
+     ============================================================ */
+  (function() {
+    'use strict';
+    var quizQuestions = [
+      // ===== SOAL 1-6 (kelompok 1) =====
+      { q: "Apa yang membuat voting disebut inklusif?", options: { A: "Hanya yang vokal memilih", B: "Semua orang punya hak suara", C: "Hanya mayoritas yang dihitung", D: "Keputusan tanpa diskusi" }, correct: "B" },
+      { q: "Mengapa keputusan harus inklusif?", options: { A: "Agar cepat selesai", B: "Agar lebih adil & diterima", C: "Agar tidak ada rapat", D: "Agar pemimpin senang" }, correct: "B" },
+      { q: "Pilar A dalam A-K-S-E adalah...", options: { A: "Akuntabilitas", B: "Amanah", C: "Adil", D: "Asik" }, correct: "A" },
+      { q: "Pilar K dalam A-K-S-E adalah...", options: { A: "Kompetisi", B: "Kolaborasi", C: "Kritik", D: "Kekuasaan" }, correct: "B" },
+      { q: "Pilar S dalam A-K-S-E adalah...", options: { A: "Sombong", B: "Sendiri", C: "Sinergi", D: "Salah" }, correct: "C" },
+      { q: "Pilar E dalam A-K-S-E adalah...", options: { A: "Egois", B: "Emosi", C: "Eksklusif", D: "Empati" }, correct: "D" },
+
+      // ===== SOAL 7-12 (kelompok 2) =====
+      { q: "Solusi nyata untuk yang takut berbeda pendapat?", options: { A: "Voting anonim", B: "Voting terbuka", C: "Tunjuk tangan", D: "Suara keras" }, correct: "A" },
+      { q: "Contoh transparansi dalam voting?", options: { A: "Hitung suara di depan kelas", B: "Hitungan disembunyikan", C: "Hanya pemimpin tahu", D: "Hasil dirahasiakan" }, correct: "A" },
+      { q: "Akuntabilitas berarti keputusan...", options: { A: "Bisa dipertanggungjawabkan", B: "Tidak bisa ditanya", C: "Hanya untuk pemimpin", D: "Rahasia selamanya" }, correct: "A" },
+      { q: "Tanpa inklusi, keputusan bisa...", options: { A: "Lebih kuat", B: "Memicu konflik", C: "Lebih cepat", D: "Lebih adil" }, correct: "B" },
+      { q: "Yang dimaksud 'kolaborasi' dalam pilar K?", options: { A: "Kerja sama semua pihak", B: "Kerja sendiri", C: "Kerja pemimpin saja", D: "Kerja satu kelompok" }, correct: "A" },
+      { q: "Contoh partisipasi semua dalam voting?", options: { A: "Semua siswa memilih", B: "Hanya 3 orang memilih", C: "Hanya ketua memilih", D: "Guru yang memilih" }, correct: "A" },
+
+      // ===== SOAL 13-18 (kelompok 3) =====
+      { q: "Mengapa inklusi mencegah konflik?", options: { A: "Semua merasa dilibatkan", B: "Tidak ada yang peduli", C: "Hanya pemimpin yang bicara", D: "Tidak ada rapat" }, correct: "A" },
+      { q: "Contoh keputusan TIDAK inklusif?", options: { A: "Semua memilih", B: "3 orang memilih untuk semua", C: "Voting anonim", D: "Diskusi terbuka" }, correct: "B" },
+      { q: "Apa itu 'sinergi' dalam pilar S?", options: { A: "Gabungan ide saling menguatkan", B: "Kerja sendiri", C: "Hanya pemimpin", D: "Hanya mayoritas" }, correct: "A" },
+      { q: "Apa itu 'akuntabilitas' dalam pilar A?", options: { A: "Keputusan bisa dipertanggungjawabkan", B: "Keputusan disembunyikan", C: "Keputusan hanya untuk pemimpin", D: "Keputusan tanpa alasan" }, correct: "A" },
+      { q: "Contoh 'dengar pendapat' sebelum voting?", options: { A: "Semua boleh bicara tanpa interupsi", B: "Hanya ketua yang bicara", C: "Tidak ada diskusi", D: "Voting langsung" }, correct: "A" },
+      { q: "Mengapa keputusan sepihak sering ditolak?", options: { A: "Karena tidak melibatkan semua", B: "Karena terlalu cepat", C: "Karena terlalu adil", D: "Karena ada diskusi" }, correct: "A" },
+
+      // ===== SOAL 19-24 (kelompok 4) =====
+      { q: "Apa itu 'empati' dalam pilar E?", options: { A: "Memahami perasaan orang lain", B: "Mengabaikan orang lain", C: "Hanya pemimpin tahu", D: "Hasil dirahasiakan" }, correct: "A" },
+      { q: "Solusi nyata untuk empati dalam voting?", options: { A: "Voting anonim & beri ruang", B: "Hitung di ruang tertutup", C: "Tidak dihitung", D: "Hanya pemimpin yang hitung" }, correct: "A" },
+      { q: "Apa itu 'kolaborasi' dalam pilar K?", options: { A: "Semua dilibatkan", B: "Hanya yang keras didengar", C: "Hanya pemimpin didengar", D: "Tidak ada yang didengar" }, correct: "A" },
+      { q: "Contoh partisipasi yang buruk?", options: { A: "Hanya 3 orang memilih untuk semua", B: "Semua siswa memilih", C: "Voting anonim", D: "Diskusi terbuka" }, correct: "A" },
+      { q: "Mengapa sinergi membuat keputusan lebih kuat?", options: { A: "Semua merasa memiliki", B: "Hanya pemimpin yang kuat", C: "Tidak ada yang peduli", D: "Hanya mayoritas yang kuat" }, correct: "A" },
+      { q: "Apa itu 'notulen voting'?", options: { A: "Catatan hasil voting", B: "Kotak suara", C: "Pemimpin rapat", D: "Peserta voting" }, correct: "A" },
+
+      // ===== SOAL 25-30 (kelompok 5) =====
+      { q: "Solusi untuk yang pendiam dalam voting?", options: { A: "Beri ruang & voting anonim", B: "Biarkan tidak memilih", C: "Paksa bicara", D: "Keluarkan dari voting" }, correct: "A" },
+      { q: "Apa manfaat kolaborasi dalam keputusan inklusif?", options: { A: "Solusi lebih kreatif", B: "Keputusan lebih cepat", C: "Tidak ada diskusi", D: "Hanya satu pendapat" }, correct: "A" },
+      { q: "Mengapa keputusan inklusif lebih diterima?", options: { A: "Karena semua merasa dilibatkan", B: "Karena dipaksa", C: "Karena tidak ada diskusi", D: "Karena hanya pemimpin yang bicara" }, correct: "A" },
+      { q: "Apa itu 'voting anonim'?", options: { A: "Voting tanpa nama pemilih", B: "Voting terbuka", C: "Voting hanya pemimpin", D: "Voting tanpa kotak" }, correct: "A" },
+      { q: "Contoh keputusan inklusif di kelas?", options: { A: "Pemilihan ketua kelas oleh semua siswa", B: "Ketua dipilih 3 orang", C: "Ketua ditunjuk guru", D: "Ketua memilih sendiri" }, correct: "A" },
+      { q: "Apa pesan utama voting inklusif?", options: { A: "Semua suara penting & didengar", B: "Hanya suara mayoritas penting", C: "Hanya suara pemimpin penting", D: "Suara minoritas diabaikan" }, correct: "A" }
+    ];
+
+    var quizPenalties = [0, 0, 0, 0, 0];
+    var quizActive = 0;
+    var quizCurrentQ = 0;
+    var quizRound = 1;
+    var quizTimerInterval = null;
+    var quizTimeLeft = 15;
+    var quizAnswering = false;
+    var quizStarted = false;
+    var quizRoundPenalties = [0, 0, 0, 0, 0];
+    var quizPlayedThisRound = [false, false, false, false, false];
+
+    var quizTimerBox = document.getElementById('quizTimer');
+    var quizTimerText = document.getElementById('quizTimerText');
+    var quizQuestionText = document.getElementById('quizQuestionText');
+    var quizCounter = document.getElementById('quizCounter');
+    var quizRoundInfo = document.getElementById('quizRoundInfo');
+    var quizActiveGroup = document.getElementById('quizActiveGroup');
+    var quizStatus = document.getElementById('quizStatus');
+    var quizStartBtn = document.getElementById('quizStartBtn');
+    var quizResetBtn = document.getElementById('quizResetBtn');
+    var quizAnswerBtns = document.querySelectorAll('.quiz-answer');
+    var quizScoresEls = document.querySelectorAll('.quiz-score');
+    var quizPunishmentBanner = document.getElementById('quizPunishmentBanner');
+    var quizPunishmentNames = document.getElementById('quizPunishmentNames');
+    var quizWinnerBanner = document.getElementById('quizWinnerBanner');
+    var quizWinnerText = document.getElementById('quizWinnerText');
+
+    if (quizCounter) quizCounter.textContent = 'Soal 1 dari ' + quizQuestions.length;
+
+    function updateQuizScores() {
+      for (var i = 0; i < quizScoresEls.length; i++) {
+        var el = quizScoresEls[i];
+        var pts = el.querySelector('.qs-pts');
+        if (pts) pts.textContent = quizPenalties[i];
+        el.classList.toggle('active', i === quizActive);
+        el.classList.toggle('penalized', quizPenalties[i] > 0);
+      }
+      if (quizActiveGroup) {
+        quizActiveGroup.innerHTML = '<i class="fas fa-arrow-right" style="color: #2563eb;"></i>' +
+          '<span style="font-weight: 800; color: #1e3a8a;">Giliran: Kelompok ' + (quizActive + 1) + '</span>';
+      }
+      if (quizRoundInfo) quizRoundInfo.textContent = 'Putaran ' + quizRound;
+    }
+
+    function clearQuizTimer() {
+      if (quizTimerInterval) { clearInterval(quizTimerInterval); quizTimerInterval = null; }
+    }
+
+    function startQuizTimer() {
+      clearQuizTimer();
+      quizTimeLeft = 15;
+      quizTimerText.textContent = quizTimeLeft;
+      quizTimerBox.classList.remove('warning');
+      quizTimerInterval = setInterval(function() {
+        quizTimeLeft--;
+        quizTimerText.textContent = quizTimeLeft;
+        if (quizTimeLeft <= 5) quizTimerBox.classList.add('warning');
+        if (quizTimeLeft <= 0) {
+          clearQuizTimer();
+          handleQuizTimeout();
+        }
+      }, 1000);
+    }
+
+    function handleQuizTimeout() {
+      if (quizAnswering) return;
+      quizAnswering = true;
+      disableQuizAnswers(true);
+      addPenalty(quizActive, '⏰ Waktu habis!');
+    }
+
+    function disableQuizAnswers(disabled) {
+      for (var i = 0; i < quizAnswerBtns.length; i++) {
+        quizAnswerBtns[i].disabled = disabled;
+        quizAnswerBtns[i].classList.remove('correct', 'wrong');
+      }
+    }
+
+    function showQuizQuestion() {
+      if (quizCurrentQ >= quizQuestions.length) { endQuizGame(); return; }
+      var q = quizQuestions[quizCurrentQ];
+      quizQuestionText.textContent = q.q;
+      quizCounter.textContent = 'Soal ' + (quizCurrentQ + 1) + ' dari ' + quizQuestions.length;
+      var optA = document.getElementById('quizOptA');
+      var optB = document.getElementById('quizOptB');
+      var optC = document.getElementById('quizOptC');
+      var optD = document.getElementById('quizOptD');
+      if (optA) optA.textContent = q.options.A;
+      if (optB) optB.textContent = q.options.B;
+      if (optC) optC.textContent = q.options.C;
+      if (optD) optD.textContent = q.options.D;
+      quizAnswering = false;
+      disableQuizAnswers(false);
+      startQuizTimer();
+    }
+
+    function addPenalty(groupIdx, reason) {
+      quizPenalties[groupIdx]++;
+      quizRoundPenalties[groupIdx]++;
+      quizStatus.className = 'game-status no';
+      quizStatus.innerHTML = '<i class="fas fa-times-circle"></i> ' + reason + ' Kelompok ' + (groupIdx + 1) + ' dapat 1 poin kesalahan.';
+      updateQuizScores();
+      setTimeout(function() {
+        advanceQuizAfterAnswer();
+      }, 1500);
+    }
+
+    function handleQuizAnswer(selected) {
+      if (quizAnswering || !quizStarted) return;
+      quizAnswering = true;
+      clearQuizTimer();
+      var q = quizQuestions[quizCurrentQ];
+      var correct = (selected === q.correct);
+
+      for (var i = 0; i < quizAnswerBtns.length; i++) {
+        var b = quizAnswerBtns[i];
+        if (b.dataset.answer === q.correct) b.classList.add('correct');
+        if (b.dataset.answer === selected && !correct) b.classList.add('wrong');
+      }
+      disableQuizAnswers(true);
+
+      if (correct) {
+        quizStatus.className = 'game-status ok';
+        quizStatus.innerHTML = '<i class="fas fa-check-circle"></i> BENAR! Kelompok ' + (quizActive + 1) + ' aman.';
+        setTimeout(function() { advanceQuizAfterAnswer(); }, 1200);
+      } else {
+        addPenalty(quizActive, '❌ Salah!');
+      }
+    }
+
+    function advanceQuizAfterAnswer() {
+      quizCurrentQ++;
+      if (quizCurrentQ >= quizQuestions.length) { endQuizGame(); return; }
+
+      quizPlayedThisRound[quizActive] = true;
+
+      var allPlayed = true;
+      for (var i = 0; i < 5; i++) {
+        if (!quizPlayedThisRound[i]) { allPlayed = false; break; }
+      }
+
+      if (allPlayed) {
+        evaluatePunishment();
+      } else {
+        var next = quizActive + 1;
+        var checked = 0;
+        while (checked < 5 && quizPlayedThisRound[next % 5]) {
+          next++;
+          checked++;
+        }
+        quizActive = next % 5;
+        updateQuizScores();
+        showQuizQuestion();
+      }
+    }
+
+    function evaluatePunishment() {
+      var maxPenalty = -1;
+      for (var i = 0; i < 5; i++) {
+        if (quizRoundPenalties[i] > maxPenalty) maxPenalty = quizRoundPenalties[i];
+      }
+
+      if (maxPenalty === 0) {
+        quizStatus.className = 'game-status ok';
+        quizStatus.innerHTML = '<i class="fas fa-check-circle"></i> Semua kelompok aman di putaran ini! Tidak ada hukuman.';
+        setTimeout(function() { startNewRound(); }, 1800);
+        return;
+      }
+
+      var losers = [];
+      for (var j = 0; j < 5; j++) {
+        if (quizRoundPenalties[j] === maxPenalty) losers.push(j + 1);
+      }
+
+      var names = losers.map(function(n) { return 'Kelompok ' + n; }).join(', ');
+      quizPunishmentNames.textContent = names;
+      quizPunishmentBanner.classList.add('show');
+      quizStatus.className = 'game-status no';
+      quizStatus.innerHTML = '<i class="fas fa-microphone"></i> ' + names + ' dapat kesalahan terbanyak (' + maxPenalty + ') — HUKUMAN MENYANYI! 🎶';
+
+      setTimeout(function() {
+        quizPunishmentBanner.classList.remove('show');
+        startNewRound();
+      }, 3000);
+    }
+
+    function startNewRound() {
+      quizRound++;
+      quizRoundPenalties = [0, 0, 0, 0, 0];
+      quizPlayedThisRound = [false, false, false, false, false];
+      quizActive = 0;
+      updateQuizScores();
+      if (quizCurrentQ >= quizQuestions.length) {
+        endQuizGame();
+      } else {
+        showQuizQuestion();
+      }
+    }
+
+    function endQuizGame() {
+      clearQuizTimer();
+      disableQuizAnswers(true);
+      quizQuestionText.textContent = '🏆 KUIS SELESAI!';
+      quizCounter.textContent = 'Semua soal terjawab';
+
+      var maxTotal = -1;
+      for (var i = 0; i < 5; i++) {
+        if (quizPenalties[i] > maxTotal) maxTotal = quizPenalties[i];
+      }
+
+      var losers = [];
+      for (var j = 0; j < 5; j++) {
+        if (quizPenalties[j] === maxTotal) losers.push(j + 1);
+      }
+
+      var text = '';
+      if (maxTotal === 0) {
+        text = 'Semua kelompok hebat — tidak ada hukuman! 🎉';
+        quizWinnerBanner.classList.add('show');
+        quizWinnerText.textContent = text;
+        quizStatus.className = 'game-status ok';
+        quizStatus.innerHTML = '<i class="fas fa-trophy"></i> ' + text;
+      } else {
+        var names = losers.map(function(n) { return 'Kelompok ' + n; }).join(', ');
+        quizPunishmentNames.textContent = names;
+        quizPunishmentBanner.classList.add('show');
+        quizStatus.className = 'game-status no';
+        quizStatus.innerHTML = '<i class="fas fa-microphone"></i> Total kesalahan terbanyak: ' + names + ' (' + maxTotal + ' kesalahan) — HUKUMAN MENYANYI! 🎶';
+      }
+
+      quizStartBtn.innerHTML = '<i class="fas fa-rotate-right"></i> Main Lagi';
+      quizStartBtn.disabled = false;
+    }
+
+    function startQuizGame() {
+      if (quizStarted) { resetQuizGame(); }
+      quizStarted = true;
+      quizCurrentQ = 0;
+      quizActive = 0;
+      quizRound = 1;
+      quizPenalties = [0, 0, 0, 0, 0];
+      quizRoundPenalties = [0, 0, 0, 0, 0];
+      quizPlayedThisRound = [false, false, false, false, false];
+      quizWinnerBanner.classList.remove('show');
+      quizPunishmentBanner.classList.remove('show');
+      updateQuizScores();
+      quizStartBtn.innerHTML = '<i class="fas fa-play"></i> Kuis Berjalan';
+      quizStartBtn.disabled = true;
+      quizStatus.className = 'game-status';
+      quizStatus.innerHTML = '<i class="fas fa-arrow-right"></i> Giliran Kelompok 1. Jawab benar untuk aman, salah = 1 poin kesalahan!';
+      showQuizQuestion();
+    }
+
+    function resetQuizGame() {
+      clearQuizTimer();
+      quizStarted = false;
+      quizAnswering = false;
+      quizActive = 0;
+      quizCurrentQ = 0;
+      quizRound = 1;
+      quizPenalties = [0, 0, 0, 0, 0];
+      quizRoundPenalties = [0, 0, 0, 0, 0];
+      quizPlayedThisRound = [false, false, false, false, false];
+      quizTimeLeft = 15;
+      quizTimerText.textContent = '15';
+      quizTimerBox.classList.remove('warning');
+      quizQuestionText.textContent = 'Tekan "Mulai Kuis" untuk memulai!';
+      quizCounter.textContent = 'Soal 1 dari ' + quizQuestions.length;
+      quizStatus.className = 'game-status';
+      quizStatus.innerHTML = '<i class="fas fa-info-circle"></i> Jawaban salah = 1 poin kesalahan. Di akhir putaran, yang paling banyak salah HUKUMAN MENYANYI!';
+      quizWinnerBanner.classList.remove('show');
+      quizPunishmentBanner.classList.remove('show');
+      for (var i = 0; i < quizAnswerBtns.length; i++) {
+        quizAnswerBtns[i].classList.remove('correct', 'wrong');
+      }
+      disableQuizAnswers(true);
+      updateQuizScores();
+      quizStartBtn.innerHTML = '<i class="fas fa-play"></i> Mulai Kuis';
+      quizStartBtn.disabled = false;
+    }
+
+    window.quizStart = function() { startQuizGame(); };
+    window.quizReset = function() { resetQuizGame(); };
+    window.quizAnswer = function(opt) { handleQuizAnswer(opt); };
+
+    resetQuizGame();
+  })();
+
+  /* Fallback */
+  window.pidStart = window.pidStart || function() { console.warn('PID belum siap'); };
+  window.quizStart = window.quizStart || function() { console.warn('Quiz belum siap'); };
+</script>
+</body>
+</html>
