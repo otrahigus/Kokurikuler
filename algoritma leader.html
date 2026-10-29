@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemimpin di Era Algoritma | SMP Fase D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Plus Jakarta Sans', sans-serif; background: #0b1a2e; }
+
+    .viewport { position: relative; width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .track { display: flex; height: 92vh; width: 100%; transition: transform 0.55s cubic-bezier(0.65,0,0.35,1); will-change: transform; }
+    .slide { flex: 0 0 100%; height: 100%; padding: 0 4vw; display: flex; align-items: center; justify-content: center; }
+    .slide-inner {
+      position: relative; width: 100%; max-width: 1150px; height: 100%;
+      background: #f0f7ff; border-radius: 44px 44px 28px 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 8px 20px rgba(0,20,50,0.3);
+      padding: 40px 48px; overflow-y: auto; overflow-x: hidden;
+      border: 1px solid rgba(255,255,255,0.3); scrollbar-width: thin; scrollbar-color: #2563eb #e0e7ff;
+    }
+    .slide-inner::-webkit-scrollbar { width: 8px; }
+    .slide-inner::-webkit-scrollbar-track { background: #e0e7ff; border-radius: 10px; }
+    .slide-inner::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 10px; }
+    .slide-inner::before {
+      content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 10px;
+      background: linear-gradient(90deg, #2563eb, #3b82f6, #8b5cf6, #ec4899);
+      border-radius: 44px 44px 0 0;
+    }
+
+    .slide-number {
+      position: absolute; top: 24px; right: 32px; font-size: 0.8rem; font-weight: 600;
+      color: #1e3a8a; background: rgba(37,99,235,0.08); padding: 5px 16px;
+      border-radius: 100px; border: 1px solid rgba(37,99,235,0.2); z-index: 2;
+    }
+
+    h1 { font-size: 2.7rem; font-weight: 800; letter-spacing: -1px; line-height: 1.15; color: #0a1e3c; margin-bottom: 10px; }
+    h2 { font-size: 1.9rem; font-weight: 700; color: #0a1e3c; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    h2 i { color: #2563eb; font-size: 1.6rem; background: rgba(37,99,235,0.12); padding: 10px; border-radius: 16px; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+    p, li { font-size: 1.02rem; line-height: 1.5; color: #1e293b; }
+    .subhead { font-size: 1.15rem; font-weight: 500; color: #2563eb; margin-bottom: 20px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .card {
+      background: white; border-radius: 22px; padding: 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      border: 1px solid rgba(37,99,235,0.1);
+    }
+    .card-icon { font-size: 1.6rem; color: #2563eb; margin-bottom: 8px; }
+
+    .bullet-list { list-style: none; padding: 0; }
+    .bullet-list li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 9px; font-size: 0.96rem; line-height: 1.4; }
+    .bullet-list li i { margin-top: 3px; flex-shrink: 0; font-size: 0.85rem; }
+
+    .example-box {
+      background: #eef4ff; border-radius: 14px; padding: 14px;
+      margin-top: 10px; border-left: 4px solid #2563eb;
+      font-size: 0.92rem; color: #1e2f4a;
+    }
+    .example-box strong { color: #0a1e3c; display: block; margin-bottom: 3px; font-weight: 700; }
+
+    .warn-box {
+      background: #fef2f2; border-radius: 14px; padding: 14px;
+      margin-top: 10px; border-left: 4px solid #dc2626;
+      color: #7f1d1d; font-size: 0.92rem;
+    }
+    .warn-box strong { color: #991b1b; display: block; margin-bottom: 3px; font-weight: 700; }
+    .warn-box i { color: #dc2626; margin-right: 6px; }
+
+    .solution-box {
+      background: #f0fdf4; border-radius: 14px; padding: 14px;
+      margin-top: 10px; border-left: 4px solid #16a34a;
+      color: #14532d; font-size: 0.92rem;
+    }
+    .solution-box strong { color: #166534; display: block; margin-bottom: 3px; font-weight: 700; }
+    .solution-box i { color: #16a34a; margin-right: 6px; }
+
+    .tag { display: inline-block; padding: 3px 12px; border-radius: 60px; font-size: 0.73rem; font-weight: 700; margin-bottom: 8px; }
+    .tag-blue { background: #dbeafe; color: #1e3a8a; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-purple { background: #ede9fe; color: #5b21b6; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+
+    .highlight { background: #fef9c3; padding: 2px 7px; border-radius: 6px; font-weight: 600; }
+
+    .quote {
+      background: #e6f0ff; border-radius: 18px; padding: 16px 22px;
+      margin: 18px 0 6px; font-size: 1rem; font-weight: 500;
+      color: #0a1e3c; border: 1px dashed #2563eb; text-align: center;
+    }
+    .quote i { color: #2563eb; margin-right: 6px; }
+
+    .fase-badge {
+      background: #8b5cf6; color: white; font-size: 0.85rem; font-weight: 700;
+      padding: 5px 14px; border-radius: 60px; display: inline-block; margin-bottom: 10px;
+    }
+
+    /* LO */
+    .lo-card {
+      background: white; border-radius: 20px; padding: 20px;
+      border: 1px solid rgba(37,99,235,0.1);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .lo-num {
+      background: #2563eb; color: white; font-weight: 800;
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 1rem;
+    }
+    .lo-card p { font-size: 0.95rem; }
+
+    /* GAME */
+    .game-header {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px; margin-bottom: 14px;
+    }
+    .game-title {
+      background: #0a1e3c; color: white; border-radius: 16px;
+      padding: 10px 22px; font-weight: 800; font-size: 1.05rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .game-title i { color: #fbbf24; }
+    .game-timer {
+      background: #2563eb; color: white; border-radius: 16px;
+      padding: 10px 22px; font-weight: 800; font-size: 1.5rem;
+      display: flex; align-items: center; gap: 10px;
+      min-width: 120px; justify-content: center;
+      transition: all 0.2s;
+    }
+    .game-timer.warning { background: #dc2626; animation: pulse 0.6s infinite; }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+    .game-question-box {
+      background: white; border-radius: 22px; padding: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 2px solid rgba(37,99,235,0.15);
+      text-align: center; margin: 10px 0;
+      min-height: 90px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .game-question-box .label {
+      font-size: 0.75rem; font-weight: 700; color: #2563eb;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+    }
+    .game-question-box .q-text {
+      font-size: 1.35rem; font-weight: 700; color: #0a1e3c; line-height: 1.35;
+    }
+
+    .quiz-scores { display: flex; gap: 8px; flex-wrap: wrap; }
+    .quiz-score {
+      background: white; border-radius: 14px; padding: 8px 12px;
+      border: 2px solid rgba(37,99,235,0.15);
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 700; font-size: 0.88rem; color: #1e293b;
+      transition: all 0.2s;
+    }
+    .quiz-score.active { border-color: #2563eb; background: #dbeafe; box-shadow: 0 4px 12px rgba(37,99,235,0.2); }
+    .quiz-score.penalized { border-color: #dc2626; background: #fee2e2; }
+    .quiz-score .qs-badge {
+      width: 24px; height: 24px; border-radius: 8px; background: #2563eb; color: white;
+      display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+    }
+    .quiz-score.penalized .qs-badge { background: #dc2626; }
+    .quiz-score .qs-pts { color: #dc2626; min-width: 20px; text-align: right; }
+    .quiz-score .qs-label { font-size: 0.6rem; color: #94a3b8; font-weight: 600; margin-left: 2px; }
+
+    .quiz-answer-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
+    .quiz-answer {
+      border: none; border-radius: 18px; padding: 20px 16px;
+      font-family: inherit; font-weight: 700; font-size: 1.05rem;
+      cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; gap: 12px;
+      background: white; color: #1e293b; text-align: left;
+      border: 2px solid rgba(37,99,235,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      position: relative;
+    }
+    .quiz-answer:hover:not(:disabled) { border-color: #2563eb; transform: translateY(-2px); }
+    .quiz-answer:disabled { opacity: 0.5; cursor: not-allowed; }
+    .quiz-answer .qa-letter {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: #e0e7ff; color: #2563eb; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.95rem;
+    }
+    .quiz-answer.correct { background: #dcfce7; border-color: #16a34a; }
+    .quiz-answer.correct .qa-letter { background: #16a34a; color: white; }
+    .quiz-answer.wrong { background: #fee2e2; border-color: #dc2626; }
+    .quiz-answer.wrong .qa-letter { background: #dc2626; color: white; }
+
+    .quiz-punishment-banner {
+      background: linear-gradient(135deg, #f59e0b, #ec4899); color: white;
+      border-radius: 20px; padding: 22px; text-align: center;
+      font-weight: 800; font-size: 1.15rem; margin-top: 12px;
+      display: none;
+    }
+    .quiz-punishment-banner.show { display: block; animation: fadeIn 0.4s; }
+    .quiz-punishment-banner .mic-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+    .quiz-punishment-banner .names { font-size: 1.3rem; margin: 6px 0; }
+    .quiz-punishment-banner .sub { font-size: 0.9rem; opacity: 0.95; font-weight: 600; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .game-status {
+      background: #fef3c7; border-radius: 14px; padding: 12px 18px;
+      margin-top: 12px; font-weight: 600; color: #92400e;
+      text-align: center; font-size: 0.95rem;
+      border-left: 4px solid #f59e0b;
+    }
+    .game-status.ok { background: #dcfce7; color: #166534; border-left-color: #16a34a; }
+    .game-status.no { background: #fee2e2; color: #991b1b; border-left-color: #dc2626; }
+
+    .game-controls { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+    .game-btn {
+      border: none; border-radius: 14px; padding: 14px 28px;
+      font-family: inherit; font-weight: 700; font-size: 1rem;
+      cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .game-btn:active { transform: translateY(2px); }
+    .game-btn-primary { background: #2563eb; color: white; box-shadow: 0 4px 0 #1e40af; }
+    .game-btn-primary:active { box-shadow: 0 2px 0 #1e40af; }
+    .game-btn-primary:hover { background: #1d4ed8; }
+    .game-btn-secondary { background: white; color: #1e3a8a; border: 2px solid #cbd5e1; }
+    .game-btn-secondary:hover { border-color: #2563eb; color: #2563eb; }
+    .game-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Navigation */
+    .nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 50px; height: 50px; border-radius: 50%;
+      background: rgba(255,255,255,0.95); color: #1e3a8a; border: none;
+      cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3); transition: all 0.2s; z-index: 10;
+    }
+    .nav-btn:hover { background: #2563eb; color: white; transform: translateY(-50%) scale(1.08); }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: translateY(-50%); }
+    .nav-btn:disabled:hover { background: rgba(255,255,255,0.95); color: #1e3a8a; }
+    .nav-prev { left: 16px; }
+    .nav-next { right: 16px; }
+
+    .dots {
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; padding: 10px 18px;
+      background: rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+      border-radius: 100px; z-index: 10; border: 1px solid rgba(255,255,255,0.15);
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.35); border: none; cursor: pointer; transition: all 0.25s; padding: 0; }
+    .dot.active { background: #3b82f6; width: 24px; border-radius: 100px; }
+
+    @media (max-width: 900px) {
+      .slide-inner { padding: 28px 20px; border-radius: 28px; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.4rem; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: 1fr 1fr; }
+      .quiz-answer-row { grid-template-columns: 1fr; }
+      .nav-btn { width: 40px; height: 40px; }
+      .nav-prev { left: 6px; }
+      .nav-next { right: 6px; }
+    }
+    @media (max-width: 600px) {
+      .slide-inner { padding: 22px 14px; }
+      h1 { font-size: 1.6rem; }
+      p, li { font-size: 0.92rem; }
+      .grid-4 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="viewport">
+  <div class="track" id="track">
+
+    <!-- 1: COVER -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">1 / 11</div>
+        <div class="fase-badge">Kokurikuler SMP • Fase D</div>
+        <h1>Pemimpin di Era Algoritma</h1>
+        <p class="subhead">Dari konsumen pasif menjadi pemimpin digital & influencer positif.</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px;">
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-brain" style="color: #2563eb; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Cara Kerja Algoritma</span>
+          </div>
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-shield-halved" style="color: #8b5cf6; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Echo Chamber & Filter Bubble</span>
+          </div>
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-star" style="color: #f59e0b; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Influencer Positif</span>
+          </div>
+          <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <i class="fas fa-gamepad" style="color: #16a34a; font-size: 1.2rem;"></i>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Game Kuis 6 Kelompok</span>
+          </div>
+        </div>
+        <p style="margin-top: 28px; font-size: 0.92rem; color: #475569;"><i class="fas fa-arrow-right" style="color: #2563eb; margin-right: 6px;"></i>Navigasi: tombol panah, keyboard, atau geser layar.</p>
+      </div>
+    </div>
+
+    <!-- 2: LEARNING OBJECTIVES -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">2 / 11</div>
+        <h2><i class="fas fa-bullseye"></i> Learning Objectives</h2>
+        <p class="subhead">Setelah sesi ini, siswa diharapkan mampu:</p>
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="lo-card">
+            <div class="lo-num">1</div>
+            <p>Membedakan <strong>konsumen pasif</strong> dan <strong>konsumen aktif</strong> dalam menggunakan media digital.</p>
+          </div>
+          <div class="lo-card">
+            <div class="lo-num">2</div>
+            <p>Menjelaskan cara kerja <strong>algoritma</strong> dalam menyajikan konten di media sosial.</p>
+          </div>
+          <div class="lo-card">
+            <div class="lo-num">3</div>
+            <p>Mengidentifikasi dua jebakan digital: <strong>echo chamber</strong> dan <strong>filter bubble</strong>, serta dampaknya.</p>
+          </div>
+          <div class="lo-card">
+            <div class="lo-num">4</div>
+            <p>Menjelaskan peran <strong>Pelajar Pancasila</strong> sebagai pemimpin digital yang bijak & influencer positif.</p>
+          </div>
+          <div class="lo-card">
+            <div class="lo-num">5</div>
+            <p>Menerapkan prinsip dasar <strong>influencer positif</strong> dan menjaga <strong>digital footprint</strong> yang baik.</p>
+          </div>
+          <div class="lo-card">
+            <div class="lo-num">6</div>
+            <p>Berkolaborasi dalam kelompok menyelesaikan <strong>kuis inklusif</strong> dan menerima konsekuensi bersama.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3: KONSUMEN PASIF -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">3 / 11</div>
+        <h2><i class="fas fa-user-slash"></i> Pendahuluan: Konsumen Pasif</h2>
+        <p class="subhead">Saat kita hanya "menelan" apa pun yang disuguhkan layar.</p>
+        <div class="grid-2">
+          <div class="card" style="border-top: 5px solid #dc2626;">
+            <span class="tag tag-red"><i class="fas fa-times"></i> KONSUMEN PASIF</span>
+            <ul class="bullet-list" style="margin-top: 6px;">
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Scroll terus tanpa berpikir</span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Percaya semua yang viral</span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Ikut share tanpa verifikasi</span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Dikendalikan algoritma</span></li>
+            </ul>
+            <div class="warn-box">
+              <strong><i class="fas fa-triangle-exclamation"></i> Akibatnya:</strong> Mudah termakan hoaks, ikut menyebar kebencian, dan tidak sadar dibentuk oleh konten.
+            </div>
+          </div>
+          <div class="card" style="border-top: 5px solid #16a34a;">
+            <span class="tag tag-green"><i class="fas fa-check"></i> KONSUMEN AKTIF</span>
+            <ul class="bullet-list" style="margin-top: 6px;">
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Berpikir sebelum scroll</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Cek fakta sebelum percaya</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Memilih konten dengan sadar</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Mengendalikan diri, bukan dikendalikan</span></li>
+            </ul>
+            <div class="solution-box">
+              <strong><i class="fas fa-lightbulb"></i> Solusi:</strong> Sebelum percaya atau share, tanya: <em>Benar nggak? Sumbernya siapa? Apa tujuannya?</em>
+            </div>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 14px;">
+          <i class="fas fa-key"></i> Jangan jadi <strong>konsumen pasif</strong> — jadilah pengguna yang sadar & kritis.
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: PELAJAR PANCASILA BIJAK -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">4 / 11</div>
+        <h2><i class="fas fa-star"></i> Pelajar Pancasila: Bijak Bertransformasi</h2>
+        <p class="subhead">Dari konsumen pasif menjadi <strong>pemimpin digital</strong> yang berkarakter Pancasila.</p>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-brain" style="color: #2563eb;"></i></div>
+            <h3 style="font-size: 1.05rem;">Berpikir Kritis</h3>
+            <p style="font-size: 0.92rem;">Tidak langsung percaya. Cek sumber, bandingkan informasi, dan tanya "apa buktinya?"</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-heart" style="color: #ec4899;"></i></div>
+            <h3 style="font-size: 1.05rem;">Berakhlak Mulia</h3>
+            <p style="font-size: 0.92rem;">Sopan di kolom komentar. Tidak menyebar kebencian atau ujaran kebencian di media sosial.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-hands-helping" style="color: #16a34a;"></i></div>
+            <h3 style="font-size: 1.05rem;">Gotong Royong</h3>
+            <p style="font-size: 0.92rem;">Bantu teman yang termakan hoaks. Ajak bersama-sama membuat konten positif.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-globe" style="color: #8b5cf6;"></i></div>
+            <h3 style="font-size: 1.05rem;">Berkebinekaan Global</h3>
+            <p style="font-size: 0.92rem;">Hargai perbedaan pendapat di dunia digital. Tidak menyerang identitas orang lain.</p>
+          </div>
+        </div>
+        <div class="solution-box" style="margin-top: 14px;">
+          <strong><i class="fas fa-rocket"></i> Transformasi:</strong> Pelajar Pancasila bukan hanya di sekolah — tapi juga <strong>di dunia digital</strong>. Setiap like, share, dan komentar adalah cerminan karakter.
+        </div>
+      </div>
+    </div>
+
+    <!-- 5: CARA KERJA ALGORITMA -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">5 / 11</div>
+        <h2><i class="fas fa-microchip"></i> Memahami Cara Kerja Algoritma</h2>
+        <p class="subhead">Algoritma adalah "otak" di balik konten yang muncul di layarmu.</p>
+        <div class="grid-2">
+          <div class="card" style="border-top: 5px solid #2563eb;">
+            <h3 style="font-size: 1.1rem;"><i class="fas fa-cogs" style="color: #2563eb; margin-right: 6px;"></i> Cara Kerja Sederhananya</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-1" style="color: #2563eb;"></i> <span>Kamu <strong>menonton / klik / like</strong> sesuatu</span></li>
+              <li><i class="fas fa-2" style="color: #2563eb;"></i> <span>Algoritma <strong>mencatat minatmu</strong></span></li>
+              <li><i class="fas fa-3" style="color: #2563eb;"></i> <span>Algoritma <strong>menyajikan konten serupa</strong></span></li>
+              <li><i class="fas fa-4" style="color: #2563eb;"></i> <span>Semakin sering, semakin <strong>dipersempit</strong></span></li>
+            </ul>
+          </div>
+          <div class="card" style="border-top: 5px solid #f59e0b;">
+            <h3 style="font-size: 1.1rem;"><i class="fas fa-exclamation-triangle" style="color: #f59e0b; margin-right: 6px;"></i> Dampak Positif & Negatif</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span><strong>Positif:</strong> konten edukatif mudah ditemukan</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span><strong>Positif:</strong> rekomendasi sesuai minat</span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span><strong>Negatif:</strong> terjebak konten sama terus</span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span><strong>Negatif:</strong> sulit melihat sudut pandang lain</span></li>
+            </ul>
+            <div class="warn-box">
+              <strong><i class="fas fa-triangle-exclamation"></i> Ingat:</strong> Algoritma tidak memilih yang <em>benar</em> — tapi yang <strong>paling bikin kamu betah</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6: ECHO CHAMBER & FILTER BUBBLE -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">6 / 11</div>
+        <h2><i class="fas fa-shield-halved"></i> Dua Jebakan Digital</h2>
+        <p class="subhead" style="margin-bottom: 14px;">Tanpa sadar, algoritma bisa mengurung kita dalam dua jebakan ini.</p>
+        <div class="grid-2">
+          <div class="card" style="border-top: 5px solid #dc2626;">
+            <span class="tag tag-red"><i class="fas fa-volume-high"></i> ECHO CHAMBER</span>
+            <h3 style="font-size: 1.05rem;">Ruang Gema</h3>
+            <ul class="bullet-list" style="margin-top: 6px;">
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Hanya mendengar <strong>pendapat yang sama</strong></span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Pendapat berbeda <strong>tidak muncul</strong></span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Merasa <strong>paling benar</strong> sendiri</span></li>
+              <li><i class="fas fa-times-circle" style="color: #dc2626;"></i> <span>Mudah <strong>marah</strong> pada yang berbeda</span></li>
+            </ul>
+            <div class="example-box" style="border-left-color: #dc2626; font-size: 0.9rem;">
+              <strong>Contoh:</strong> Grup chat yang isinya hanya setuju satu pandangan — yang berbeda langsung dikeluarkan.
+            </div>
+          </div>
+          <div class="card" style="border-top: 5px solid #f59e0b;">
+            <span class="tag tag-amber"><i class="fas fa-circle-dot"></i> FILTER BUBBLE</span>
+            <h3 style="font-size: 1.05rem;">Gelembung Filter</h3>
+            <ul class="bullet-list" style="margin-top: 6px;">
+              <li><i class="fas fa-times-circle" style="color: #f59e0b;"></i> <span>Konten <strong>disaring otomatis</strong> oleh algoritma</span></li>
+              <li><i class="fas fa-times-circle" style="color: #f59e0b;"></i> <span>Hanya lihat yang <strong>sesuai minat</strong></span></li>
+              <li><i class="fas fa-times-circle" style="color: #f59e0b;"></i> <span>Dunia terasa <strong>sempit</strong></span></li>
+              <li><i class="fas fa-times-circle" style="color: #f59e0b;"></i> <span>Tidak sadar ada <strong>pandangan lain</strong></span></li>
+            </ul>
+            <div class="example-box" style="border-left-color: #f59e0b; font-size: 0.9rem;">
+              <strong>Contoh:</strong> Beranda TikTok hanya menampilkan video lucu terus — tidak pernah muncul berita penting.
+            </div>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 14px;">
+          <i class="fas fa-key"></i> Keluar dari jebakan: <strong>sengaja cari sudut pandang lain</strong> & ikuti akun yang berbeda.
+        </div>
+      </div>
+    </div>
+
+    <!-- 7: PRINSIP INFLUENCER POSITIF -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">7 / 11</div>
+        <h2><i class="fas fa-star"></i> Prinsip Dasar Influencer Positif</h2>
+        <p class="subhead">Bukan sekadar terkenal — tapi <strong>berdampak baik</strong>.</p>
+        <div class="grid-3">
+          <div class="card" style="border-top: 4px solid #2563eb;">
+            <div class="card-icon"><i class="fas fa-check-circle" style="color: #16a34a;"></i></div>
+            <h3 style="font-size: 1rem;">Jujur & Transparan</h3>
+            <p style="font-size: 0.9rem;">Sampaikan fakta, akui jika salah, jangan menyebar hoaks.</p>
+          </div>
+          <div class="card" style="border-top: 4px solid #8b5cf6;">
+            <div class="card-icon"><i class="fas fa-heart" style="color: #ec4899;"></i></div>
+            <h3 style="font-size: 1rem;">Bermanfaat</h3>
+            <p style="font-size: 0.9rem;">Konten memberi nilai tambah: edukasi, inspirasi, atau hiburan sehat.</p>
+          </div>
+          <div class="card" style="border-top: 4px solid #f59e0b;">
+            <div class="card-icon"><i class="fas fa-handshake" style="color: #f59e0b;"></i></div>
+            <h3 style="font-size: 1rem;">Menghargai Perbedaan</h3>
+            <p style="font-size: 0.9rem;">Tidak menyerang identitas, tidak menyebar kebencian.</p>
+          </div>
+          <div class="card" style="border-top: 4px solid #16a34a;">
+            <div class="card-icon"><i class="fas fa-shield-halved" style="color: #16a34a;"></i></div>
+            <h3 style="font-size: 1rem;">Bertanggung Jawab</h3>
+            <p style="font-size: 0.9rem;">Sadar setiap unggahan berdampak pada orang lain.</p>
+          </div>
+          <div class="card" style="border-top: 4px solid #ec4899;">
+            <div class="card-icon"><i class="fas fa-lightbulb" style="color: #f59e0b;"></i></div>
+            <h3 style="font-size: 1rem;">Konsisten</h3>
+            <p style="font-size: 0.9rem;">Nilai yang diperjuangkan tetap, tidak berubah karena tren.</p>
+          </div>
+          <div class="card" style="border-top: 4px solid #2563eb;">
+            <div class="card-icon"><i class="fas fa-users" style="color: #2563eb;"></i></div>
+            <h3 style="font-size: 1rem;">Memberdayakan</h3>
+            <p style="font-size: 0.9rem;">Mengajak audiens berbuat baik, bukan sekadar ikut-ikutan.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8: DIGITAL FOOTPRINT -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">8 / 11</div>
+        <h2><i class="fas fa-shoe-prints"></i> Digital Footprint</h2>
+        <p class="subhead">Jejak digitalmu <strong>tidak pernah hilang</strong> — bahkan setelah dihapus.</p>
+        <div class="grid-2">
+          <div class="card" style="border-left: 5px solid #2563eb;">
+            <h3 style="font-size: 1.05rem;"><i class="fas fa-list" style="color: #2563eb; margin-right: 6px;"></i> Apa Saja Jejak Digitalmu?</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-circle" style="color: #2563eb; font-size: 0.5rem; margin-top: 7px;"></i> <span>Postingan & komentar</span></li>
+              <li><i class="fas fa-circle" style="color: #2563eb; font-size: 0.5rem; margin-top: 7px;"></i> <span>Like & share</span></li>
+              <li><i class="fas fa-circle" style="color: #2563eb; font-size: 0.5rem; margin-top: 7px;"></i> <span>Riwayat pencarian</span></li>
+              <li><i class="fas fa-circle" style="color: #2563eb; font-size: 0.5rem; margin-top: 7px;"></i> <span>Data pribadi yang dibagikan</span></li>
+              <li><i class="fas fa-circle" style="color: #2563eb; font-size: 0.5rem; margin-top: 7px;"></i> <span>Foto & video yang diunggah</span></li>
+            </ul>
+          </div>
+          <div class="card" style="border-left: 5px solid #16a34a;">
+            <h3 style="font-size: 1.05rem;"><i class="fas fa-shield" style="color: #16a34a; margin-right: 6px;"></i> Cara Menjaga Jejak Digital</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Pikirkan <strong>sebelum posting</strong></span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Jangan bagikan <strong>data pribadi</strong></span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Gunakan <strong>kata sandi kuat</strong></span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Cek <strong>pengaturan privasi</strong></span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Hapus konten yang <strong>tidak pantas</strong></span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 14px;">
+          <i class="fas fa-key"></i> Jejak digital = <strong>reputasimu di dunia maya</strong>. Jaga seperti menjaga nama baik.
+        </div>
+      </div>
+    </div>
+
+    <!-- 9: GAME KUIS 6 KELOMPOK -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">9 / 11</div>
+        <div class="game-header">
+          <div class="game-title"><i class="fas fa-microphone" style="color: #fbbf24;"></i> GAME KUIS — Yang Salah Menyanyi!</div>
+          <div class="game-timer" id="quizTimer">
+            <i class="fas fa-clock"></i>
+            <span id="quizTimerText">15</span>
+          </div>
+        </div>
+
+        <div class="quiz-scores" id="quizScores">
+          <div class="quiz-score" data-group="1"><span class="qs-badge">1</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="2"><span class="qs-badge">2</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="3"><span class="qs-badge">3</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="4"><span class="qs-badge">4</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="5"><span class="qs-badge">5</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="6"><span class="qs-badge">6</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div class="quiz-score active" id="quizActiveGroup" style="border-color: #2563eb; background: #dbeafe;">
+              <i class="fas fa-arrow-right" style="color: #2563eb;"></i>
+              <span style="font-weight: 800; color: #1e3a8a;">Giliran: Kelompok 1</span>
+            </div>
+            <span style="font-size: 0.82rem; color: #475569;" id="quizCounter">Soal 1 dari 30</span>
+            <span style="font-size: 0.82rem; font-weight: 700; color: #dc2626;" id="quizRoundInfo">Putaran 1</span>
+          </div>
+        </div>
+
+        <div class="game-question-box">
+          <div class="label"><i class="fas fa-question-circle"></i> Soal Kuis</div>
+          <div class="q-text" id="quizQuestionText">Tekan "Mulai Kuis" untuk memulai!</div>
+        </div>
+
+        <div class="quiz-answer-row" id="quizAnswerRow">
+          <button class="quiz-answer" data-answer="A" disabled onclick="window.quizAnswer('A')">
+            <span class="qa-letter">A</span>
+            <span class="qa-text" id="quizOptA">-</span>
+          </button>
+          <button class="quiz-answer" data-answer="B" disabled onclick="window.quizAnswer('B')">
+            <span class="qa-letter">B</span>
+            <span class="qa-text" id="quizOptB">-</span>
+          </button>
+          <button class="quiz-answer" data-answer="C" disabled onclick="window.quizAnswer('C')">
+            <span class="qa-letter">C</span>
+            <span class="qa-text" id="quizOptC">-</span>
+          </button>
+          <button class="quiz-answer" data-answer="D" disabled onclick="window.quizAnswer('D')">
+            <span class="qa-letter">D</span>
+            <span class="qa-text" id="quizOptD">-</span>
+          </button>
+        </div>
+
+        <div class="game-status" id="quizStatus">
+          <i class="fas fa-info-circle"></i> Jawaban salah = 1 poin kesalahan. Di akhir putaran, yang paling banyak salah HUKUMAN MENYANYI!
+        </div>
+
+        <div class="quiz-punishment-banner" id="quizPunishmentBanner">
+          <span class="mic-icon">🎤</span>
+          <div class="names" id="quizPunishmentNames">Kelompok 1</div>
+          <div class="sub">Dapat kesalahan terbanyak — HUKUMAN MENYANYI! 🎶</div>
+        </div>
+
+        <div class="game-controls">
+          <button class="game-btn game-btn-primary" id="quizStartBtn" type="button" onclick="window.quizStart()"><i class="fas fa-play"></i> Mulai Kuis</button>
+          <button class="game-btn game-btn-secondary" id="quizResetBtn" type="button" onclick="window.quizReset()"><i class="fas fa-rotate-left"></i> Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10: BANK SOAL & ATURAN -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">10 / 11</div>
+        <h2><i class="fas fa-list-check"></i> Aturan Kuis & Cara Main</h2>
+        <div class="grid-2">
+          <div class="card" style="border-left: 5px solid #2563eb;">
+            <h3 style="font-size: 1rem;"><i class="fas fa-list-ol" style="color: #2563eb; margin-right: 6px;"></i> Cara Main</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-1" style="color: #2563eb;"></i> <span>6 kelompok, masing-masing 4–5 siswa</span></li>
+              <li><i class="fas fa-2" style="color: #2563eb;"></i> <span>Setiap kelompok dapat giliran menjawab</span></li>
+              <li><i class="fas fa-3" style="color: #2563eb;"></i> <span>Jawaban <strong>benar</strong> = aman</span></li>
+              <li><i class="fas fa-4" style="color: #2563eb;"></i> <span>Jawaban <strong>salah / waktu habis</strong> = +1 poin kesalahan</span></li>
+              <li><i class="fas fa-5" style="color: #2563eb;"></i> <span>Akhir putaran: kesalahan terbanyak = <strong>HUKUMAN MENYANYI</strong> 🎤</span></li>
+            </ul>
+          </div>
+          <div class="card" style="border-left: 5px solid #16a34a;">
+            <h3 style="font-size: 1rem;"><i class="fas fa-lightbulb" style="color: #16a34a; margin-right: 6px;"></i> Tips Menang</h3>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Diskusi kelompok sebelum menjawab</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Baca soal dengan teliti</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Jangan terburu-buru</span></li>
+              <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <span>Ingat materi: algoritma, echo chamber, filter bubble, digital footprint</span></li>
+            </ul>
+            <div class="solution-box">
+              <strong><i class="fas fa-rocket"></i> Hadiah:</strong> Kelompok dengan kesalahan paling sedikit = pemenang!
+            </div>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 14px;">
+          <i class="fas fa-quote-left"></i> Jawab benar untuk aman — salah sedikit bisa bikin nyanyi di depan kelas! 🎶
+        </div>
+      </div>
+    </div>
+
+    <!-- 11: PENUTUP -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-number">11 / 11</div>
+        <h2><i class="fas fa-handshake"></i> Kesimpulan & Komitmen</h2>
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="card">
+            <ul class="bullet-list">
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Jangan jadi <strong>konsumen pasif</strong> — jadilah pengguna kritis.</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Pahami <strong>cara kerja algoritma</strong> & dua jebakannya.</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Jadi <strong>Pelajar Pancasila</strong> yang bijak di dunia digital.</span></li>
+              <li><i class="fas fa-check-circle" style="color: #2563eb;"></i> <span>Terapkan <strong>prinsip influencer positif</strong> & jaga jejak digital.</span></li>
+            </ul>
+          </div>
+          <div style="background: #2563eb; border-radius: 24px; padding: 24px; color: white; display: flex; flex-direction: column; justify-content: center;">
+            <i class="fas fa-bullhorn" style="font-size: 2.2rem; margin-bottom: 10px;"></i>
+            <h3 style="color: white; font-size: 1.1rem; margin-bottom: 8px;">Komitmen</h3>
+            <p style="color: rgba(255,255,255,0.92); font-size: 0.95rem;">Aku menjadi pemimpin digital yang bijak — berpikir sebelum share, menjaga jejak digital, dan menyebarkan kebaikan.</p>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 20px; font-size: 1.05rem;">
+          <i class="fas fa-quote-left"></i> "Algoritma bisa mengendalikan layar, tapi <strong>kamu yang mengendalikan dirimu</strong>."
+        </div>
+        <div style="margin-top: 18px; text-align: center; border-top: 1px solid #cbd5e1; padding-top: 14px;">
+          <p style="font-size: 0.88rem; color: #475569;"><i class="fas fa-graduation-cap" style="color: #2563eb; margin-right: 6px;"></i> Kokurikuler SMP Fase D — Pemimpin di Era Algoritma</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="nav-btn nav-prev" id="prevBtn" aria-label="Sebelumnya"><i class="fas fa-chevron-left"></i></button>
+  <button class="nav-btn nav-next" id="nextBtn" aria-label="Berikutnya"><i class="fas fa-chevron-right"></i></button>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+  /* ============================================================
+     BAGIAN 1: NAVIGASI SLIDE
+     ============================================================ */
+  (function() {
+    'use strict';
+    var track = document.getElementById('track');
+    if (!track) return;
+    var slides = track.querySelectorAll('.slide');
+    var totalSlides = slides.length;
+    var prevBtn = document.getElementById('prevBtn');
+    var nextBtn = document.getElementById('nextBtn');
+    var dotsContainer = document.getElementById('dots');
+    var currentIndex = 0;
+
+    for (var i = 0; i < totalSlides; i++) {
+      (function(idx) {
+        var dot = document.createElement('button');
+        dot.classList.add('dot');
+        if (idx === 0) dot.classList.add('active');
+        dot.setAttribute('aria-label', 'Slide ' + (idx + 1));
+        dot.addEventListener('click', function() { goToSlide(idx); });
+        dotsContainer.appendChild(dot);
+      })(i);
+    }
+    var dots = dotsContainer.querySelectorAll('.dot');
+
+    function updateUI() {
+      track.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+      prevBtn.disabled = (currentIndex === 0);
+      nextBtn.disabled = (currentIndex === totalSlides - 1);
+      for (var i = 0; i < dots.length; i++) {
+        dots[i].classList.toggle('active', i === currentIndex);
+      }
+      var inner = slides[currentIndex].querySelector('.slide-inner');
+      if (inner) inner.scrollTop = 0;
+    }
+
+    function goToSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      currentIndex = index;
+      updateUI();
+    }
+
+    window.nextSlide = function() { goToSlide(currentIndex + 1); };
+    window.prevSlide = function() { goToSlide(currentIndex - 1); };
+
+    nextBtn.addEventListener('click', window.nextSlide);
+    prevBtn.addEventListener('click', window.prevSlide);
+
+    document.addEventListener('keydown', function(e) {
+      var tag = (e.target && e.target.tagName) ? e.target.tagName : '';
+      if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'SELECT') return;
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); window.nextSlide(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); window.prevSlide(); }
+      else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+      else if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+    });
+
+    var touchStartX = 0, touchStartY = 0, isSwiping = false;
+    var viewport = document.querySelector('.viewport');
+    viewport.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+      isSwiping = false;
+    }, { passive: true });
+    viewport.addEventListener('touchmove', function(e) {
+      var dx = e.changedTouches[0].screenX - touchStartX;
+      var dy = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) isSwiping = true;
+    }, { passive: true });
+    viewport.addEventListener('touchend', function(e) {
+      if (!isSwiping) return;
+      var dx = e.changedTouches[0].screenX - touchStartX;
+      if (dx < -50) window.nextSlide();
+      else if (dx > 50) window.prevSlide();
+      isSwiping = false;
+    }, { passive: true });
+
+    var wheelTimeout;
+    viewport.addEventListener('wheel', function(e) {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+        if (wheelTimeout) return;
+        if (e.deltaX > 20) window.nextSlide();
+        else if (e.deltaX < -20) window.prevSlide();
+        wheelTimeout = setTimeout(function() { wheelTimeout = null; }, 600);
+      }
+    }, { passive: false });
+
+    updateUI();
+  })();
+
+  /* ============================================================
+     BAGIAN 2: KUIS GAME — 6 KELOMPOK, 30 SOAL, HUKUMAN MENYANYI
+     ============================================================ */
+  (function() {
+    'use strict';
+    var quizQuestions = [
+      // ===== SOAL 1-5 (kelompok 1) =====
+      { q: "Apa yang dimaksud konsumen pasif?", options: { A: "Scroll tanpa berpikir", B: "Cek fakta dulu", C: "Pilih konten sadar", D: "Berpikir kritis" }, correct: "A" },
+      { q: "Apa ciri konsumen aktif?", options: { A: "Percaya semua viral", B: "Berpikir sebelum share", C: "Ikut-ikutan tanpa cek", D: "Dikendalikan algoritma" }, correct: "B" },
+      { q: "Apa itu algoritma media sosial?", options: { A: "Otak yang mengatur konten", B: "Teman online", C: "Aplikasi edit foto", D: "Jaringan internet" }, correct: "A" },
+      { q: "Apa yang dicatat algoritma dari kita?", options: { A: "Nama lengkap kita", B: "Alamat rumah", C: "Minat & perilaku online", D: "Nomor HP" }, correct: "C" },
+      { q: "Dampak negatif algoritma?", options: { A: "Konten edukatif muncul", B: "Terjebak konten sama terus", C: "Rekomendasi sesuai minat", D: "Mudah cari informasi" }, correct: "B" },
+
+      // ===== SOAL 6-10 (kelompok 2) =====
+      { q: "Apa itu echo chamber?", options: { A: "Ruang gema pendapat sama", B: "Kamar tidur", C: "Grup belajar", D: "Ruang musik" }, correct: "A" },
+      { q: "Apa itu filter bubble?", options: { A: "Gelembung sabun", B: "Konten disaring algoritma", C: "Filter kamera", D: "Gelembung udara" }, correct: "B" },
+      { q: "Contoh echo chamber?", options: { A: "Grup hanya setuju satu pandangan", B: "Grup belajar bersama", C: "Diskusi terbuka", D: "Baca berita dari banyak sumber" }, correct: "A" },
+      { q: "Contoh filter bubble?", options: { A: "Beranda hanya video lucu terus", B: "Lihat berita penting", C: "Baca banyak sudut pandang", D: "Ikuti akun berbeda" }, correct: "A" },
+      { q: "Cara keluar dari jebakan digital?", options: { A: "Cari sudut pandang lain", B: "Ikuti satu akun saja", C: "Tutup semua akun", D: "Percaya semua konten" }, correct: "A" },
+
+      // ===== SOAL 11-15 (kelompok 3) =====
+      { q: "Apa itu digital footprint?", options: { A: "Jejak digital kita", B: "Sepatu digital", C: "Langkah kaki", D: "Cetakan kaki" }, correct: "A" },
+      { q: "Contoh digital footprint?", options: { A: "Postingan & komentar", B: "Jalan-jalan", C: "Tidur siang", D: "Makan siang" }, correct: "A" },
+      { q: "Cara menjaga jejak digital?", options: { A: "Pikir sebelum posting", B: "Bagikan data pribadi", C: "Posting sembarangan", D: "Abai privasi" }, correct: "A" },
+      { q: "Prinsip influencer positif?", options: { A: "Jujur & bermanfaat", B: "Cari sensasi", C: "Sebar hoaks", D: "Hina orang lain" }, correct: "A" },
+      { q: "Mengapa jejak digital penting?", options: { A: "Cermin reputasi kita", B: "Tidak penting", C: "Bisa dihapus selamanya", D: "Tidak ada dampak" }, correct: "A" },
+
+      // ===== SOAL 16-20 (kelompok 4) =====
+      { q: "Siapa Pelajar Pancasila?", options: { A: "Pelajar berkarakter Pancasila", B: "Pelajar malas", C: "Pelajar pemalas", D: "Pelajar tanpa etika" }, correct: "A" },
+      { q: "Sikap Pelajar Pancasila di medsos?", options: { A: "Sopan & berpikir kritis", B: "Sebar kebencian", C: "Hina orang", D: "Sebar hoaks" }, correct: "A" },
+      { q: "Apa itu influencer positif?", options: { A: "Berdampak baik", B: "Cari sensasi", C: "Sebar hoaks", D: "Hina orang" }, correct: "A" },
+      { q: "Contoh konten bermanfaat?", options: { A: "Edukasi & inspirasi", B: "Hoaks", C: "Kebencian", D: "Fitnah" }, correct: "A" },
+      { q: "Mengapa harus menghargai perbedaan?", options: { A: "Karena semua berhak berpendapat", B: "Karena kita paling benar", C: "Karena berbeda itu salah", D: "Karena harus sama" }, correct: "A" },
+
+      // ===== SOAL 21-25 (kelompok 5) =====
+      { q: "Apa dampak echo chamber?", options: { A: "Merasa paling benar", B: "Makin terbuka", C: "Makin kritis", D: "Makin bijak" }, correct: "A" },
+      { q: "Apa dampak filter bubble?", options: { A: "Dunia terasa sempit", B: "Dunia terasa luas", C: "Makin tahu banyak", D: "Makin terbuka" }, correct: "A" },
+      { q: "Solusi untuk filter bubble?", options: { A: "Ikuti akun berbeda", B: "Ikuti satu akun saja", C: "Tutup semua akun", D: "Percaya semua" }, correct: "A" },
+      { q: "Mengapa algoritma bisa berbahaya?", options: { A: "Bikin ketagihan & sempit", B: "Bikin pintar", C: "Bikin bijak", D: "Bikin kritis" }, correct: "A" },
+      { q: "Apa itu hoaks?", options: { A: "Berita bohong", B: "Berita benar", C: "Berita olahraga", D: "Berita cuaca" }, correct: "A" },
+
+      // ===== SOAL 26-30 (kelompok 6) =====
+      { q: "Apa yang harus dilakukan sebelum share?", options: { A: "Cek fakta dulu", B: "Langsung share", C: "Share tanpa baca", D: "Share ke semua" }, correct: "A" },
+      { q: "Mengapa konsumen pasif berbahaya?", options: { A: "Mudah termakan hoaks", B: "Makin pintar", C: "Makin bijak", D: "Makin kritis" }, correct: "A" },
+      { q: "Apa peran pemimpin digital?", options: { A: "Memberi contoh baik", B: "Menyebar hoaks", C: "Hina orang", D: "Cari sensasi" }, correct: "A" },
+      { q: "Apa itu ujaran kebencian?", options: { A: "Serangan identitas", B: "Kritik ide", C: "Saran baik", D: "Pujian" }, correct: "A" },
+      { q: "Apa pesan utama materi ini?", options: { A: "Jadi pengguna digital bijak", B: "Ikut semua tren", C: "Percaya semua konten", D: "Sebar hoaks" }, correct: "A" }
+    ];
+
+    var quizPenalties = [0, 0, 0, 0, 0, 0];
+    var quizActive = 0;
+    var quizCurrentQ = 0;
+    var quizRound = 1;
+    var quizTimerInterval = null;
+    var quizTimeLeft = 15;
+    var quizAnswering = false;
+    var quizStarted = false;
+    var quizRoundPenalties = [0, 0, 0, 0, 0, 0];
+    var quizPlayedThisRound = [false, false, false, false, false, false];
+
+    var quizTimerBox = document.getElementById('quizTimer');
+    var quizTimerText = document.getElementById('quizTimerText');
+    var quizQuestionText = document.getElementById('quizQuestionText');
+    var quizCounter = document.getElementById('quizCounter');
+    var quizRoundInfo = document.getElementById('quizRoundInfo');
+    var quizActiveGroup = document.getElementById('quizActiveGroup');
+    var quizStatus = document.getElementById('quizStatus');
+    var quizStartBtn = document.getElementById('quizStartBtn');
+    var quizResetBtn = document.getElementById('quizResetBtn');
+    var quizAnswerBtns = document.querySelectorAll('.quiz-answer');
+    var quizScoresEls = document.querySelectorAll('.quiz-score');
+    var quizPunishmentBanner = document.getElementById('quizPunishmentBanner');
+    var quizPunishmentNames = document.getElementById('quizPunishmentNames');
+
+    if (quizCounter) quizCounter.textContent = 'Soal 1 dari ' + quizQuestions.length;
+
+    function updateQuizScores() {
+      for (var i = 0; i < quizScoresEls.length; i++) {
+        var el = quizScoresEls[i];
+        var pts = el.querySelector('.qs-pts');
+        if (pts) pts.textContent = quizPenalties[i];
+        el.classList.toggle('active', i === quizActive);
+        el.classList.toggle('penalized', quizPenalties[i] > 0);
+      }
+      if (quizActiveGroup) {
+        quizActiveGroup.innerHTML = '<i class="fas fa-arrow-right" style="color: #2563eb;"></i>' +
+          '<span style="font-weight: 800; color: #1e3a8a;">Giliran: Kelompok ' + (quizActive + 1) + '</span>';
+      }
+      if (quizRoundInfo) quizRoundInfo.textContent = 'Putaran ' + quizRound;
+    }
+
+    function clearQuizTimer() {
+      if (quizTimerInterval) { clearInterval(quizTimerInterval); quizTimerInterval = null; }
+    }
+
+    function startQuizTimer() {
+      clearQuizTimer();
+      quizTimeLeft = 15;
+      quizTimerText.textContent = quizTimeLeft;
+      quizTimerBox.classList.remove('warning');
+      quizTimerInterval = setInterval(function() {
+        quizTimeLeft--;
+        quizTimerText.textContent = quizTimeLeft;
+        if (quizTimeLeft <= 5) quizTimerBox.classList.add('warning');
+        if (quizTimeLeft <= 0) {
+          clearQuizTimer();
+          handleQuizTimeout();
+        }
+      }, 1000);
+    }
+
+    function handleQuizTimeout() {
+      if (quizAnswering) return;
+      quizAnswering = true;
+      disableQuizAnswers(true);
+      addPenalty(quizActive, '⏰ Waktu habis!');
+    }
+
+    function disableQuizAnswers(disabled) {
+      for (var i = 0; i < quizAnswerBtns.length; i++) {
+        quizAnswerBtns[i].disabled = disabled;
+        quizAnswerBtns[i].classList.remove('correct', 'wrong');
+      }
+    }
+
+    function showQuizQuestion() {
+      if (quizCurrentQ >= quizQuestions.length) { endQuizGame(); return; }
+      var q = quizQuestions[quizCurrentQ];
+      quizQuestionText.textContent = q.q;
+      quizCounter.textContent = 'Soal ' + (quizCurrentQ + 1) + ' dari ' + quizQuestions.length;
+      var optA = document.getElementById('quizOptA');
+      var optB = document.getElementById('quizOptB');
+      var optC = document.getElementById('quizOptC');
+      var optD = document.getElementById('quizOptD');
+      if (optA) optA.textContent = q.options.A;
+      if (optB) optB.textContent = q.options.B;
+      if (optC) optC.textContent = q.options.C;
+      if (optD) optD.textContent = q.options.D;
+      quizAnswering = false;
+      disableQuizAnswers(false);
+      startQuizTimer();
+    }
+
+    function addPenalty(groupIdx, reason) {
+      quizPenalties[groupIdx]++;
+      quizRoundPenalties[groupIdx]++;
+      quizStatus.className = 'game-status no';
+      quizStatus.innerHTML = '<i class="fas fa-times-circle"></i> ' + reason + ' Kelompok ' + (groupIdx + 1) + ' dapat 1 poin kesalahan.';
+      updateQuizScores();
+      setTimeout(function() {
+        advanceQuizAfterAnswer();
+      }, 1500);
+    }
+
+    function handleQuizAnswer(selected) {
+      if (quizAnswering || !quizStarted) return;
+      quizAnswering = true;
+      clearQuizTimer();
+      var q = quizQuestions[quizCurrentQ];
+      var correct = (selected === q.correct);
+
+      for (var i = 0; i < quizAnswerBtns.length; i++) {
+        var b = quizAnswerBtns[i];
+        if (b.dataset.answer === q.correct) b.classList.add('correct');
+        if (b.dataset.answer === selected && !correct) b.classList.add('wrong');
+      }
+      disableQuizAnswers(true);
+
+      if (correct) {
+        quizStatus.className = 'game-status ok';
+        quizStatus.innerHTML = '<i class="fas fa-check-circle"></i> BENAR! Kelompok ' + (quizActive + 1) + ' aman.';
+        setTimeout(function() { advanceQuizAfterAnswer(); }, 1200);
+      } else {
+        addPenalty(quizActive, '❌ Salah!');
+      }
+    }
+
+    function advanceQuizAfterAnswer() {
+      quizCurrentQ++;
+      if (quizCurrentQ >= quizQuestions.length) { endQuizGame(); return; }
+
+      quizPlayedThisRound[quizActive] = true;
+
+      var allPlayed = true;
+      for (var i = 0; i < 6; i++) {
+        if (!quizPlayedThisRound[i]) { allPlayed = false; break; }
+      }
+
+      if (allPlayed) {
+        evaluatePunishment();
+      } else {
+        var next = quizActive + 1;
+        var checked = 0;
+        while (checked < 6 && quizPlayedThisRound[next % 6]) {
+          next++;
+          checked++;
+        }
+        quizActive = next % 6;
+        updateQuizScores();
+        showQuizQuestion();
+      }
+    }
+
+    function evaluatePunishment() {
+      var maxPenalty = -1;
+      for (var i = 0; i < 6; i++) {
+        if (quizRoundPenalties[i] > maxPenalty) maxPenalty = quizRoundPenalties[i];
+      }
+
+      if (maxPenalty === 0) {
+        quizStatus.className = 'game-status ok';
+        quizStatus.innerHTML = '<i class="fas fa-check-circle"></i> Semua kelompok aman di putaran ini! Tidak ada hukuman.';
+        setTimeout(function() { startNewRound(); }, 1800);
+        return;
+      }
+
+      var losers = [];
+      for (var j = 0; j < 6; j++) {
+        if (quizRoundPenalties[j] === maxPenalty) losers.push(j + 1);
+      }
+
+      var names = losers.map(function(n) { return 'Kelompok ' + n; }).join(', ');
+      quizPunishmentNames.textContent = names;
+      quizPunishmentBanner.classList.add('show');
+      quizStatus.className = 'game-status no';
+      quizStatus.innerHTML = '<i class="fas fa-microphone"></i> ' + names + ' dapat kesalahan terbanyak (' + maxPenalty + ') — HUKUMAN MENYANYI! 🎶';
+
+      setTimeout(function() {
+        quizPunishmentBanner.classList.remove('show');
+        startNewRound();
+      }, 3000);
+    }
+
+    function startNewRound() {
+      quizRound++;
+      quizRoundPenalties = [0, 0, 0, 0, 0, 0];
+      quizPlayedThisRound = [false, false, false, false, false, false];
+      quizActive = 0;
+      updateQuizScores();
+      if (quizCurrentQ >= quizQuestions.length) {
+        endQuizGame();
+      } else {
+        showQuizQuestion();
+      }
+    }
+
+    function endQuizGame() {
+      clearQuizTimer();
+      disableQuizAnswers(true);
+      quizQuestionText.textContent = '🏆 KUIS SELESAI!';
+      quizCounter.textContent = 'Semua soal terjawab';
+
+      var maxTotal = -1;
+      for (var i = 0; i < 6; i++) {
+        if (quizPenalties[i] > maxTotal) maxTotal = quizPenalties[i];
+      }
+
+      var losers = [];
+      for (var j = 0; j < 6; j++) {
+        if (quizPenalties[j] === maxTotal) losers.push(j + 1);
+      }
+
+      if (maxTotal === 0) {
+        quizStatus.className = 'game-status ok';
+        quizStatus.innerHTML = '<i class="fas fa-trophy"></i> Semua kelompok hebat — tidak ada hukuman! 🎉';
+      } else {
+        var names = losers.map(function(n) { return 'Kelompok ' + n; }).join(', ');
+        quizPunishmentNames.textContent = names;
+        quizPunishmentBanner.classList.add('show');
+        quizStatus.className = 'game-status no';
+        quizStatus.innerHTML = '<i class="fas fa-microphone"></i> Total kesalahan terbanyak: ' + names + ' (' + maxTotal + ' kesalahan) — HUKUMAN MENYANYI! 🎶';
+      }
+
+      quizStartBtn.innerHTML = '<i class="fas fa-rotate-right"></i> Main Lagi';
+      quizStartBtn.disabled = false;
+    }
+
+    function startQuizGame() {
+      if (quizStarted) { resetQuizGame(); }
+      quizStarted = true;
+      quizCurrentQ = 0;
+      quizActive = 0;
+      quizRound = 1;
+      quizPenalties = [0, 0, 0, 0, 0, 0];
+      quizRoundPenalties = [0, 0, 0, 0, 0, 0];
+      quizPlayedThisRound = [false, false, false, false, false, false];
+      quizPunishmentBanner.classList.remove('show');
+      updateQuizScores();
+      quizStartBtn.innerHTML = '<i class="fas fa-play"></i> Kuis Berjalan';
+      quizStartBtn.disabled = true;
+      quizStatus.className = 'game-status';
+      quizStatus.innerHTML = '<i class="fas fa-arrow-right"></i> Giliran Kelompok 1. Jawab benar untuk aman, salah = 1 poin kesalahan!';
+      showQuizQuestion();
+    }
+
+    function resetQuizGame() {
+      clearQuizTimer();
+      quizStarted = false;
+      quizAnswering = false;
+      quizActive = 0;
+      quizCurrentQ = 0;
+      quizRound = 1;
+      quizPenalties = [0, 0, 0, 0, 0, 0];
+      quizRoundPenalties = [0, 0, 0, 0, 0, 0];
+      quizPlayedThisRound = [false, false, false, false, false, false];
+      quizTimeLeft = 15;
+      quizTimerText.textContent = '15';
+      quizTimerBox.classList.remove('warning');
+      quizQuestionText.textContent = 'Tekan "Mulai Kuis" untuk memulai!';
+      quizCounter.textContent = 'Soal 1 dari ' + quizQuestions.length;
+      quizStatus.className = 'game-status';
+      quizStatus.innerHTML = '<i class="fas fa-info-circle"></i> Jawaban salah = 1 poin kesalahan. Di akhir putaran, yang paling banyak salah HUKUMAN MENYANYI!';
+      quizPunishmentBanner.classList.remove('show');
+      for (var i = 0; i < quizAnswerBtns.length; i++) {
+        quizAnswerBtns[i].classList.remove('correct', 'wrong');
+      }
+      disableQuizAnswers(true);
+      updateQuizScores();
+      quizStartBtn.innerHTML = '<i class="fas fa-play"></i> Mulai Kuis';
+      quizStartBtn.disabled = false;
+    }
+
+    window.quizStart = function() { startQuizGame(); };
+    window.quizReset = function() { resetQuizGame(); };
+    window.quizAnswer = function(opt) { handleQuizAnswer(opt); };
+
+    resetQuizGame();
+  })();
+
+  window.quizStart = window.quizStart || function() { console.warn('Quiz belum siap'); };
+</script>
+</body>
+</html>
