@@ -152,23 +152,23 @@
       font-size: 1.35rem; font-weight: 700; color: #0a1e3c; line-height: 1.35;
     }
 
-    .quiz-scores { display: flex; gap: 8px; flex-wrap: wrap; }
+    .quiz-scores { display: flex; gap: 6px; flex-wrap: wrap; }
     .quiz-score {
-      background: white; border-radius: 14px; padding: 8px 12px;
+      background: white; border-radius: 12px; padding: 5px 9px;
       border: 2px solid rgba(37,99,235,0.15);
-      display: flex; align-items: center; gap: 8px;
-      font-weight: 700; font-size: 0.88rem; color: #1e293b;
+      display: flex; align-items: center; gap: 5px;
+      font-weight: 700; font-size: 0.78rem; color: #1e293b;
       transition: all 0.2s;
     }
     .quiz-score.active { border-color: #2563eb; background: #dbeafe; box-shadow: 0 4px 12px rgba(37,99,235,0.2); }
     .quiz-score.penalized { border-color: #dc2626; background: #fee2e2; }
     .quiz-score .qs-badge {
-      width: 24px; height: 24px; border-radius: 8px; background: #2563eb; color: white;
-      display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+      width: 20px; height: 20px; border-radius: 6px; background: #2563eb; color: white;
+      display: flex; align-items: center; justify-content: center; font-size: 0.65rem;
     }
     .quiz-score.penalized .qs-badge { background: #dc2626; }
-    .quiz-score .qs-pts { color: #dc2626; min-width: 20px; text-align: right; }
-    .quiz-score .qs-label { font-size: 0.6rem; color: #94a3b8; font-weight: 600; margin-left: 2px; }
+    .quiz-score .qs-pts { color: #dc2626; min-width: 14px; text-align: right; }
+    .quiz-score .qs-label { font-size: 0.5rem; color: #94a3b8; font-weight: 600; }
 
     .quiz-answer-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
     .quiz-answer {
@@ -300,7 +300,7 @@
           </div>
           <div style="background: white; border-radius: 14px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
             <i class="fas fa-gamepad" style="color: #16a34a; font-size: 1.2rem;"></i>
-            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Game Kuis 6 Kelompok</span>
+            <span style="font-weight: 600; color: #0a1e3c; font-size: 0.85rem;">Game Kuis 8 Kelompok</span>
           </div>
         </div>
         <p style="margin-top: 28px; font-size: 0.92rem; color: #475569;"><i class="fas fa-arrow-right" style="color: #2563eb; margin-right: 6px;"></i>Navigasi: tombol panah, keyboard, atau geser layar.</p>
@@ -561,7 +561,7 @@
       </div>
     </div>
 
-    <!-- 9: GAME KUIS 6 KELOMPOK -->
+    <!-- 9: GAME KUIS 8 KELOMPOK, 64 SOAL -->
     <div class="slide">
       <div class="slide-inner">
         <div class="slide-number">9 / 11</div>
@@ -580,6 +580,8 @@
           <div class="quiz-score" data-group="4"><span class="qs-badge">4</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
           <div class="quiz-score" data-group="5"><span class="qs-badge">5</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
           <div class="quiz-score" data-group="6"><span class="qs-badge">6</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="7"><span class="qs-badge">7</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
+          <div class="quiz-score" data-group="8"><span class="qs-badge">8</span> <span class="qs-pts">0</span> <span class="qs-label">salah</span></div>
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
@@ -588,7 +590,7 @@
               <i class="fas fa-arrow-right" style="color: #2563eb;"></i>
               <span style="font-weight: 800; color: #1e3a8a;">Giliran: Kelompok 1</span>
             </div>
-            <span style="font-size: 0.82rem; color: #475569;" id="quizCounter">Soal 1 dari 30</span>
+            <span style="font-size: 0.82rem; color: #475569;" id="quizCounter">Soal 1 dari 64</span>
             <span style="font-size: 0.82rem; font-weight: 700; color: #dc2626;" id="quizRoundInfo">Putaran 1</span>
           </div>
         </div>
@@ -634,7 +636,7 @@
       </div>
     </div>
 
-    <!-- 10: BANK SOAL & ATURAN -->
+    <!-- 10: ATURAN & TIPS -->
     <div class="slide">
       <div class="slide-inner">
         <div class="slide-number">10 / 11</div>
@@ -643,11 +645,12 @@
           <div class="card" style="border-left: 5px solid #2563eb;">
             <h3 style="font-size: 1rem;"><i class="fas fa-list-ol" style="color: #2563eb; margin-right: 6px;"></i> Cara Main</h3>
             <ul class="bullet-list" style="margin-top: 8px;">
-              <li><i class="fas fa-1" style="color: #2563eb;"></i> <span>6 kelompok, masing-masing 4–5 siswa</span></li>
-              <li><i class="fas fa-2" style="color: #2563eb;"></i> <span>Setiap kelompok dapat giliran menjawab</span></li>
-              <li><i class="fas fa-3" style="color: #2563eb;"></i> <span>Jawaban <strong>benar</strong> = aman</span></li>
-              <li><i class="fas fa-4" style="color: #2563eb;"></i> <span>Jawaban <strong>salah / waktu habis</strong> = +1 poin kesalahan</span></li>
-              <li><i class="fas fa-5" style="color: #2563eb;"></i> <span>Akhir putaran: kesalahan terbanyak = <strong>HUKUMAN MENYANYI</strong> 🎤</span></li>
+              <li><i class="fas fa-1" style="color: #2563eb;"></i> <span><strong>8 kelompok</strong>, masing-masing 4–5 siswa</span></li>
+              <li><i class="fas fa-2" style="color: #2563eb;"></i> <span><strong>64 soal</strong> — 8 soal per kelompok</span></li>
+              <li><i class="fas fa-3" style="color: #2563eb;"></i> <span>Setiap kelompok dapat giliran menjawab</span></li>
+              <li><i class="fas fa-4" style="color: #2563eb;"></i> <span>Jawaban <strong>benar</strong> = aman</span></li>
+              <li><i class="fas fa-5" style="color: #2563eb;"></i> <span>Jawaban <strong>salah / waktu habis</strong> = +1 poin kesalahan</span></li>
+              <li><i class="fas fa-6" style="color: #2563eb;"></i> <span>Akhir putaran: kesalahan terbanyak = <strong>HUKUMAN MENYANYI</strong> 🎤</span></li>
             </ul>
           </div>
           <div class="card" style="border-left: 5px solid #16a34a;">
@@ -800,55 +803,93 @@
   })();
 
   /* ============================================================
-     BAGIAN 2: KUIS GAME — 6 KELOMPOK, 30 SOAL, HUKUMAN MENYANYI
+     BAGIAN 2: KUIS GAME — 8 KELOMPOK, 64 SOAL, HUKUMAN MENYANYI
      ============================================================ */
   (function() {
     'use strict';
     var quizQuestions = [
-      // ===== SOAL 1-5 (kelompok 1) =====
+      // ===== SOAL 1-8 (kelompok 1) =====
       { q: "Apa yang dimaksud konsumen pasif?", options: { A: "Scroll tanpa berpikir", B: "Cek fakta dulu", C: "Pilih konten sadar", D: "Berpikir kritis" }, correct: "A" },
       { q: "Apa ciri konsumen aktif?", options: { A: "Percaya semua viral", B: "Berpikir sebelum share", C: "Ikut-ikutan tanpa cek", D: "Dikendalikan algoritma" }, correct: "B" },
       { q: "Apa itu algoritma media sosial?", options: { A: "Otak yang mengatur konten", B: "Teman online", C: "Aplikasi edit foto", D: "Jaringan internet" }, correct: "A" },
       { q: "Apa yang dicatat algoritma dari kita?", options: { A: "Nama lengkap kita", B: "Alamat rumah", C: "Minat & perilaku online", D: "Nomor HP" }, correct: "C" },
       { q: "Dampak negatif algoritma?", options: { A: "Konten edukatif muncul", B: "Terjebak konten sama terus", C: "Rekomendasi sesuai minat", D: "Mudah cari informasi" }, correct: "B" },
+      { q: "Apa itu Pelajar Pancasila?", options: { A: "Pelajar berkarakter Pancasila", B: "Pelajar malas", C: "Pelajar pemalas", D: "Pelajar tanpa etika" }, correct: "A" },
+      { q: "Sikap Pelajar Pancasila di medsos?", options: { A: "Sopan & berpikir kritis", B: "Sebar kebencian", C: "Hina orang", D: "Sebar hoaks" }, correct: "A" },
+      { q: "Apa itu hoaks?", options: { A: "Berita bohong", B: "Berita benar", C: "Berita olahraga", D: "Berita cuaca" }, correct: "A" },
 
-      // ===== SOAL 6-10 (kelompok 2) =====
+      // ===== SOAL 9-16 (kelompok 2) =====
       { q: "Apa itu echo chamber?", options: { A: "Ruang gema pendapat sama", B: "Kamar tidur", C: "Grup belajar", D: "Ruang musik" }, correct: "A" },
       { q: "Apa itu filter bubble?", options: { A: "Gelembung sabun", B: "Konten disaring algoritma", C: "Filter kamera", D: "Gelembung udara" }, correct: "B" },
       { q: "Contoh echo chamber?", options: { A: "Grup hanya setuju satu pandangan", B: "Grup belajar bersama", C: "Diskusi terbuka", D: "Baca berita dari banyak sumber" }, correct: "A" },
       { q: "Contoh filter bubble?", options: { A: "Beranda hanya video lucu terus", B: "Lihat berita penting", C: "Baca banyak sudut pandang", D: "Ikuti akun berbeda" }, correct: "A" },
       { q: "Cara keluar dari jebakan digital?", options: { A: "Cari sudut pandang lain", B: "Ikuti satu akun saja", C: "Tutup semua akun", D: "Percaya semua konten" }, correct: "A" },
+      { q: "Apa dampak echo chamber?", options: { A: "Merasa paling benar", B: "Makin terbuka", C: "Makin kritis", D: "Makin bijak" }, correct: "A" },
+      { q: "Apa dampak filter bubble?", options: { A: "Dunia terasa sempit", B: "Dunia terasa luas", C: "Makin tahu banyak", D: "Makin terbuka" }, correct: "A" },
+      { q: "Solusi untuk filter bubble?", options: { A: "Ikuti akun berbeda", B: "Ikuti satu akun saja", C: "Tutup semua akun", D: "Percaya semua" }, correct: "A" },
 
-      // ===== SOAL 11-15 (kelompok 3) =====
+      // ===== SOAL 17-24 (kelompok 3) =====
       { q: "Apa itu digital footprint?", options: { A: "Jejak digital kita", B: "Sepatu digital", C: "Langkah kaki", D: "Cetakan kaki" }, correct: "A" },
       { q: "Contoh digital footprint?", options: { A: "Postingan & komentar", B: "Jalan-jalan", C: "Tidur siang", D: "Makan siang" }, correct: "A" },
       { q: "Cara menjaga jejak digital?", options: { A: "Pikir sebelum posting", B: "Bagikan data pribadi", C: "Posting sembarangan", D: "Abai privasi" }, correct: "A" },
       { q: "Prinsip influencer positif?", options: { A: "Jujur & bermanfaat", B: "Cari sensasi", C: "Sebar hoaks", D: "Hina orang lain" }, correct: "A" },
       { q: "Mengapa jejak digital penting?", options: { A: "Cermin reputasi kita", B: "Tidak penting", C: "Bisa dihapus selamanya", D: "Tidak ada dampak" }, correct: "A" },
-
-      // ===== SOAL 16-20 (kelompok 4) =====
-      { q: "Siapa Pelajar Pancasila?", options: { A: "Pelajar berkarakter Pancasila", B: "Pelajar malas", C: "Pelajar pemalas", D: "Pelajar tanpa etika" }, correct: "A" },
-      { q: "Sikap Pelajar Pancasila di medsos?", options: { A: "Sopan & berpikir kritis", B: "Sebar kebencian", C: "Hina orang", D: "Sebar hoaks" }, correct: "A" },
       { q: "Apa itu influencer positif?", options: { A: "Berdampak baik", B: "Cari sensasi", C: "Sebar hoaks", D: "Hina orang" }, correct: "A" },
       { q: "Contoh konten bermanfaat?", options: { A: "Edukasi & inspirasi", B: "Hoaks", C: "Kebencian", D: "Fitnah" }, correct: "A" },
       { q: "Mengapa harus menghargai perbedaan?", options: { A: "Karena semua berhak berpendapat", B: "Karena kita paling benar", C: "Karena berbeda itu salah", D: "Karena harus sama" }, correct: "A" },
 
-      // ===== SOAL 21-25 (kelompok 5) =====
-      { q: "Apa dampak echo chamber?", options: { A: "Merasa paling benar", B: "Makin terbuka", C: "Makin kritis", D: "Makin bijak" }, correct: "A" },
-      { q: "Apa dampak filter bubble?", options: { A: "Dunia terasa sempit", B: "Dunia terasa luas", C: "Makin tahu banyak", D: "Makin terbuka" }, correct: "A" },
-      { q: "Solusi untuk filter bubble?", options: { A: "Ikuti akun berbeda", B: "Ikuti satu akun saja", C: "Tutup semua akun", D: "Percaya semua" }, correct: "A" },
+      // ===== SOAL 25-32 (kelompok 4) =====
       { q: "Mengapa algoritma bisa berbahaya?", options: { A: "Bikin ketagihan & sempit", B: "Bikin pintar", C: "Bikin bijak", D: "Bikin kritis" }, correct: "A" },
-      { q: "Apa itu hoaks?", options: { A: "Berita bohong", B: "Berita benar", C: "Berita olahraga", D: "Berita cuaca" }, correct: "A" },
-
-      // ===== SOAL 26-30 (kelompok 6) =====
       { q: "Apa yang harus dilakukan sebelum share?", options: { A: "Cek fakta dulu", B: "Langsung share", C: "Share tanpa baca", D: "Share ke semua" }, correct: "A" },
       { q: "Mengapa konsumen pasif berbahaya?", options: { A: "Mudah termakan hoaks", B: "Makin pintar", C: "Makin bijak", D: "Makin kritis" }, correct: "A" },
       { q: "Apa peran pemimpin digital?", options: { A: "Memberi contoh baik", B: "Menyebar hoaks", C: "Hina orang", D: "Cari sensasi" }, correct: "A" },
       { q: "Apa itu ujaran kebencian?", options: { A: "Serangan identitas", B: "Kritik ide", C: "Saran baik", D: "Pujian" }, correct: "A" },
-      { q: "Apa pesan utama materi ini?", options: { A: "Jadi pengguna digital bijak", B: "Ikut semua tren", C: "Percaya semua konten", D: "Sebar hoaks" }, correct: "A" }
+      { q: "Apa pesan utama materi ini?", options: { A: "Jadi pengguna digital bijak", B: "Ikut semua tren", C: "Percaya semua konten", D: "Sebar hoaks" }, correct: "A" },
+      { q: "Apa itu konten edukatif?", options: { A: "Konten yang mengajarkan hal baik", B: "Konten hoaks", C: "Konten kebencian", D: "Konten fitnah" }, correct: "A" },
+      { q: "Mengapa harus berpikir sebelum posting?", options: { A: "Agar tidak menyesal", B: "Agar viral", C: "Agar banyak like", D: "Agar terkenal" }, correct: "A" },
+
+      // ===== SOAL 33-40 (kelompok 5) =====
+      { q: "Apa itu algoritma?", options: { A: "Program yang mengatur konten", B: "Aplikasi edit", C: "Game online", D: "Jaringan internet" }, correct: "A" },
+      { q: "Apa fungsi algoritma di medsos?", options: { A: "Menyajikan konten sesuai minat", B: "Menghapus akun", C: "Mengirim pulsa", D: "Menelepon" }, correct: "A" },
+      { q: "Apa itu konten viral?", options: { A: "Konten yang banyak dibagikan", B: "Konten hoaks", C: "Konten kebencian", D: "Konten fitnah" }, correct: "A" },
+      { q: "Apa itu berita bohong?", options: { A: "Hoaks", B: "Fakta", C: "Opini", D: "Berita resmi" }, correct: "A" },
+      { q: "Apa itu media sosial?", options: { A: "Platform untuk berinteraksi online", B: "Buku pelajaran", C: "Papan tulis", D: "Koran" }, correct: "A" },
+      { q: "Apa itu digital?", options: { A: "Berbasis teknologi", B: "Berbasis kertas", C: "Berbasis kayu", D: "Berbasis batu" }, correct: "A" },
+      { q: "Apa itu konten?", options: { A: "Isi media (gambar, video, teks)", B: "Kertas", C: "Pensil", D: "Buku" }, correct: "A" },
+      { q: "Apa itu netizen?", options: { A: "Pengguna internet", B: "Pengguna koran", C: "Pengguna radio", D: "Pengguna TV" }, correct: "A" },
+
+      // ===== SOAL 41-48 (kelompok 6) =====
+      { q: "Apa yang harus dilakukan saat menerima hoaks?", options: { A: "Cek fakta & jangan share", B: "Langsung share", C: "Percaya", D: "Sebar ke semua" }, correct: "A" },
+      { q: "Mengapa hoaks cepat menyebar?", options: { A: "Karena emosi & share tanpa cek", B: "Karena benar", C: "Karena edukatif", D: "Karena bermanfaat" }, correct: "A" },
+      { q: "Apa itu verifikasi?", options: { A: "Cek kebenaran informasi", B: "Share berita", C: "Like postingan", D: "Komentar" }, correct: "A" },
+      { q: "Apa itu sumber terpercaya?", options: { A: "Media resmi & kredibel", B: "Akun anonim", C: "Grup chat", D: "Berita viral" }, correct: "A" },
+      { q: "Apa itu etika digital?", options: { A: "Aturan berperilaku di dunia digital", B: "Aturan main game", C: "Aturan sekolah", D: "Aturan rumah" }, correct: "A" },
+      { q: "Apa itu jejak digital?", options: { A: "Rekam jejak online kita", B: "Sepatu", C: "Kaki", D: "Cetakan" }, correct: "A" },
+      { q: "Mengapa jejak digital penting dijaga?", options: { A: "Berpengaruh pada reputasi", B: "Tidak penting", C: "Bisa dihapus selamanya", D: "Tidak ada dampak" }, correct: "A" },
+      { q: "Apa itu privasi digital?", options: { A: "Hak menjaga data pribadi", B: "Hak menyebar data", C: "Hak membagikan sandi", D: "Hak membagikan alamat" }, correct: "A" },
+
+      // ===== SOAL 49-56 (kelompok 7) =====
+      { q: "Apa itu password yang kuat?", options: { A: "Kombinasi huruf, angka, simbol", B: "Tanggal lahir", C: "Nama sendiri", D: "123456" }, correct: "A" },
+      { q: "Mengapa tidak boleh bagikan data pribadi?", options: { A: "Bisa disalahgunakan", B: "Biar terkenal", C: "Biar viral", D: "Biar banyak like" }, correct: "A" },
+      { q: "Apa itu cyberbullying?", options: { A: "Perundungan online", B: "Belajar online", C: "Main game online", D: "Nonton video" }, correct: "A" },
+      { q: "Apa yang harus dilakukan jika dirundung online?", options: { A: "Laporkan & blokir", B: "Balas dengan kebencian", C: "Diam saja", D: "Ikut merundung" }, correct: "A" },
+      { q: "Apa itu konten negatif?", options: { A: "Konten yang merugikan", B: "Konten edukasi", C: "Konten inspirasi", D: "Konten positif" }, correct: "A" },
+      { q: "Apa itu konten positif?", options: { A: "Konten yang bermanfaat", B: "Konten hoaks", C: "Konten kebencian", D: "Konten fitnah" }, correct: "A" },
+      { q: "Apa itu literasi digital?", options: { A: "Kemampuan menggunakan teknologi bijak", B: "Kemampuan menulis", C: "Kemampuan membaca", D: "Kemampuan berhitung" }, correct: "A" },
+      { q: "Mengapa literasi digital penting?", options: { A: "Agar tidak termakan hoaks", B: "Agar viral", C: "Agar terkenal", D: "Agar banyak like" }, correct: "A" },
+
+      // ===== SOAL 57-64 (kelompok 8) =====
+      { q: "Apa itu konsumen aktif?", options: { A: "Pengguna yang sadar & kritis", B: "Pengguna yang pasif", C: "Pengguna yang malas", D: "Pengguna yang abai" }, correct: "A" },
+      { q: "Apa itu transformasi digital?", options: { A: "Perubahan ke era digital", B: "Perubahan cuaca", C: "Perubahan musim", D: "Perubahan waktu" }, correct: "A" },
+      { q: "Apa itu pemimpin digital?", options: { A: "Pemimpin yang bijak di dunia digital", B: "Pemimpin yang abai", C: "Pemimpin yang malas", D: "Pemimpin yang cuek" }, correct: "A" },
+      { q: "Apa itu Pelajar Pancasila?", options: { A: "Pelajar berkarakter Pancasila", B: "Pelajar biasa", C: "Pelajar malas", D: "Pelajar cuek" }, correct: "A" },
+      { q: "Apa itu berpikir kritis?", options: { A: "Menganalisis sebelum percaya", B: "Percaya semua", C: "Ikut-ikutan", D: "Abai" }, correct: "A" },
+      { q: "Apa itu berakhlak mulia?", options: { A: "Berperilaku baik", B: "Berperilaku buruk", C: "Berperilaku kasar", D: "Berperilaku jahat" }, correct: "A" },
+      { q: "Apa itu gotong royong?", options: { A: "Kerja sama membantu", B: "Kerja sendiri", C: "Kerja malas", D: "Kerja cuek" }, correct: "A" },
+      { q: "Apa itu berkebinekaan global?", options: { A: "Menghargai perbedaan", B: "Membenci perbedaan", C: "Menolak perbedaan", D: "Mengabaikan perbedaan" }, correct: "A" }
     ];
 
-    var quizPenalties = [0, 0, 0, 0, 0, 0];
+    var quizPenalties = [0, 0, 0, 0, 0, 0, 0, 0];
     var quizActive = 0;
     var quizCurrentQ = 0;
     var quizRound = 1;
@@ -856,8 +897,8 @@
     var quizTimeLeft = 15;
     var quizAnswering = false;
     var quizStarted = false;
-    var quizRoundPenalties = [0, 0, 0, 0, 0, 0];
-    var quizPlayedThisRound = [false, false, false, false, false, false];
+    var quizRoundPenalties = [0, 0, 0, 0, 0, 0, 0, 0];
+    var quizPlayedThisRound = [false, false, false, false, false, false, false, false];
 
     var quizTimerBox = document.getElementById('quizTimer');
     var quizTimerText = document.getElementById('quizTimerText');
@@ -983,7 +1024,7 @@
       quizPlayedThisRound[quizActive] = true;
 
       var allPlayed = true;
-      for (var i = 0; i < 6; i++) {
+      for (var i = 0; i < 8; i++) {
         if (!quizPlayedThisRound[i]) { allPlayed = false; break; }
       }
 
@@ -992,11 +1033,11 @@
       } else {
         var next = quizActive + 1;
         var checked = 0;
-        while (checked < 6 && quizPlayedThisRound[next % 6]) {
+        while (checked < 8 && quizPlayedThisRound[next % 8]) {
           next++;
           checked++;
         }
-        quizActive = next % 6;
+        quizActive = next % 8;
         updateQuizScores();
         showQuizQuestion();
       }
@@ -1004,7 +1045,7 @@
 
     function evaluatePunishment() {
       var maxPenalty = -1;
-      for (var i = 0; i < 6; i++) {
+      for (var i = 0; i < 8; i++) {
         if (quizRoundPenalties[i] > maxPenalty) maxPenalty = quizRoundPenalties[i];
       }
 
@@ -1016,7 +1057,7 @@
       }
 
       var losers = [];
-      for (var j = 0; j < 6; j++) {
+      for (var j = 0; j < 8; j++) {
         if (quizRoundPenalties[j] === maxPenalty) losers.push(j + 1);
       }
 
@@ -1034,8 +1075,8 @@
 
     function startNewRound() {
       quizRound++;
-      quizRoundPenalties = [0, 0, 0, 0, 0, 0];
-      quizPlayedThisRound = [false, false, false, false, false, false];
+      quizRoundPenalties = [0, 0, 0, 0, 0, 0, 0, 0];
+      quizPlayedThisRound = [false, false, false, false, false, false, false, false];
       quizActive = 0;
       updateQuizScores();
       if (quizCurrentQ >= quizQuestions.length) {
@@ -1052,12 +1093,12 @@
       quizCounter.textContent = 'Semua soal terjawab';
 
       var maxTotal = -1;
-      for (var i = 0; i < 6; i++) {
+      for (var i = 0; i < 8; i++) {
         if (quizPenalties[i] > maxTotal) maxTotal = quizPenalties[i];
       }
 
       var losers = [];
-      for (var j = 0; j < 6; j++) {
+      for (var j = 0; j < 8; j++) {
         if (quizPenalties[j] === maxTotal) losers.push(j + 1);
       }
 
@@ -1082,9 +1123,9 @@
       quizCurrentQ = 0;
       quizActive = 0;
       quizRound = 1;
-      quizPenalties = [0, 0, 0, 0, 0, 0];
-      quizRoundPenalties = [0, 0, 0, 0, 0, 0];
-      quizPlayedThisRound = [false, false, false, false, false, false];
+      quizPenalties = [0, 0, 0, 0, 0, 0, 0, 0];
+      quizRoundPenalties = [0, 0, 0, 0, 0, 0, 0, 0];
+      quizPlayedThisRound = [false, false, false, false, false, false, false, false];
       quizPunishmentBanner.classList.remove('show');
       updateQuizScores();
       quizStartBtn.innerHTML = '<i class="fas fa-play"></i> Kuis Berjalan';
@@ -1101,9 +1142,9 @@
       quizActive = 0;
       quizCurrentQ = 0;
       quizRound = 1;
-      quizPenalties = [0, 0, 0, 0, 0, 0];
-      quizRoundPenalties = [0, 0, 0, 0, 0, 0];
-      quizPlayedThisRound = [false, false, false, false, false, false];
+      quizPenalties = [0, 0, 0, 0, 0, 0, 0, 0];
+      quizRoundPenalties = [0, 0, 0, 0, 0, 0, 0, 0];
+      quizPlayedThisRound = [false, false, false, false, false, false, false, false];
       quizTimeLeft = 15;
       quizTimerText.textContent = '15';
       quizTimerBox.classList.remove('warning');
