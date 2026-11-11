@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPT Pertemuan 7 — Report Writing</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #0f172a;
+  }
+
+  .slide-container {
+    position: relative;
+    width: 100vw; height: 100vh;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .slide {
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    padding: 4vh 6vw;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+    overflow-y: auto;
+  }
+  .slide.active { display: flex; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 { font-size: clamp(1.8rem, 4vw, 3rem); color: #16213e; margin-bottom: 1.5vh; }
+  h2 { font-size: clamp(1.4rem, 3vw, 2.2rem); color: #0f3460; margin-bottom: 1.5vh; }
+  h3 { font-size: clamp(1.1rem, 2.2vw, 1.6rem); color: #e94560; margin-bottom: 1vh; }
+  p { font-size: clamp(0.95rem, 1.6vw, 1.3rem); color: #333; line-height: 1.6; }
+  .subtitle { font-size: clamp(0.9rem, 1.4vw, 1.1rem); color: #666; margin-top: 1vh; }
+
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2vw;
+    margin-top: 2vh;
+    width: 100%;
+    max-width: 1100px;
+  }
+  .vocab-card {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e0e8ff 100%);
+    border: 2px solid #0f3460;
+    border-radius: 14px;
+    padding: 1.2vh 1vw;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    text-align: left;
+    box-shadow: 0 3px 8px rgba(15,52,96,0.1);
+  }
+  .vocab-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    background: linear-gradient(135deg, #e94560 0%, #c73650 100%);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(233,69,96,0.3);
+  }
+  .vocab-card:active { transform: scale(0.95); }
+  .vocab-card .word { font-size: clamp(0.85rem, 1.4vw, 1.1rem); font-weight: bold; display: block; }
+  .vocab-card .meaning { font-size: clamp(0.7rem, 1.1vw, 0.9rem); opacity: 0.8; }
+  .vocab-card .speaker { font-size: 0.8em; opacity: 0.6; float: right; }
+
+  .sentence-list {
+    text-align: left;
+    width: 100%;
+    max-width: 1100px;
+    margin-top: 2vh;
+  }
+  .sentence-list p {
+    background: #f0f4ff;
+    padding: 1.2vh 1.5vw;
+    border-radius: 10px;
+    margin: 0.8vh 0;
+    font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+    border-left: 5px solid #e94560;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+  }
+  .sentence-list p:hover { background: #d8e4ff; }
+  .sentence-list p .num {
+    display: inline-block;
+    width: 2em; height: 2em;
+    background: #0f3460; color: #fff;
+    border-radius: 50%;
+    text-align: center; line-height: 2em;
+    font-size: 0.75em;
+    margin-right: 1em;
+    flex-shrink: 0;
+  }
+  .sentence-list p .text { flex: 1; }
+  .sentence-list p .speaker { font-size: 0.9em; opacity: 0.5; margin-left: 0.8em; }
+
+  .fact-box {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border-left: 6px solid #e94560;
+    padding: 2vh 2vw;
+    border-radius: 10px;
+    margin-top: 2vh;
+    font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+    text-align: left;
+    width: 100%;
+    max-width: 1100px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  }
+  .exercise-box {
+    background: linear-gradient(135deg, #e8f4ff 0%, #d0e8ff 100%);
+    border: 2px dashed #0f3460;
+    border-radius: 12px;
+    padding: 2vh 2vw;
+    margin-top: 2vh;
+    width: 100%;
+    max-width: 1100px;
+    text-align: left;
+  }
+  .exercise-box p { font-size: clamp(0.9rem, 1.4vw, 1.1rem); margin: 1vh 0; }
+  .exercise-box .blank {
+    display: inline-block;
+    width: 8em;
+    border-bottom: 2px dashed #e94560;
+    margin: 0 0.5em;
+  }
+
+  .game-simple {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border: 3px solid #4caf50;
+    border-radius: 12px;
+    padding: 2vh 2vw;
+    margin-top: 2vh;
+    width: 100%;
+    max-width: 1100px;
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(76,175,80,0.2);
+  }
+  .game-simple h3 { color: #2e7d32; margin-bottom: 1vh; }
+  .game-simple p { color: #333; font-size: clamp(0.9rem, 1.4vw, 1.1rem); margin: 0.6vh 0; }
+
+  .big-icon { font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 1.5vh; }
+  .highlight { background: #ffe0e6; padding: 0.1em 0.4em; border-radius: 5px; font-weight: bold; }
+
+  .step-box {
+    background: linear-gradient(135deg, #e8f4ff 0%, #d0e8ff 100%);
+    border-radius: 10px;
+    padding: 2vh 2vw;
+    margin-top: 2vh;
+    width: 100%;
+    max-width: 1100px;
+    text-align: left;
+    border-left: 5px solid #0f3460;
+  }
+  .step-box p { font-size: clamp(0.85rem, 1.3vw, 1.05rem); margin: 0.6vh 0; }
+  .step-box .step-num {
+    display: inline-block;
+    width: 1.8em; height: 1.8em;
+    background: #e94560; color: #fff;
+    border-radius: 50%;
+    text-align: center; line-height: 1.8em;
+    font-size: 0.75em;
+    margin-right: 0.8em;
+  }
+
+  .report-structure {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2vw;
+    margin-top: 2vh;
+    width: 100%;
+    max-width: 1100px;
+  }
+  .structure-card {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e0e8ff 100%);
+    border: 3px solid #0f3460;
+    border-radius: 12px;
+    padding: 2vh 2vw;
+    text-align: left;
+    box-shadow: 0 3px 10px rgba(15,52,96,0.1);
+  }
+  .structure-card h4 {
+    color: #0f3460;
+    margin-bottom: 1vh;
+    font-size: clamp(1rem, 1.6vw, 1.3rem);
+    text-align: center;
+  }
+  .structure-card p { font-size: clamp(0.9rem, 1.4vw, 1.1rem); margin: 0.6vh 0; }
+
+  .outline-box {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+    border: 2px dashed #f57c00;
+    border-radius: 12px;
+    padding: 2vh 2vw;
+    margin-top: 2vh;
+    width: 100%;
+    max-width: 1100px;
+    text-align: left;
+  }
+  .outline-box h4 { color: #f57c00; margin-bottom: 1vh; font-size: clamp(1rem, 1.6vw, 1.2rem); }
+  .outline-box p { font-size: clamp(0.9rem, 1.4vw, 1.1rem); margin: 0.5vh 0; }
+  .outline-box .line {
+    display: inline-block;
+    width: 90%;
+    border-bottom: 2px dashed #f57c00;
+    margin: 0.5vh 0;
+  }
+
+  .sound-controls {
+    position: absolute;
+    top: 1.5vh; right: 1.5vw;
+    display: flex; gap: 0.5vw;
+    z-index: 100;
+  }
+  .sound-controls button {
+    background: rgba(15,52,96,0.9);
+    color: #fff; border: none;
+    padding: 0.8vh 1.2vw;
+    border-radius: 8px;
+    font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .sound-controls button:hover { background: #e94560; }
+  .sound-controls button.active { background: #e94560; }
+
+  .autoplay-controls {
+    position: absolute;
+    top: 1.5vh; left: 1.5vw;
+    display: flex; gap: 0.5vw;
+    z-index: 100;
+    align-items: center;
+  }
+  .autoplay-controls button {
+    background: rgba(15,52,96,0.9);
+    color: #fff; border: none;
+    padding: 0.8vh 1.2vw;
+    border-radius: 8px;
+    font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .autoplay-controls button:hover { background: #e94560; }
+  .autoplay-controls button.active { background: #4caf50; }
+  .autoplay-controls .timer {
+    background: rgba(15,52,96,0.9);
+    color: #fff;
+    padding: 0.8vh 1vw;
+    border-radius: 8px;
+    font-size: clamp(0.7rem, 1vw, 0.9rem);
+    font-weight: bold;
+    min-width: 3em;
+    text-align: center;
+  }
+
+  .nav {
+    position: absolute;
+    bottom: 2vh; right: 2vw;
+    display: flex; gap: 0.5vw;
+    z-index: 100;
+  }
+  .nav button {
+    background: rgba(15,52,96,0.9);
+    color: #fff; border: none;
+    padding: 1vh 1.5vw;
+    border-radius: 8px;
+    font-size: clamp(0.8rem, 1.2vw, 1rem);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .nav button:hover { background: #e94560; }
+
+  .page-indicator {
+    position: absolute;
+    bottom: 2.5vh; left: 2vw;
+    font-size: clamp(0.8rem, 1.2vw, 1rem);
+    color: #888;
+    z-index: 100;
+    background: rgba(255,255,255,0.9);
+    padding: 0.5vh 1vw;
+    border-radius: 8px;
+  }
+
+  .progress-bar {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 4px;
+    background: rgba(15,52,96,0.15);
+    z-index: 100;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #e94560, #0f3460);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  .slide::-webkit-scrollbar { width: 6px; }
+  .slide::-webkit-scrollbar-track { background: #f0f0f0; }
+  .slide::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+
+  <div class="autoplay-controls">
+    <button id="autoplayBtn" onclick="toggleAutoplay()" title="Auto Next">▶ Auto</button>
+    <div class="timer" id="timerDisplay">10s</div>
+  </div>
+
+  <div class="sound-controls">
+    <button id="soundToggle" onclick="toggleSound()" title="On/Off Sound">🔊 ON</button>
+    <button onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
+  </div>
+
+  <!-- SLIDE 1: Judul -->
+  <div class="slide active">
+    <div class="big-icon">✍️</div>
+    <h1>Report Writing</h1>
+    <p class="subtitle">Pertemuan 7 — Chapter 1: Exploring Fauna of Indonesia</p>
+    <h2>Write Your Own Report!</h2>
+    <p style="margin-top:2vh;">Bahasa Inggris Kelas 9 — Buku Paket English for Nusantara</p>
+  </div>
+
+  <!-- SLIDE 2: Tujuan -->
+  <div class="slide">
+    <h2>🎯 Tujuan Hari Ini</h2>
+    <div class="step-box">
+      <p><span class="step-num">1</span> Mengingat kembali struktur report text</p>
+      <p><span class="step-num">2</span> Mengumpulkan informasi tentang hewan pilihan</p>
+      <p><span class="step-num">3</span> Menyusun outline report text</p>
+      <p><span class="step-num">4</span> Menulis report text 3-5 kalimat</p>
+      <p><span class="step-num">5</span> Mempresentasikan hasil tulisan</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Review Struktur Report -->
+  <div class="slide">
+    <h2>Review: Report Text Structure</h2>
+    <div class="report-structure">
+      <div class="structure-card">
+        <h4>1. Identification</h4>
+        <p>Mengenalkan objek secara umum.</p>
+        <p><em>Contoh: The Bekantan is a monkey with a long nose.</em></p>
+        <p><em>The Cenderawasih is a beautiful bird.</em></p>
+      </div>
+      <div class="structure-card">
+        <h4>2. Description</h4>
+        <p>Menjelaskan ciri fisik, habitat, makanan, perilaku.</p>
+        <p><em>Contoh: It has reddish-brown fur. It lives in Borneo. It eats leaves.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Review Grammar -->
+  <div class="slide">
+    <h2>Review: Grammar untuk Report</h2>
+    <div class="fact-box">
+      <p><strong>1. To Be:</strong> is / are / am</p>
+      <p style="margin-left:1.5em;">The Bekantan <strong>is</strong> a monkey.</p>
+      <p><strong>2. Has / Have:</strong> untuk kepemilikan</p>
+      <p style="margin-left:1.5em;">It <strong>has</strong> a long nose. They <strong>have</strong> long arms.</p>
+      <p><strong>3. Simple Present:</strong> untuk fakta</p>
+      <p style="margin-left:1.5em;">It <strong>lives</strong> in Borneo. It <strong>eats</strong> leaves.</p>
+      <p><strong>4. Possessive:</strong> its / their</p>
+      <p style="margin-left:1.5em;"><strong>Its</strong> fur is brown. <strong>Their</strong> habitat is Borneo.</p>
+      <p><strong>5. Passive Voice:</strong> to be + verb-3</p>
+      <p style="margin-left:1.5em;">Bekantans <strong>are found</strong> in Borneo.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Pilih Hewan -->
+  <div class="slide">
+    <h2>Pilih Hewanmu!</h2>
+    <p>Pilih satu hewan Indonesia untuk report text-mu.</p>
+    <div class="vocab-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="vocab-card" style="text-align:center;">
+        <span style="font-size:2.5em; display:block;">🦧</span>
+        <span class="word">Orangutan</span>
+        <span class="meaning">Borneo</span>
+      </div>
+      <div class="vocab-card" style="text-align:center;">
+        <span style="font-size:2.5em; display:block;">🐒</span>
+        <span class="word">Bekantan</span>
+        <span class="meaning">Borneo</span>
+      </div>
+      <div class="vocab-card" style="text-align:center;">
+        <span style="font-size:2.5em; display:block;">🐦</span>
+        <span class="word">Cenderawasih</span>
+        <span class="meaning">Papua</span>
+      </div>
+      <div class="vocab-card" style="text-align:center;">
+        <span style="font-size:2.5em; display:block;">🦜</span>
+        <span class="word">Jalak Bali</span>
+        <span class="meaning">Bali</span>
+      </div>
+      <div class="vocab-card" style="text-align:center;">
+        <span style="font-size:2.5em; display:block;">🦎</span>
+        <span class="word">Komodo</span>
+        <span class="meaning">NTT</span>
+      </div>
+      <div class="vocab-card" style="text-align:center;">
+        <span style="font-size:2.5em; display:block;">🐅</span>
+        <span class="word">Harimau Sumatra</span>
+        <span class="meaning">Sumatra</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Isi Data Hewan -->
+  <div class="slide">
+    <h2>Isi Data Hewanmu!</h2>
+    <div class="outline-box">
+      <h4>Data Hewan</h4>
+      <p><strong>Nama hewan:</strong> <span class="line"></span></p>
+      <p><strong>Ciri fisik:</strong> <span class="line"></span></p>
+      <p><strong>Habitat:</strong> <span class="line"></span></p>
+      <p><strong>Makanan:</strong> <span class="line"></span></p>
+      <p><strong>Fakta unik:</strong> <span class="line"></span></p>
+    </div>
+    <p style="margin-top:1.5vh; font-size:0.95em; color:#888;">Tulis di buku catatanmu!</p>
+  </div>
+
+  <!-- SLIDE 7: Contoh Outline -->
+  <div class="slide">
+    <h2>Contoh Outline — Orangutan</h2>
+    <div class="outline-box">
+      <h4>Data Orangutan</h4>
+      <p><strong>Nama:</strong> Orangutan</p>
+      <p><strong>Ciri fisik:</strong> long arms, reddish hair, big body</p>
+      <p><strong>Habitat:</strong> forests of Borneo and Sumatra</p>
+      <p><strong>Makanan:</strong> fruit, leaves, insects</p>
+      <p><strong>Fakta unik:</strong> very smart, can use tools</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Susun Kalimat -->
+  <div class="slide">
+    <h2>Susun Kalimat!</h2>
+    <p>Gunakan outline-mu untuk membuat kalimat.</p>
+    <div class="fact-box">
+      <p><strong>Pola kalimat:</strong></p>
+      <p>• <strong>Identification:</strong> The [hewan] is a [jenis hewan].</p>
+      <p>• <strong>Ciri fisik:</strong> It has [ciri fisik].</p>
+      <p>• <strong>Habitat:</strong> It lives in [habitat].</p>
+      <p>• <strong>Makanan:</strong> It eats [makanan].</p>
+      <p>• <strong>Fakta unik:</strong> It is [fakta unik].</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Contoh Report Text -->
+  <div class="slide">
+    <h2>Contoh Report Text — Orangutan</h2>
+    <div class="sentence-list">
+      <p data-word="The orangutan is a big ape."><span class="num">1</span><span class="text">The orangutan <strong>is</strong> a big ape. <em>(Identification)</em></span><span class="speaker">🔊</span></p>
+      <p data-word="It has long arms and reddish hair."><span class="num">2</span><span class="text">It <strong>has</strong> long arms and reddish hair.</span><span class="speaker">🔊</span></p>
+      <p data-word="It lives in the forests of Borneo and Sumatra."><span class="num">3</span><span class="text">It <strong>lives</strong> in the forests of Borneo and Sumatra.</span><span class="speaker">🔊</span></p>
+      <p data-word="It eats fruit, leaves, and insects."><span class="num">4</span><span class="text">It <strong>eats</strong> fruit, leaves, and insects.</span><span class="speaker">🔊</span></p>
+      <p data-word="It is very smart and can use tools."><span class="num">5</span><span class="text">It <strong>is</strong> very smart and can use tools.</span><span class="speaker">🔊</span></p>
+      <p data-word="Orangutans are found in Borneo and Sumatra."><span class="num">6</span><span class="text">Orangutans <strong>are found</strong> in Borneo and Sumatra. <em>(Passive)</em></span><span class="speaker">🔊</span></p>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Latihan 1 — Susun Kalimat -->
+  <div class="slide">
+    <h2>Latihan 1 — Susun Kalimat</h2>
+    <div class="exercise-box">
+      <p>Susun kata-kata ini menjadi kalimat yang benar!</p>
+      <p><strong>1.</strong> is — The Bekantan — a monkey — with a long nose</p>
+      <p style="margin-left:1.5em; color:#888;">→ <span class="blank"></span></p>
+      <p style="margin-top:1.5vh;"><strong>2.</strong> has — It — reddish-brown fur</p>
+      <p style="margin-left:1.5em; color:#888;">→ <span class="blank"></span></p>
+      <p style="margin-top:1.5vh;"><strong>3.</strong> lives — It — in Borneo</p>
+      <p style="margin-left:1.5em; color:#888;">→ <span class="blank"></span></p>
+      <p style="margin-top:1.5vh;"><strong>4.</strong> eats — It — leaves and seeds</p>
+      <p style="margin-left:1.5em; color:#888;">→ <span class="blank"></span></p>
+    </div>
+    <button onclick="speakText('The Bekantan is a monkey with a long nose. It has reddish-brown fur. It lives in Borneo. It eats leaves and seeds.')"
+      style="margin-top:2vh; padding:1vh 2vw; background:#0f3460; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:1rem;">
+      🔊 Dengar Jawaban
+    </button>
+  </div>
+
+  <!-- SLIDE 11: Latihan 2 — Isi Rumpang -->
+  <div class="slide">
+    <h2>Latihan 2 — Isi Rumpang</h2>
+    <div class="exercise-box">
+      <p><strong>1.</strong> The Cenderawasih <span class="blank"></span> a beautiful bird.</p>
+      <p><strong>2.</strong> It <span class="blank"></span> colorful feathers.</p>
+      <p><strong>3.</strong> It <span class="blank"></span> in the forests of Papua.</p>
+      <p><strong>4.</strong> It <span class="blank"></span> fruit and insects.</p>
+      <p><strong>5.</strong> Cenderawasih <span class="blank"></span> found in Papua. (passive)</p>
+    </div>
+    <button onclick="speakText('is, has, lives, eats, are')"
+      style="margin-top:2vh; padding:1vh 2vw; background:#0f3460; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:1rem;">
+      🔊 Dengar Jawaban
+    </button>
+  </div>
+
+  <!-- SLIDE 12: Writing Practice -->
+  <div class="slide">
+    <h2>Writing Practice</h2>
+    <p>Tulis report text-mu sendiri! 5-7 kalimat.</p>
+    <div class="outline-box">
+      <h4>Report Text — Hewan Pilihanmu</h4>
+      <p><strong>Identification:</strong> <span class="line"></span></p>
+      <p><strong>Ciri fisik:</strong> <span class="line"></span></p>
+      <p><strong>Habitat:</strong> <span class="line"></span></p>
+      <p><strong>Makanan:</strong> <span class="line"></span></p>
+      <p><strong>Fakta unik:</strong> <span class="line"></span></p>
+      <p><strong>Passive voice:</strong> <span class="line"></span></p>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: Peer Review -->
+  <div class="slide">
+    <div class="big-icon">👥</div>
+    <h2>Peer Review</h2>
+    <div class="game-simple">
+      <h3>Cara Bermain:</h3>
+      <p>1. Tukar tulisan dengan teman sebangku</p>
+      <p>2. Baca tulisan temanmu</p>
+      <p>3. Beri tanda ✓ jika benar, ? jika ada yang perlu diperbaiki</p>
+      <p>4. Kembalikan tulisan ke temanmu</p>
+      <p>5. Perbaiki tulisanmu berdasarkan masukan</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: Presentasi -->
+  <div class="slide">
+    <div class="big-icon">🎤</div>
+    <h2>Presentasi</h2>
+    <p>Bacakan report text-mu di depan kelas!</p>
+    <div class="fact-box">
+      <p><strong>Tips Presentasi:</strong></p>
+      <p>✅ Berbicara dengan jelas</p>
+      <p>✅ Tatap mata teman-teman</p>
+      <p>✅ Tidak perlu takut salah</p>
+      <p>✅ Yang penting berani mencoba!</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: Exit Ticket -->
+  <div class="slide">
+    <div class="big-icon">🎫</div>
+    <h2>Exit Ticket</h2>
+    <p>Tulis di kertas kecil:</p>
+    <div class="fact-box">
+      <p><strong>1.</strong> 1 hal yang saya pelajari hari ini:</p>
+      <p style="margin-left:2em;">_____________________________</p>
+      <p style="margin-top:1.5vh;"><strong>2.</strong> 1 pertanyaan yang masih tersisa:</p>
+      <p style="margin-left:2em;">_____________________________</p>
+    </div>
+    <p style="margin-top:2vh;">Kumpulkan di pintu keluar! 🚪</p>
+  </div>
+
+  <!-- SLIDE 16: Penutup -->
+  <div class="slide">
+    <div class="big-icon">🎉</div>
+    <h1>Great Job!</h1>
+    <p style="font-size:1.3em; margin-top:2vh;">See you next meeting!</p>
+    <p style="margin-top:1.5vh;">Chapter 1 selesai! Selanjutnya: Chapter 2 — Taking Trips ✨</p>
+    <p style="margin-top:2vh; font-size:0.9em; color:#888;">Pertemuan selanjutnya: Taking Trips (Recount Text)</p>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <div class="page-indicator"><span id="pageNum">1</span> / 16</div>
+
+  <div class="nav">
+    <button onclick="prevSlide()">◀ Prev</button>
+    <button onclick="nextSlide()">Next ▶</button>
+  </div>
+
+</div>
+
+<script>
+  // ============ STATE ============
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const pageNum = document.getElementById('pageNum');
+  const progressFill = document.getElementById('progressFill');
+  const totalSlides = slides.length;
+
+  let autoplayEnabled = false;
+  let autoplayTimer = null;
+  let countdownTimer = null;
+  let remainingSeconds = 10;
+  const SLIDE_DURATION = 10;
+
+  const autoplayBtn = document.getElementById('autoplayBtn');
+  const timerDisplay = document.getElementById('timerDisplay');
+
+  // ============ NAVIGASI ============
+  function showSlide(index) {
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+    pageNum.textContent = index + 1;
+    const progress = ((index + 1) / totalSlides) * 100;
+    progressFill.style.width = progress + '%';
+  }
+
+  function goToNextSlide() {
+    if (currentSlide < totalSlides - 1) {
+      currentSlide++;
+      showSlide(currentSlide);
+      if (autoplayEnabled) resetCountdown();
+    } else {
+      if (autoplayEnabled) stopAutoplay();
+    }
+  }
+
+  function nextSlide() { goToNextSlide(); }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      showSlide(currentSlide);
+      if (autoplayEnabled) resetCountdown();
+    }
+  }
+
+  // ============ AUTOPLAY ============
+  function startAutoplay() {
+    autoplayEnabled = true;
+    autoplayBtn.textContent = '⏸ Pause';
+    autoplayBtn.classList.add('active');
+    resetCountdown();
+  }
+
+  function stopAutoplay() {
+    autoplayEnabled = false;
+    autoplayBtn.textContent = '▶ Auto';
+    autoplayBtn.classList.remove('active');
+    clearInterval(autoplayTimer);
+    clearInterval(countdownTimer);
+    timerDisplay.textContent = SLIDE_DURATION + 's';
+  }
+
+  function toggleAutoplay() {
+    if (autoplayEnabled) stopAutoplay();
+    else startAutoplay();
+  }
+
+  function resetCountdown() {
+    clearInterval(autoplayTimer);
+    clearInterval(countdownTimer);
+    remainingSeconds = SLIDE_DURATION;
+    timerDisplay.textContent = remainingSeconds + 's';
+
+    countdownTimer = setInterval(() => {
+      remainingSeconds--;
+      if (remainingSeconds >= 0) timerDisplay.textContent = remainingSeconds + 's';
+    }, 1000);
+
+    autoplayTimer = setInterval(() => { goToNextSlide(); }, SLIDE_DURATION * 1000);
+  }
+
+  // ============ KEYBOARD ============
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); return; }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); return; }
+    if (e.key === 'PageDown') { e.preventDefault(); nextSlide(); return; }
+    if (e.key === 'PageUp') { e.preventDefault(); prevSlide(); return; }
+    if (e.key === 'Enter') { e.preventDefault(); nextSlide(); return; }
+    if (e.key === 'Escape') { if (document.fullscreenElement) document.exitFullscreen(); return; }
+    if (e.key === 'a' || e.key === 'A') { toggleAutoplay(); return; }
+  });
+
+  // ============ FULLSCREEN ============
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => console.warn(err));
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  // ============ SOUND ============
+  let soundEnabled = true;
+  function toggleSound() {
+    soundEnabled = !soundEnabled;
+    const btn = document.getElementById('soundToggle');
+    btn.textContent = soundEnabled ? '🔊 ON' : '🔇 OFF';
+    btn.classList.toggle('active', !soundEnabled);
+  }
+
+  function speakText(text, rate = 0.85) {
+    if (!soundEnabled) return;
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = rate;
+      const voices = window.speechSynthesis.getVoices();
+      const englishVoice = voices.find(v => v.lang.startsWith('en'));
+      if (englishVoice) utterance.voice = englishVoice;
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+  }
+
+  // ============ INTERAKSI KATA ============
+  document.querySelectorAll('.vocab-card').forEach(card => {
+    card.addEventListener('click', () => {
+      if (card.dataset.word) speakText(card.dataset.word, 0.8);
+      card.style.transform = 'scale(1.05)';
+      setTimeout(() => card.style.transform = '', 200);
+    });
+  });
+
+  document.querySelectorAll('.sentence-list p').forEach(el => {
+    el.addEventListener('click', () => {
+      if (el.dataset.word) speakText(el.dataset.word, 0.85);
+      el.style.background = '#ffd8e0';
+      setTimeout(() => el.style.background = '', 300);
+    });
+  });
+
+  // ============ INIT ============
+  showSlide(0);
+</script>
+</body>
+</html>
